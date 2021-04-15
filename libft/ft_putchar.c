@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/07 12:54:47 by lelderbe         ###   ########.fr       */
+/*   Created: 2020/11/04 11:56:29 by lelderbe          #+#    #+#             */
+/*   Updated: 2020/11/04 12:17:46 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int		main(int argc, char** argv)
+int 	ft_putchar(int c)
 {
-	(void)argc;
-	(void)argv;
-
+	write(1, &c, 1);
 	return (0);
 }

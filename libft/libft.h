@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 16:23:50 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/11/11 15:18:11 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/14 16:52:54 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-typedef struct	s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
@@ -35,8 +35,9 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
-char			*ft_strnstr(const char *haystack, const char *needle,
-						size_t len);
+char			*ft_strnstr(const char *haystack, const char *needle, \
+					size_t len);
+int				ft_strcmp(const char *s1, const char *s2);
 int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
@@ -53,6 +54,7 @@ char			*ft_strtrim(char const *s1, char const *set);
 char			**ft_split(char const *s, char c);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char			*ft_itoa(int n);
+int				ft_putchar(int c);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char *s, int fd);
 void			ft_putendl_fd(char *s, int fd);

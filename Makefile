@@ -6,11 +6,20 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/07 12:48:57 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/04/14 17:05:20 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		= main.c
+CLI_DIR		= cli/
+CLI_SRCS	= cli_readline.c
+CLI_SRCS	:= $(addprefix $(CLI_DIR), $(CLI_SRCS))
+
+MAIN_DIR	= main/
+MAIN_SRCS	= main.c		process_errors.c
+MAIN_SRCS	:= $(addprefix $(MAIN_DIR), $(MAIN_SRCS))
+
+
+SRCS		= ${MAIN_SRCS} ${CLI_SRCS} 
 
 HEADERS		= minishell.h
 
@@ -22,7 +31,7 @@ LIBFT_DIR	= libft/
 
 LIBFT		= libft.a
 
-INCLUDES	= -I${LIBFT_DIR}
+INCLUDES	= -I${LIBFT_DIR} -I${CLI_DIR} -I${MAIN_DIR}
 
 CC			= gcc
 
@@ -36,7 +45,10 @@ CFLAGS		= -Wall -Wextra -Werror
 all:		${NAME}
 
 ${NAME}:	${LIBFT_DIR}${LIBFT} ${OBJS}
-			${CC} ${OBJS} ${INCLUDES} -L${LIBFT_DIR} -lft ${MLXFLAGS} -o ${NAME}
+			${CC} ${OBJS} ${INCLUDES} -L${LIBFT_DIR} -lft ${MLXFLAGS} -o ${NAME} -ltermcap
+
+debug:		${LIBFT_DIR}${LIBFT} ${OBJS}
+			${CC} -g ${OBJS} ${INCLUDES} -L${LIBFT_DIR} -lft ${MLXFLAGS} -o ${NAME} -ltermcap
 
 ${LIBFT_DIR}${LIBFT}:	${LIBFT_DIR}
 			${MAKE} -C ${LIBFT_DIR} bonus

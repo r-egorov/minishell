@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/07 12:49:04 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/07 12:52:56 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/01/29 16:10:43 by cisis             #+#    #+#             */
+/*   Updated: 2021/01/29 16:20:21 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+int		ft_strcmp(const char *s1, const char *s2)
+{
+	int		i;
 
-# include "cli.h"
-
-
-
-
-#endif
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
+}

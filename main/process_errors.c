@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   process_errors.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/07 12:49:04 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/07 12:52:56 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/13 14:07:07 by cisis             #+#    #+#             */
+/*   Updated: 2021/04/14 15:48:12 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "main.h"
 
-# include "cli.h"
+void 	process_error()
+{
+	char 	*msg;
 
-
-
-
-#endif
+	msg = strerror(errno);
+	write(2, "Error: ", 7);
+	write(2, msg, ft_strlen(msg));
+}
