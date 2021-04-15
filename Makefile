@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/14 17:05:20 by cisis            ###   ########.fr        #
+#    Updated: 2021/04/15 13:08:15 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,16 @@ CLI_DIR		= cli/
 CLI_SRCS	= cli_readline.c
 CLI_SRCS	:= $(addprefix $(CLI_DIR), $(CLI_SRCS))
 
+LINE_DIR	= $(CLI_DIR)line_class/
+LINE_SRCS	= line.c
+LINE_SRCS	:= $(addprefix $(LINE_DIR), $(LINE_SRCS))
+
 MAIN_DIR	= main/
 MAIN_SRCS	= main.c		process_errors.c
 MAIN_SRCS	:= $(addprefix $(MAIN_DIR), $(MAIN_SRCS))
 
 
-SRCS		= ${MAIN_SRCS} ${CLI_SRCS} 
+SRCS		= ${MAIN_SRCS} ${CLI_SRCS} ${LINE_SRCS}
 
 HEADERS		= minishell.h
 
@@ -31,7 +35,7 @@ LIBFT_DIR	= libft/
 
 LIBFT		= libft.a
 
-INCLUDES	= -I${LIBFT_DIR} -I${CLI_DIR} -I${MAIN_DIR}
+INCLUDES	= -I${LIBFT_DIR} -I${CLI_DIR} -I${MAIN_DIR} -I${LINE_DIR}
 
 CC			= gcc
 
