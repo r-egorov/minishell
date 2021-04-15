@@ -6,39 +6,84 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/15 10:57:08 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/15 12:48:54 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli.h"
 #include <stdio.h>
 
-static void	line_append(char **original_line, char *src, int nbytes)
+void	line_append(t_line *self, char *src, int nbytes)
 {
 	char			*tmp;
-	char			*line;
-	size_t			line_len;
+	char			*string;
 
-	line = *original_line;
-	if (!line)
+	string = self->str;
+	if (!string)
 	{
-		src[nbytes] = '\0';
 		tmp = (char *)malloc((nbytes + 1) * sizeof(char));
 		if (!tmp)
 			process_error();
 		ft_strlcpy(tmp, src, nbytes + 1);
+		self->len = nbytes;
 	}
 	else
 	{
-		line_len = ft_strlen(line);
-		tmp = (char *)malloc((line_len + nbytes + 1) * sizeof(char));
+		tmp = (char *)malloc((self->len + nbytes + 1) * sizeof(char));
 		if (!tmp)
 			process_error();
-		ft_memcpy(tmp, line, line_len + 1);
-		ft_strlcat(tmp, src, line_len + nbytes + 1);
-		free(line);
+		ft_memcpy(tmp, string, self->len + 1);
+		ft_strlcat(tmp, src, self->len + nbytes + 1);
+		self->len += nbytes;
+		free(string);
 	}
-	*original_line = tmp;
+	self->str = tmp;
+}
+
+char	line_pop_last(t_line *self)
+{
+	char	res;
+
+	if (self->len >= 1)
+	{
+		if (self->len == 1)
+		{
+			res = self->str[0];
+			free(self->str);
+			self->str = NULL;
+			self->len = 0;
+		}
+		else
+		{
+			res = self->str[self->len - 1];
+			self->str[self->len - 1] = '\0';
+			self->len -= 1;
+		}
+		return (res);
+	}
+	return (0);
+}
+
+void	line_del(t_line *self)
+{
+	if (self->str)
+		free(self->str);
+	free(self);
+}
+
+t_line	*line_new(void)
+{
+	t_line	*line;
+
+	line = (t_line *)malloc(sizeof(t_line));
+	if (!line)
+		process_error();
+	line->str = NULL;
+	line->len = 0;
+	line->append = line_append;
+	line->pop_last = line_pop_last;
+	line->del = line_del;
+	return (line);
 }
 
 char 	*cli_readline (void)
@@ -47,9 +92,10 @@ char 	*cli_readline (void)
 	int 			nbytes;
 	int				to_read;
 	char			buf[2001];
-	char			*line;
+	t_line			*line;
 
-	line = NULL;
+
+	line = line_new();
 	tcgetattr(0, &terminal);
 	terminal.c_lflag &= ~(ECHO);
 	terminal.c_lflag &= ~(ICANON);
@@ -88,17 +134,20 @@ char 	*cli_readline (void)
 		}
 		else if (!ft_strncmp(buf, "\x7f", 1))
 		{
-			tputs(cursor_left, 1, ft_putchar);
-			tputs(delete_character, 1, ft_putchar);
+			if ((line->pop_last(line)))
+			{
+				tputs(cursor_left, 1, ft_putchar);
+				tputs(delete_character, 1, ft_putchar);
+			}
 		}
 		else
 		{
 			write(1, buf, nbytes);
-			line_append(&line, buf, nbytes);
+			if (buf[0] >= 33 && buf[0] <= 126)
+				line->append(line, buf, nbytes);
 		}
 	}
-	printf("input = |%s|\n", line);
+	printf("input = |%s|\nlen = %d\n", line->str, line->len);
 	write(1, "\n", 1);
 	return (0);
 }
-
