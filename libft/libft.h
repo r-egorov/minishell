@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 16:23:50 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/14 16:52:54 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/15 13:49:13 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }				t_list;
+
+typedef struct s_dlist
+{
+	void			*content;
+	struct s_dlist	*next;
+	struct s_dlist	*prev;
+}				t_dlist;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -69,5 +76,13 @@ void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
+void			ft_dlstadd_back(t_dlist **lst, t_dlist *new);
+void			ft_dlstadd_front(t_dlist **lst, t_dlist *new);
+void			ft_dlstclear(t_dlist **lst, void (*del)(void*));
+void			ft_dlstiter(t_dlist *lst, void (*f)(void *));
+void			ft_dlstdelone(t_dlist *lst, void (*del)(void*));
+t_dlist			*ft_dlstlast(t_dlist *lst);
+t_dlist			*ft_dlstnew(void *content);
+int				ft_dlstsize(t_dlist *lst);
 
 #endif
