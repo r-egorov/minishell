@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   cli.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/15 15:24:46 by cisis            ###   ########.fr       */
+/*   Created: 2021/04/15 14:59:54 by cisis             #+#    #+#             */
+/*   Updated: 2021/04/15 18:16:46 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef CLI_H
+# define CLI_H
 
-# include <errno.h>
-# include <string.h> // strerror
+# include <term.h>
+# include <termios.h>
+# include <unistd.h>
+# include <sys/ioctl.h>
 
 # include "libft.h"
-# include "cli.h"
+# include "main.h"
+# include "line.h"
 
-void 	process_error();
+typedef struct	s_cli
+{
+	t_dlist			*history;
+	struct termios	term;
+	t_line			*line;
+
+	char			*(*readline)(struct s_cli *self);
+}				t_cli;
+
+char 	*cli_readline(t_cli *self);
+void	cli_init(t_cli *self);
 
 #endif
