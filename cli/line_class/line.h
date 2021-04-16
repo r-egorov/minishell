@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:02:59 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/15 17:53:36 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 13:44:26 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include "libft.h"
+# include "errors.h"
 
 /*
  * A `line` class containing a string which was entered (or copied) into stdin
@@ -47,7 +48,5 @@ t_line	*line_new(void);
 void	line_del(t_line *self);
 char	line_pop_last(t_line *self);
 void	line_append(t_line *self, char *src, int nbytes);
-
-void	process_error(void); //FIXME (include "process_error.h")
 
 #endif

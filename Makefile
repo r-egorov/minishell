@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/15 15:21:55 by cisis            ###   ########.fr        #
+#    Updated: 2021/04/16 13:43:21 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,15 @@ LINE_SRCS	= line.c
 LINE_SRCS	:= $(addprefix ${LINE_DIR}, ${LINE_SRCS})
 
 MAIN_DIR	= main/
-MAIN_SRCS	= main.c		process_errors.c
+MAIN_SRCS	= main.c
 MAIN_SRCS	:= $(addprefix ${MAIN_DIR}, ${MAIN_SRCS})
 
+ERRORS_DIR	= errors/
+ERRORS_SRCS	= process_errors.c
+ERRORS_SRCS	:= $(addprefix ${ERRORS_DIR}, ${ERRORS_SRCS})
 
-SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS}
+
+SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${ERRORS_SRCS}
 
 #HEADERS		= minishell.h
 
@@ -37,7 +41,7 @@ LIBFT_DIR	= libft/
 
 LIBFT		= libft.a
 
-INCLUDES	= -I${LIBFT_DIR} -I${CLICL_DIR} -I${MAIN_DIR} -I${LINE_DIR}
+INCLUDES	= -I${LIBFT_DIR} -I${CLICL_DIR} -I${MAIN_DIR} -I${LINE_DIR} -I${ERRORS_DIR}
 
 CC			= gcc
 
