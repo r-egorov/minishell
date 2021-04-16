@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:03:36 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:20:16 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 16:29:30 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	line_append(t_line *self, char *src, int nbytes)
 	{
 		tmp = (char *)malloc((nbytes + 1) * sizeof(char));
 		if (!tmp)
-			process_error();
+			process_syserror();
 		ft_strlcpy(tmp, src, nbytes + 1);
 		self->len = nbytes;
 	}
@@ -42,7 +42,7 @@ void	line_append(t_line *self, char *src, int nbytes)
 	{
 		tmp = (char *)malloc((self->len + nbytes + 1) * sizeof(char));
 		if (!tmp)
-			process_error();
+			process_syserror();
 		ft_memcpy(tmp, string, self->len + 1);
 		ft_strlcat(tmp, src, self->len + nbytes + 1);
 		self->len += nbytes;
@@ -99,7 +99,7 @@ t_line	*line_dup(t_line *line)
 	res = line_new();
 	res->str = ft_strdup(line->str);
 	if (!res->str)
-		process_error();
+		process_syserror();
 	res->len = line->len;
 	return (res);
 }
@@ -110,7 +110,7 @@ t_line	*line_new(void)
 
 	line = (t_line *)malloc(sizeof(t_line));
 	if (!line)
-		process_error();
+		process_syserror();
 	line->str = NULL;
 	line->len = 0;
 	line->append = line_append;

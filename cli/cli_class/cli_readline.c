@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:24:19 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 16:29:07 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	cli_launch_term(t_cli *self)
 	self->term.c_lflag &= ~(ICANON);
 
 	if (tcsetattr(0, TCSANOW, &self->term) == -1)
-		process_error();
+		process_syserror();
 
 	if (tgetent(0, "xterm-256color") == -1)
-		process_error();
+		process_syserror();
 
 	write(1, "minihell > ", 11);
 	
