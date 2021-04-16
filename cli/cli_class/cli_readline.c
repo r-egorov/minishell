@@ -6,19 +6,22 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 13:09:46 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 13:56:37 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli.h"
-#include <stdio.h>
 
 void	cli_init(t_cli *self)
 {
 	self->history = NULL;
-	self->line = NULL;
 	self->readline = cli_readline;
 	self->line = line_new();
+}
+
+void	cli_del(t_cli *self)
+{
+	self->line->del(self->line);
 }
 
 void	cli_launch_term(t_cli *self)
@@ -91,8 +94,6 @@ char 	*cli_readline(t_cli *self)
 				self->line->append(self->line, buf, nbytes);
 		}
 	}
-
-	printf("input = |%s|\nlen = %d\n", self->line->str, self->line->len);
 	write(1, "\n", 1);
 	return (0);
 }
