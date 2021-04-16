@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:02:59 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 13:44:26 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 16:01:22 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ typedef struct s_line
 	int			len;
 	void		(*append)(struct s_line *self, char *to_append, int size);
 	char		(*pop_last)(struct s_line *self);
-	void		(*del)(struct s_line *self);
+	void		(*del)(void *self);
 }				t_line;
 
 t_line	*line_new(void);
-void	line_del(t_line *self);
+void	line_del(void *self);
 char	line_pop_last(t_line *self);
 void	line_append(t_line *self, char *src, int nbytes);
+t_line	*line_dup(t_line *line);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 13:56:37 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 16:24:19 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 void	cli_init(t_cli *self)
 {
-	self->history = NULL;
+	self->hist = NULL;
+	self->hist_cur = NULL;
 	self->readline = cli_readline;
-	self->line = line_new();
+	self->line = NULL;
 }
 
 void	cli_del(t_cli *self)
 {
-	self->line->del(self->line);
+	ft_dlstclear(&(self->hist), line_del);
 }
 
 void	cli_launch_term(t_cli *self)
@@ -41,19 +42,29 @@ void	cli_launch_term(t_cli *self)
 	tputs(save_cursor, 1, ft_putchar);
 }
 
-static void	handle_up_down(char *buf)
+static void	handle_up_down(t_cli *self, char *buf)
 {
 	if (!ft_strncmp(buf, "\e[A", 3))
 	{
-		tputs(restore_cursor, 1, ft_putchar);
-		tputs(clr_eos, 1, ft_putchar);
-		write(1, "UP", 2);
+		if (self->hist_cur->next)
+		{
+			self->hist_cur = self->hist_cur->next;
+			self->line = (t_line *)self->hist_cur->content;
+			tputs(restore_cursor, 1, ft_putchar);
+			tputs(clr_eos, 1, ft_putchar);
+			write(1, self->line->str, self->line->len);
+		}
 	}
 	else if (!ft_strncmp(buf, "\e[B", 3))
 	{
-		tputs(restore_cursor, 1, ft_putchar);
-		tputs(clr_eos, 1, ft_putchar);
-		write(1, "DOWN", 4);
+		if (self->hist_cur->prev)
+		{
+			self->hist_cur = self->hist_cur->prev;
+			self->line = (t_line *)self->hist_cur->content;
+			tputs(restore_cursor, 1, ft_putchar);
+			tputs(clr_eos, 1, ft_putchar);
+			write(1, self->line->str, self->line->len);
+		}
 	}
 }
 
@@ -66,7 +77,7 @@ static void handle_backspace(t_cli *self)
 	}
 }
 
-char 	*cli_readline(t_cli *self)
+int 	cli_readline(t_cli *self)
 {
 	int 			nbytes;
 	int				to_read;
@@ -75,13 +86,17 @@ char 	*cli_readline(t_cli *self)
 	cli_launch_term(self);
 	ft_bzero(buf, 101);
 
+	ft_dlstadd_front(&(self->hist), ft_dlstnew(line_new()));
+	self->hist_cur = self->hist;
+	self->line = (t_line *)self->hist_cur->content;
+
 	while (ft_strncmp(buf, "\n", 1))
 	{
 		ioctl(0, FIONREAD, &to_read);
 		nbytes = read(0, buf, 100);
 		if (!ft_strncmp(buf, "\e", 1))
 		{
-			handle_up_down(buf);
+			handle_up_down(self, buf);
 			if ((!ft_strncmp(buf, "\e[D", 3)) || (!ft_strncmp(buf, "\e[C", 3)))
 				continue ;
 		}
@@ -94,6 +109,11 @@ char 	*cli_readline(t_cli *self)
 				self->line->append(self->line, buf, nbytes);
 		}
 	}
+	if (self->hist_cur != self->hist)
+	{
+		((t_line *)self->hist->content)->del((t_line *)self->hist->content);
+		self->hist->content = line_dup(self->line);
+	}
 	write(1, "\n", 1);
-	return (0);
+	return (1);
 }

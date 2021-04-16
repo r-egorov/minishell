@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 14:59:54 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 13:44:38 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 16:13:30 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,16 @@
 
 typedef struct	s_cli
 {
-	t_dlist			*history;
+	t_dlist			*hist;
+	t_dlist			*hist_cur;
 	struct termios	term;
 	t_line			*line;
 
-	char			*(*readline)(struct s_cli *self);
+	int			(*readline)(struct s_cli *self);
 }				t_cli;
 
-char 	*cli_readline(t_cli *self);
+int 	cli_readline(t_cli *self);
 void	cli_init(t_cli *self);
+void	cli_del(t_cli *self);
 
 #endif
