@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/15 18:17:19 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/16 13:09:46 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char 	*cli_readline(t_cli *self)
 		else
 		{
 			write(1, buf, nbytes);
-			if (buf[0] >= 32 && buf[0] <= 126)
+			if ((buf[0] >= 32 && buf[0] <= 126) || (buf[0] == '\n'))
 				self->line->append(self->line, buf, nbytes);
 		}
 	}
