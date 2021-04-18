@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/18 18:28:55 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/18 14:34:13 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef EXEC_H
+# define EXEC_H
 
-# include <errno.h>
-# include <string.h>	// strerror
-# include <stdio.h>		// want printf while develop
-# include <unistd.h>	// fork
+# include <stdio.h>
 
-# include "libft.h"
-# include "cli.h"
-# include "parse.h"
-# include "exec.h"
+int		exec_run(t_parse *e);
 
 #endif

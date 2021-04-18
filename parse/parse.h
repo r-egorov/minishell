@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/18 18:28:55 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/18 14:29:35 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef PARSE_H
+# define PARSE_H
 
-# include <errno.h>
-# include <string.h>	// strerror
-# include <stdio.h>		// want printf while develop
-# include <unistd.h>	// fork
+# include <stddef.h>
+# include <stdio.h>
+//# include "line.h"
 
-# include "libft.h"
-# include "cli.h"
-# include "parse.h"
-# include "exec.h"
+typedef struct	s_parse {
+	char	*line;
+	size_t	pos;
+//	int		len;
+	char	*exec;
+}				t_parse;
+
+int		parse_init(t_parse *e);
+int		parse_next(t_parse *e);
 
 #endif

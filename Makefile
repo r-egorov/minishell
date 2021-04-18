@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/16 13:43:21 by cisis            ###   ########.fr        #
+#    Updated: 2021/04/18 14:27:57 by lelderbe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,16 @@ ERRORS_DIR	= errors/
 ERRORS_SRCS	= process_errors.c
 ERRORS_SRCS	:= $(addprefix ${ERRORS_DIR}, ${ERRORS_SRCS})
 
+PARSE_DIR	= parse/
+PARSE_SRCS	= parse.c
+PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
-SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${ERRORS_SRCS}
+EXEC_DIR	= exec/
+EXEC_SRCS	= exec.c
+EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
+
+
+SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${ERRORS_SRCS} ${PARSE_SRCS} ${EXEC_SRCS}
 
 #HEADERS		= minishell.h
 
@@ -41,7 +49,7 @@ LIBFT_DIR	= libft/
 
 LIBFT		= libft.a
 
-INCLUDES	= -I${LIBFT_DIR} -I${CLICL_DIR} -I${MAIN_DIR} -I${LINE_DIR} -I${ERRORS_DIR}
+INCLUDES	= -I${LIBFT_DIR} -I${CLICL_DIR} -I${MAIN_DIR} -I${LINE_DIR} -I${ERRORS_DIR} -I${PARSE_DIR} -I${EXEC_DIR}
 
 CC			= gcc
 
