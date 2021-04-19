@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/19 14:07:11 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/19 14:52:31 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,43 @@ static void handle_backspace(t_cli *self)
 	}
 }
 
+
+
+
+#include <stdio.h>
+
+void print_list(t_dlist *begin)
+{
+	int i = 0;
+	char *hist;
+	char *buf;
+
+	while (begin)
+	{
+		hist = ((t_line *)((t_hnode *)begin->content)->_hist)->str;
+		buf = ((t_line *)((t_hnode *)begin->content)->buf)->str;
+		printf("%d - h|%s| b|%s|\n", i, hist, buf);
+		i++;
+		begin = begin->next;
+	}
+}
+
+void revprint_list(t_dlist *begin)
+{
+	int i = ft_dlstsize(begin);
+	t_dlist *last;
+	last = ft_dlstlast(begin);
+	while (last)
+	{
+		printf("%d - |%s|\n", i, last->content);
+		i--;
+		last = last->prev;
+	}
+}
+
+
+
+
 int 	cli_readline(t_cli *self)
 {
 	int 			nbytes;
@@ -116,9 +153,12 @@ int 	cli_readline(t_cli *self)
 	begin = (t_hnode *)self->hist->content;
 	current = (t_hnode *)self->hist_cur->content;
 	if (begin == current)
-		begin->hist_upd(begin->buf);
+		begin->hist_upd(begin, begin->buf);
 	else
-		begin->hist_upd(current->buf);
+		begin->hist_upd(begin, current->buf);
+	self->line = (t_line *)((t_hnode *)self->hist->content)->_hist;
+	ft_dlstiter(self->hist, hnode_buf_upd);
+	print_list(self->hist);
 	write(1, "\n", 1);
 	return (1);
 }

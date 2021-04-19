@@ -6,11 +6,11 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:29:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/19 13:57:54 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/19 14:50:21 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "histnode.h"
+#include "hist_node.h"
 
 void	hnode_hist_upd(t_hnode *self, t_line *line)
 {
@@ -19,9 +19,12 @@ void	hnode_hist_upd(t_hnode *self, t_line *line)
 	self->_hist = line_dup(line);
 }
 
-void	hnode_buf_upd(t_hnode *self)
+void	hnode_buf_upd(void *obj)
 {
-	if (self->edited)
+	t_hnode	*self;
+
+	self = (t_hnode *)obj;
+	if (self->_hist)
 	{
 		if (self->buf)
 			self->buf->del(self->buf);
@@ -51,12 +54,12 @@ t_hnode	*hnode_new(void)
 {
 	t_hnode		*self;
 
-	res = (t_hnode *)malloc(sizeof(t_hnode));
-	if (!res)
+	self = (t_hnode *)malloc(sizeof(t_hnode));
+	if (!self)
 		process_syserror();
 	self->_hist = line_new();
 	self->buf = line_new();
-	self->hist_save = hnode_hist_save;
+	self->hist_upd = hnode_hist_upd;
 	self->buf_upd = hnode_buf_upd;
 	self->del = hnode_del;
 	return (self);
