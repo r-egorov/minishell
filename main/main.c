@@ -6,16 +6,16 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/16 16:24:15 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/18 14:34:23 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-#include <stdio.h>
 
 int		main(int argc, char** argv, char **envp)
 {
 	t_cli	cli;
+	t_parse	parse;
 
 	cli_init(&cli);
 
@@ -29,6 +29,15 @@ int		main(int argc, char** argv, char **envp)
 		printf("in list = |%s|\n", (((t_line *)cli.hist->content)->str));
 		if (cli.line->len == 0)
 			break ;
+		//parse_init(&parse, cli.line);
+		parse.line = cli.line->str;
+		parse.pos = 0;
+		//parse.len = cli.len;
+		while (parse_next(&parse))
+		{
+			exec_run(&parse);
+		}
+		//parse(cli.line);
 	}
 	cli_del(&cli);
 	return (0);

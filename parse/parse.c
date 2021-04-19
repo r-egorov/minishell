@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_errors.c                                   :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 14:07:07 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:28:02 by cisis            ###   ########.fr       */
+/*   Created: 2021/04/18 13:17:45 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/18 18:25:09 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void 	process_syserror()
+int	parse_next(t_parse *e)
 {
-	char 	*msg;
-
-	msg = strerror(errno);
-	write(2, "Error: ", 7);
-	write(2, msg, ft_strlen(msg));
-
-	exit(errno);
-}
-
-void 	process_error()
-{
-	char 	*msg;
-
-	msg = strerror(errno);
-	write(2, "Error: ", 7);
-	write(2, msg, ft_strlen(msg));
+	if (e->pos < ft_strlen(e->line))
+	{
+		printf("[parse next] got line: %s\n", e->line);
+		e->exec = ft_strdup(e->line);
+		e->pos = ft_strlen(e->exec);
+		return (1);
+	}
+	return (0);
 }

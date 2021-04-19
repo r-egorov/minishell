@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.h                                           :+:      :+:    :+:   */
+/*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/16 13:43:37 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:29:53 by cisis            ###   ########.fr       */
+/*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/18 14:34:13 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERRORS_H
-# define ERRORS_H
+#ifndef EXEC_H
+# define EXEC_H
 
-void 	process_syserror();
-void 	process_error();
+# include <stdio.h>
+
+int		exec_run(t_parse *e);
 
 #endif

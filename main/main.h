@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 13:44:08 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/18 18:28:55 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 # define MAIN_H
 
 # include <errno.h>
-# include <string.h> // strerror
+# include <string.h>	// strerror
+# include <stdio.h>		// want printf while develop
+# include <unistd.h>	// fork
 
 # include "libft.h"
 # include "cli.h"
+# include "parse.h"
+# include "exec.h"
 
 #endif
