@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 14:59:54 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:13:30 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/19 13:47:33 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "libft.h"
 # include "errors.h"
 # include "line.h"
+# include "histnode.h"
 
 typedef struct	s_cli
 {

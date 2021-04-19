@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:24:19 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/19 14:02:59 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	handle_up_down(t_cli *self, char *buf)
 		if (self->hist_cur->next)
 		{
 			self->hist_cur = self->hist_cur->next;
-			self->line = (t_line *)self->hist_cur->content;
+			self->line = (t_line *)((t_hnode *)self->hist_cur->content)->buf;
 			tputs(restore_cursor, 1, ft_putchar);
 			tputs(clr_eos, 1, ft_putchar);
 			write(1, self->line->str, self->line->len);
@@ -60,7 +60,7 @@ static void	handle_up_down(t_cli *self, char *buf)
 		if (self->hist_cur->prev)
 		{
 			self->hist_cur = self->hist_cur->prev;
-			self->line = (t_line *)self->hist_cur->content;
+			self->line = (t_line *)((t_hnode *)self->hist_cur->content)->buf;
 			tputs(restore_cursor, 1, ft_putchar);
 			tputs(clr_eos, 1, ft_putchar);
 			write(1, self->line->str, self->line->len);
@@ -86,9 +86,9 @@ int 	cli_readline(t_cli *self)
 	cli_launch_term(self);
 	ft_bzero(buf, 101);
 
-	ft_dlstadd_front(&(self->hist), ft_dlstnew(line_new()));
+	ft_dlstadd_front(&(self->hist), ft_dlstnew(hnode_new()));
 	self->hist_cur = self->hist;
-	self->line = (t_line *)self->hist_cur->content;
+	self->line = (t_line *)((t_hnode *)self->hist_cur->content)->buf;
 
 	while (ft_strncmp(buf, "\n", 1))
 	{
@@ -109,11 +109,16 @@ int 	cli_readline(t_cli *self)
 				self->line->append(self->line, buf, nbytes);
 		}
 	}
-	if (self->hist_cur != self->hist)
-	{
-		((t_line *)self->hist->content)->del((t_line *)self->hist->content);
-		self->hist->content = line_dup(self->line);
-	}
+
+	t_hnode		*begin;
+	t_hnode		*current;
+
+	begin = (t_hnode *)self->hist->content;
+	current = (t_hnode *)self->hist_cur->content;
+	if (begin == current)
+		begin->hist_upd(begin->buf);
+	else
+		begin->hist_upd(current->buf);
 	write(1, "\n", 1);
 	return (1);
 }
