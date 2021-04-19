@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/18 14:27:57 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/04/19 14:12:40 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,10 @@ CLICL_SRCS	:= $(addprefix ${CLICL_DIR}, ${CLICL_SRCS})
 LINE_DIR	= ${CLI_DIR}line_class/
 LINE_SRCS	= line.c
 LINE_SRCS	:= $(addprefix ${LINE_DIR}, ${LINE_SRCS})
+
+HNODE_DIR	= ${CLI_DIR}hist_node_class/
+HNODE_SRCS	= hist_node.c
+HNODE_SRCS	:= $(addprefix ${HNODE_DIR}, ${HNODE_SRCS})
 
 MAIN_DIR	= main/
 MAIN_SRCS	= main.c
@@ -37,7 +41,7 @@ EXEC_SRCS	= exec.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 
-SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${ERRORS_SRCS} ${PARSE_SRCS} ${EXEC_SRCS}
+SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${HNODE_SRCS} ${ERRORS_SRCS} ${PARSE_SRCS} ${EXEC_SRCS}
 
 #HEADERS		= minishell.h
 
@@ -49,7 +53,7 @@ LIBFT_DIR	= libft/
 
 LIBFT		= libft.a
 
-INCLUDES	= -I${LIBFT_DIR} -I${CLICL_DIR} -I${MAIN_DIR} -I${LINE_DIR} -I${ERRORS_DIR} -I${PARSE_DIR} -I${EXEC_DIR}
+INCLUDES	= -I${LIBFT_DIR} -I${CLICL_DIR} -I${MAIN_DIR} -I${LINE_DIR} -I${HNODE_DIR} -I${ERRORS_DIR} -I${PARSE_DIR} -I${EXEC_DIR}
 
 CC			= gcc
 

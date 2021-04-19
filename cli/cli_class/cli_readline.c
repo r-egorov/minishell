@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/19 14:52:31 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/19 17:52:41 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cli_init(t_cli *self)
 
 void	cli_del(t_cli *self)
 {
-	ft_dlstclear(&(self->hist), line_del);
+	ft_dlstclear(&(self->hist), hnode_del);
 }
 
 void	cli_launch_term(t_cli *self)
@@ -137,6 +137,8 @@ int 	cli_readline(t_cli *self)
 			if ((!ft_strncmp(buf, "\e[D", 3)) || (!ft_strncmp(buf, "\e[C", 3)))
 				continue ;
 		}
+		else if ((!ft_strncmp(buf, "\x04", 1)) && (!self->line)) // DOESNT WORK
+			return (0);
 		else if (!ft_strncmp(buf, "\x7f", 1))
 			handle_backspace(self);
 		else
