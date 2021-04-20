@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:46:24 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 17:01:38 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	exec_builtin_unset(t_parse *e, char **environ)
 	env_remove(environ
 }
 */
-int	exec_run(t_parse *e)
+int	exec_run(t_parser *e)
 {
 	pid_t		pid;
 	extern char	**environ;
