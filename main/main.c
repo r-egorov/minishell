@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/18 14:34:23 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/19 11:31:10 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,20 @@ int		main(int argc, char** argv, char **envp)
 {
 	t_cli	cli;
 	t_parse	parse;
+	int		i;
 
 	cli_init(&cli);
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
+
+	i = 0;
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
+	}
 
 	while (cli_readline(&cli))
 	{
