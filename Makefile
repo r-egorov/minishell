@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/20 16:35:57 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/04/20 16:50:33 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,8 @@ ERRORS_DIR	= errors/
 ERRORS_SRCS	= process_errors.c
 ERRORS_SRCS	:= $(addprefix ${ERRORS_DIR}, ${ERRORS_SRCS})
 
-PARSE_DIR	= parse/
-PARSE_SRCS	= parse.c
+PARSE_DIR	= parser/
+PARSE_SRCS	= parser.c
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/
