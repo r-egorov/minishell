@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 15:40:06 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:14:39 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:43:08 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,12 @@ int	eq(char *s1, char *s2)
 	return (FAIL);
 }
 
+void	free_split(char **s)
+{
+	long	i;
+
+	i = 0;
+	while (s && s[i])
+		free(s[i++]);
+	free(s);
+}

@@ -6,21 +6,11 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:06:56 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:24:23 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:56:54 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-void	free_split(char **s)
-{
-	long	i;
-
-	i = 0;
-	while (s && s[i])
-		free(s[i++]);
-	free(s);
-}
 
 int	get_count(char **arr)
 {
@@ -81,8 +71,6 @@ void	copy_arr_ex(char **dst, char **src, char *s)
 	}
 }
 
-
-
 char	**env_add(char **env, char *s)
 {
 	int		count;
@@ -141,6 +129,7 @@ char	**env_remove(char **env, char *s)
 	}
 	copy_arr_ex(result, env, elem);
 	result[count - 1] = 0;
+	printf("removed\n");
 	return (result);
 }
 

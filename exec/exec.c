@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:26:17 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:46:24 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ int	exec_run(t_parse *e)
 	if (eq(e->exec, "export"))
 	{
 		exec_builtin_export(0);
+		return (0);
+	}
+	if (eq(e->exec, "unset"))
+	{
+		exec_builtin_unset("ZZ");
 		return (0);
 	}
 	/*
