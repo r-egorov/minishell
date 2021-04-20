@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:06:56 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/19 18:09:45 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 11:41:12 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*find(char **env, char *s)
 	while (env[i])
 	{
 		match = ft_strnstr(env[i], s, ft_strlen(s));
-		if (match == env[i])
+		if (match == env[i] && env[i][ft_strlen(s)] == '=')
 			return (match);
 		i++;
 	}
@@ -96,10 +96,34 @@ void	copy_arr_ex(char **dst, char **src, char *s)
 	}
 }
 
+
+
 char	**env_add(char **env, char *s)
 {
 	int		count;
 	char	**result;
+	char	**parts;
+	char	*ptr;
+
+	parts = ft_split(s, '=');
+	if (parts && parts[0] && parts[1] && !parts[2])
+	{
+		// s is OK
+		if ((ptr = find(env, parts[0])))
+		{
+			// already here - update
+			//f
+		}
+		else
+		{
+			// add
+		}
+	}
+	else
+	{
+		// error
+	}
+
 
 	count = get_count(env);
 	result = malloc(sizeof(*result) * (count + 1));
@@ -108,7 +132,7 @@ char	**env_add(char **env, char *s)
 		//error
 		return (0);
 	}
-	copy_arr(result, env);
+	copy_arr(result, env); // replace with memcpy?
 	result[count - 1] = s;
 	result[count] = 0;
 	return (result);
