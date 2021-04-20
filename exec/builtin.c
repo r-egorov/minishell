@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:22:34 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/20 16:19:46 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/20 16:23:47 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "exec.h"
 
-# include <stdio.h>
-# include "main.h"
-//# include "parse.h"
-
-# define FAIL	0
-# define OK		1
-
-int		exec_run(t_parse *e);
-char	**env_add(char **env, char *s);
-char	**env_remove(char **env, char *s);
-
-int		eq(char *s1, char *s2);
-void	print_arr(char **arr, char *name);
-
-void	exec_builtin_export(char **argv);
-
-#endif
+void	exec_builtin_export(char **argv)
+{
+	(void)argv;
+	extern char	**environ;
+	print_arr(environ, "environ --------------");
+}

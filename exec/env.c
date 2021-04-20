@@ -6,14 +6,11 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:06:56 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 11:41:12 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:24:23 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-#define	FAIL	1
-#define	OK		0
 
 void	free_split(char **s)
 {
@@ -47,31 +44,19 @@ void	copy_arr(char **dst, char **src)
 	}
 }
 
-int		eq(char *s1, char *s2)
-{
-	int	len;
-
-	if (!s1 || !s2)
-		return (FAIL);
-	len = ft_strlen(s1) > ft_strlen(s2) ? ft_strlen(s1) : ft_strlen(s2);
-	if (ft_strncmp(s1, s2, len) == 0)
-		return (OK);
-	return (FAIL);
-}
-
-char	*find(char **env, char *s)
+char	*find(char **env, char *key)
 {
 	int		i;
 	char	*match;
 
 	// no '=' in s
-	if (ft_strchr(s, '='))
+	if (ft_strchr(key, '='))
 		return (0);
 	i = 0;
 	while (env[i])
 	{
-		match = ft_strnstr(env[i], s, ft_strlen(s));
-		if (match == env[i] && env[i][ft_strlen(s)] == '=')
+		match = ft_strnstr(env[i], key, ft_strlen(key));
+		if (match == env[i] && env[i][ft_strlen(key)] == '=')
 			return (match);
 		i++;
 	}

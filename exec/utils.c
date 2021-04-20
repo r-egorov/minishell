@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:22:34 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/20 15:40:06 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/20 16:14:39 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "exec.h"
 
-# include <stdio.h>
-# include "main.h"
-//# include "parse.h"
+void	print_arr(char **arr, char *name)
+{
+	int	i;
 
-# define FAIL	0
-# define OK		1
+	printf("%s\n", name);
+	i = 0;
+	while (arr[i])
+	{
+		printf("[%d]: %s\n", i, arr[i]);
+		i++;
+	}
+}
 
-int		exec_run(t_parse *e);
-char	**env_add(char **env, char *s);
-char	**env_remove(char **env, char *s);
+int	eq(char *s1, char *s2)
+{
+	int	len;
 
-int		eq(char *s1, char *s2);
-void	print_arr(char **arr, char *name);
+	if (!s1 || !s2)
+		return (FAIL);
+	len = ft_strlen(s1) > ft_strlen(s2) ? ft_strlen(s1) : ft_strlen(s2);
+	if (ft_strncmp(s1, s2, len) == 0)
+		return (OK);
+	return (FAIL);
+}
 
-void	exec_builtin_export(char **argv);
-
-#endif

@@ -6,24 +6,11 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 11:46:18 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:26:17 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-void	print_arr(char **arr, char *name)
-{
-	int	i;
-
-	printf("%s\n", name);
-	i = 0;
-	while (arr[i])
-	{
-		printf("[%d]: %s\n", i, arr[i]);
-		i++;
-	}
-}
 
 char *get_full_name(char *path, char *name)
 {
@@ -53,13 +40,21 @@ void	exec_builtin_unset(t_parse *e, char **environ)
 */
 int	exec_run(t_parse *e)
 {
-	pid_t	pid;
-	extern char **environ;
+	pid_t		pid;
+	extern char	**environ;
 	//char	*s = "ZZ=ssssssss";
 	//char	**tmp;
 
+	environ[8] = "ZZ=zzzzzzzzzzzzzz";
+
 	printf("[exec run] run this: %s\n", e->exec);
 	// Spawn a child to run the program
+
+	if (eq(e->exec, "export"))
+	{
+		exec_builtin_export(0);
+		return (0);
+	}
 	/*
 	printf("environ addr : %p\n", environ);
 	print_arr(environ, "parent environ ----------");
@@ -92,7 +87,8 @@ int	exec_run(t_parse *e)
 		//environ[28] = "ABC=aaaaaaaaaaaaaaaaaa";
 		//print_arr(environ, "child environ ----------");
 		char *argv[] = {e->exec, NULL};
-		char *envp[] = {"PATH=/usr/bin:/bin", "TEST=abc", NULL};
+		//char *envp[] = {"PATH=/usr/bin:/bin", "TEST=abc", NULL};
+		char **envp = environ;
 		//get_full_name(envp[0], e->exec);
 		//execve(e->exec, argv, envp);
 		execve(e->exec, argv, envp);
