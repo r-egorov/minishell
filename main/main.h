@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/18 18:28:55 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 10:55:43 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,11 @@
 # include "cli.h"
 # include "parse.h"
 # include "exec.h"
+
+#include <signal.h>
+//#include <stdlib.h>
+
+int		catch_signal(int sig, void (*handler)(int));
+void	exit_func(int sig);
 
 #endif

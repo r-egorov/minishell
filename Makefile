@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/19 14:12:40 by cisis            ###   ########.fr        #
+#    Updated: 2021/04/20 10:50:51 by lelderbe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ HNODE_SRCS	= hist_node.c
 HNODE_SRCS	:= $(addprefix ${HNODE_DIR}, ${HNODE_SRCS})
 
 MAIN_DIR	= main/
-MAIN_SRCS	= main.c
+MAIN_SRCS	= main.c signals.c
 MAIN_SRCS	:= $(addprefix ${MAIN_DIR}, ${MAIN_SRCS})
 
 ERRORS_DIR	= errors/
