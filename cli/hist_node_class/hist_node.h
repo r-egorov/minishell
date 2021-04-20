@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:23:00 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/19 14:30:07 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/20 16:29:22 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "libft.h"
 # include "line.h"
 
-typedef struct	s_hnode
+typedef struct s_hnode
 {
 	t_line		*_hist;
 	t_line		*buf;
