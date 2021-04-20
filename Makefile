@@ -6,18 +6,18 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/20 16:23:01 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/04/20 16:35:57 by lelderbe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CLI_DIR		= cli/
 
 CLICL_DIR	= ${CLI_DIR}cli_class/
-CLICL_SRCS	= cli_readline.c
+CLICL_SRCS	= cli_readline.c cli_init.c
 CLICL_SRCS	:= $(addprefix ${CLICL_DIR}, ${CLICL_SRCS})
 
 LINE_DIR	= ${CLI_DIR}line_class/
-LINE_SRCS	= line.c
+LINE_SRCS	= line.c line_init.c
 LINE_SRCS	:= $(addprefix ${LINE_DIR}, ${LINE_SRCS})
 
 HNODE_DIR	= ${CLI_DIR}hist_node_class/

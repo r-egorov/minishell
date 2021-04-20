@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:03:36 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:29:30 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/20 16:27:09 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,6 @@ char	line_pop_last(t_line *self)
 	return (0);
 }
 
-void	line_del(void *self)
-{
-	t_line	*obj;
-	obj = (t_line *)self;
-	if (obj)
-	{
-		if (obj->str)
-		{
-			free(obj->str);
-			obj->str = NULL;
-		}
-		free(obj);
-		obj = NULL;
-	}
-}
-
 t_line	*line_dup(t_line *line)
 {
 	t_line	*res;
@@ -102,19 +86,4 @@ t_line	*line_dup(t_line *line)
 		process_syserror();
 	res->len = line->len;
 	return (res);
-}
-
-t_line	*line_new(void)
-{
-	t_line	*line;
-
-	line = (t_line *)malloc(sizeof(t_line));
-	if (!line)
-		process_syserror();
-	line->str = NULL;
-	line->len = 0;
-	line->append = line_append;
-	line->pop_last = line_pop_last;
-	line->del = line_del;
-	return (line);
 }
