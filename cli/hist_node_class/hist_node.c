@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:29:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/19 14:50:21 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/20 16:29:14 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	hnode_buf_upd(void *obj)
 void	hnode_del(void *hnode)
 {
 	t_hnode		*self;
-	
+
 	self = (t_hnode *)hnode;
 	if (self)
 	{
