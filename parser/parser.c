@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/18 13:17:45 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/18 18:25:09 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
+/*   Updated: 2021/04/20 16:55:27 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int	parse_next(t_parse *e)
+void	parser_init(t_parser *self, char *string_to_parse)
+{
+	self->line = string_to_parse;
+	self->pos = 0;
+	self->exec = NULL;
+	self->argv = NULL;
+	self->pipe = 0;
+	self->redir_out = NULL;
+	self->redir_int = NULL;
+}
+
+int	parser_next(t_parser *e)
 {
 	if (e->pos < ft_strlen(e->line))
 	{

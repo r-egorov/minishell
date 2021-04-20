@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/20 14:44:48 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:54:35 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # include "libft.h"
 # include "cli.h"
-# include "parse.h"
+# include "parser.h"
 # include "exec.h"
 
 #include <signal.h>
