@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:24:45 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/20 10:55:43 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 14:44:48 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@
 
 int		catch_signal(int sig, void (*handler)(int));
 void	exit_func(int sig);
+void	noop_func(int sig);
 
 #endif

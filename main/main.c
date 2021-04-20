@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 11:52:11 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/20 14:45:12 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		main(int argc, char** argv, char **envp)
 	(void)envp;
 
 	catch_signal(SIGINT, exit_func);
+	catch_signal(SIGQUIT, noop_func);
 
 	while (cli_readline(&cli))
 	{
