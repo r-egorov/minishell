@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 17:01:38 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/22 12:25:07 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,26 @@ char *get_full_name(char *path, char *name)
 	}
 	return (0);
 }
-/*
-void	exec_builtin_unset(t_parse *e, char **environ)
+
+void	exec_init(t_parser *p, t_exec *e)
 {
-	env_remove(environ
+	e->exec = p->exec;
+	e->argv = p->argv;
 }
-*/
-int	exec_run(t_parser *e)
+
+int	exec_run(t_exec *e)
 {
 	pid_t		pid;
 	extern char	**environ;
 	//char	*s = "ZZ=ssssssss";
 	//char	**tmp;
 
-	environ[8] = "ZZ=zzzzzzzzzzzzzz";
 
 	printf("[exec run] run this: %s\n", e->exec);
 	// Spawn a child to run the program
-
+	printf("[exec run] environ addr  : %p\n", environ);
+	printf("[exec run] environ count : %d\n", get_count(environ));
+	printf("[exec run] getenv('ZZ')  : %s\n", getenv("ZZ"));
 	if (eq(e->exec, "export"))
 	{
 		exec_builtin_export(0);
@@ -57,7 +59,8 @@ int	exec_run(t_parser *e)
 	}
 	if (eq(e->exec, "unset"))
 	{
-		exec_builtin_unset("ZZ");
+		exec_builtin_unset("LANG");
+		printf("environ addr after unset: %p\n", environ);
 		return (0);
 	}
 	/*

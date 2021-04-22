@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:56:02 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/22 11:42:18 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int		main(int argc, char** argv, char **envp)
 {
 	t_cli	cli;
 	t_parser	parser;
+	t_exec	ex;
 
 	cli_init(&cli);
 
@@ -35,7 +36,8 @@ int		main(int argc, char** argv, char **envp)
 		parser_init(&parser, cli.line->str);
 		while (parser_next(&parser))
 		{
-			exec_run(&parser);
+			exec_init(&parser, &ex);
+			exec_run(&ex);
 		}
 	}
 	cli_del(&cli);

@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 17:02:52 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/22 12:25:02 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,21 @@
 # include "main.h"
 //# include "parse.h"
 
+typedef struct	s_exec {
+	char	*exec;
+	char	**argv;
+	char	**environ;
+
+}				t_exec;
+
 # define FAIL	0
 # define OK		1
 
-int		exec_run(t_parser *e);
+void    exec_init(t_parser *p, t_exec *e);
+int		exec_run(t_exec *e);
 char	**env_add(char **env, char *s);
 char	**env_remove(char **env, char *s);
+int		get_count(char **arr);
 
 int		eq(char *s1, char *s2);
 void	print_arr(char **arr, char *name);

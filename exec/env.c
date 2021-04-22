@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:06:56 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:56:54 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/22 12:25:08 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	get_count(char **arr)
 	i = 0;
 	while (arr[i])
 		i++;
-	return (i + 1);
+	return (i);
 }
 
 void	copy_arr(char **dst, char **src)
@@ -32,6 +32,7 @@ void	copy_arr(char **dst, char **src)
 		dst[i] = src[i];
 		i++;
 	}
+	dst[i] = src[i];
 }
 
 char	*find(char **env, char *key)
@@ -62,8 +63,10 @@ void	copy_arr_ex(char **dst, char **src, char *s)
 	to = 0;
 	while (src[from])
 	{
+		//printf("to: %d, from: %d", to, from);
 		if (src[from] != s)
 		{
+			//printf(" +\n");
 			dst[to] = src[from];
 			to++;
 		}
@@ -99,7 +102,7 @@ char	**env_add(char **env, char *s)
 
 
 	count = get_count(env);
-	result = malloc(sizeof(*result) * (count + 1));
+	result = malloc(sizeof(*result) * (count + 1 + 1));
 	if (!result)
 	{
 		//error
@@ -118,17 +121,18 @@ char	**env_remove(char **env, char *s)
 	char	*elem;
 
 	elem = find(env, s);
+	printf("found: %p : %s\n", elem, elem);
 	if (!elem)
 		return (0);
 	count = get_count(env);
-	result = malloc(sizeof(*result) * (count - 1));
+	result = malloc(sizeof(*result) * (count));
 	if (!result)
 	{
 		//error
 		return (0);
 	}
 	copy_arr_ex(result, env, elem);
-	result[count - 1] = 0;
+	result[count] = 0;
 	printf("removed\n");
 	return (result);
 }
