@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 14:08:26 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 16:09:28 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/22 16:11:36 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/22 16:14:27 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_builtin_pwd(t_exec *e)
+int	exec_builtin_env(t_exec *e)
 {
+	//printf("[exec builtin env]\n");
 	(void)e;
-	if (!e->pwd)
+	if (!e->envp)
 		return (0);
-	//printf("[exec builtin pwd]\n");
-	printf("%s\n", e->pwd);
-	//write(1, e->pwd, ft_strlen(e->pwd));
-	//write(e->fd, "\n", 1);
+	print_arr(e->envp);
 	return (0);
 }

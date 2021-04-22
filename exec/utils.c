@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 15:40:06 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 14:06:16 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/22 16:13:39 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ int	get_count(char **arr)
 	return (i);
 }
 
-void	print_arr(char **arr, char *name)
+void	print_arr(char **arr)
 {
 	int	i;
 
-	printf("%s\n", name);
 	i = 0;
 	while (arr[i])
 	{
-		printf("[%d]: %s\n", i, arr[i]);
+		//printf("[%d]: %s\n", i, arr[i]);
+		printf("%s\n", arr[i]);
 		i++;
 	}
 }
