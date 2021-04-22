@@ -6,11 +6,21 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 15:40:06 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/20 16:43:08 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/22 14:06:16 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+int	get_count(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
 
 void	print_arr(char **arr, char *name)
 {

@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/20 16:19:46 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 14:04:48 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/22 14:08:26 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/04/22 14:54:39 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	exec_builtin_export(t_exec *e)
+int	exec_builtin_pwd(t_exec *e)
 {
-	printf("[export] addr before : %p\n", e->envp);
-	print_arr(e->envp, "environ --------------");
+	(void)e;
+	if (!e->pwd)
+		return (0);
+	//printf("[exec builtin pwd]\n");
+	write(e->fd, e->pwd, ft_strlen(e->pwd));
+	write(e->fd, "\n", 1);
+	return (0);
 }
-

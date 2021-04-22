@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/22 11:48:24 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/04/22 14:09:57 by lelderbe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ EXEC_SRCS	= exec.c env.c utils.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 EXEC_BUILTIN_DIR	= exec/builtins/
-EXEC_BUILTIN_SRCS	= export.c
+EXEC_BUILTIN_SRCS	= export.c unset.c pwd.c
 EXEC_BUILTIN_SRCS	:= $(addprefix ${EXEC_BUILTIN_DIR}, ${EXEC_BUILTIN_SRCS})
 
 SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${HNODE_SRCS} ${ERRORS_SRCS} ${PARSE_SRCS} ${EXEC_SRCS} ${EXEC_BUILTIN_SRCS}

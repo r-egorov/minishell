@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 12:25:07 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/22 14:53:30 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,30 @@ void	exec_init(t_parser *p, t_exec *e)
 int	exec_run(t_exec *e)
 {
 	pid_t		pid;
-	extern char	**environ;
-	//char	*s = "ZZ=ssssssss";
+	//extern char	**environ;
 	//char	**tmp;
 
 
 	printf("[exec run] run this: %s\n", e->exec);
+	printf("env_get('PWD') : %s\n", env_get(e->envp, "PWD"));
 	// Spawn a child to run the program
-	printf("[exec run] environ addr  : %p\n", environ);
-	printf("[exec run] environ count : %d\n", get_count(environ));
-	printf("[exec run] getenv('ZZ')  : %s\n", getenv("ZZ"));
+	//printf("[exec run] environ addr  : %p\n", environ);
+	//printf("[exec run] environ count : %d\n", get_count(environ));
+	//printf("[exec run] getenv('ZZ')  : %s\n", getenv("ZZ"));
+	if (eq(e->exec, "pwd"))
+	{
+		exec_builtin_pwd(e);
+		return (0);
+	}
 	if (eq(e->exec, "export"))
 	{
-		exec_builtin_export(0);
+		exec_builtin_export(e);
 		return (0);
 	}
 	if (eq(e->exec, "unset"))
 	{
-		exec_builtin_unset("LANG");
-		printf("environ addr after unset: %p\n", environ);
+		exec_builtin_unset(e, "PWD");
+		//printf("environ addr after unset: %p\n", environ);
 		return (0);
 	}
 	/*
@@ -96,7 +101,7 @@ int	exec_run(t_exec *e)
 		//print_arr(environ, "child environ ----------");
 		char *argv[] = {e->exec, NULL};
 		//char *envp[] = {"PATH=/usr/bin:/bin", "TEST=abc", NULL};
-		char **envp = environ;
+		char **envp = e->envp;
 		//get_full_name(envp[0], e->exec);
 		//execve(e->exec, argv, envp);
 		execve(e->exec, argv, envp);
