@@ -17,8 +17,9 @@
 # include "main.h"
 //# include "parse.h"
 # include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include "minishell.h"
 
 typedef struct	s_exec {
 	char	*exec;

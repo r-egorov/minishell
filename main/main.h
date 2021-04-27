@@ -18,6 +18,7 @@
 # include <stdio.h>		// want printf while develop
 # include <unistd.h>	// fork
 
+# include "minishell.h"
 # include "libft.h"
 # include "cli.h"
 # include "parser.h"
