@@ -12,9 +12,21 @@
 
 #include "exec.h"
 
-void	exec_builtin_export(t_exec *e)
+int	exec_builtin_export(t_exec *e, char *param)
 {
-	printf("[export] addr before : %p\n", e->envp);
-	print_arr(e->envp, "environ --------------");
+	char    **tmp;
+
+	//printf("[export] addr before : %p\n", e->envp);
+	//print_arr(e->envp, "environ --------------");
+	tmp = env_add(e->envp, param);
+	if (!tmp)
+		return (-1); // error
+	if (tmp != e->envp)
+	{
+        free(e->envp);
+        e->envp = tmp;
+	}
+    //printf("[export] addr after : %p\n", e->envp);
+    return (0);
 }
 

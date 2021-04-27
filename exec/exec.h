@@ -17,12 +17,14 @@
 # include "main.h"
 //# include "parse.h"
 # include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 typedef struct	s_exec {
 	char	*exec;
 	char	**argv;
 	char	**envp;
-	//char	**environ;
+	char	**environ_orig;
 	int		fd;
 	char	*pwd;
 
@@ -42,7 +44,7 @@ void	print_arr(char **arr);
 int		eq(char *s1, char *s2);
 void	free_split(char **s);
 
-void	exec_builtin_export(t_exec *e);
+int		exec_builtin_export(t_exec *e, char *param);
 int		exec_builtin_unset(t_exec *e, char *key);
 int		exec_builtin_pwd(t_exec *e);
 int		exec_builtin_env(t_exec *e);

@@ -12,7 +12,7 @@
 
 #include "exec.h"
 
-char	*find(char **env, char *key)
+char	*find(char **arr, char *key)
 {
 	int		i;
 	char	*match;
@@ -21,10 +21,10 @@ char	*find(char **env, char *key)
 	if (ft_strchr(key, '='))
 		return (0);
 	i = 0;
-	while (env[i])
+	while (arr[i])
 	{
-		match = ft_strnstr(env[i], key, ft_strlen(key));
-		if (match == env[i] && env[i][ft_strlen(key)] == '=')
+		match = ft_strnstr(arr[i], key, ft_strlen(key));
+		if (match == arr[i] && arr[i][ft_strlen(key)] == '=')
 			return (match);
 		i++;
 	}
@@ -75,30 +75,57 @@ void	copy_arr_ex(char **dst, char **src, char *s)
 	}
 }
 
-char	**env_add(char **arr, char *key)
+int	env_update(char **arr, char *key, char *value)
+{
+	char	*elem;
+	int		i;
+	char	*str;
+
+	elem = find(arr, key);
+	printf("found: %p : %s\n", elem, elem);
+	if (!elem)
+		return (-1);
+	i = 0;
+	while (arr[i])
+	{
+		if (arr[i] == elem)
+		{
+			free(arr[i]);
+			str = ft_strjoin(key, "=");
+			// error if null
+			arr[i] = ft_strjoin(str, value);
+			// error if null
+			free(str);
+			break ;
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	**env_add(char **arr, char *param)
 {
 	int		count;
 	char	**result;
 	char	**parts;
-	char	*ptr;
+	//char	*ptr;
+	//int		i;
 
-	parts = ft_split(key, '=');
+	parts = ft_split(param, '=');
 	if (parts && parts[0] && parts[1] && !parts[2])
 	{
 		// key is OK
-		if ((ptr = find(arr, parts[0])))
+		if (find(arr, parts[0]))
 		{
 			// already here - update
-			//
-		}
-		else
-		{
-			// add
+			env_update(arr, parts[0], parts[1]);
+			return (arr);
 		}
 	}
 	else
 	{
 		// error
+		return (0);
 	}
 
 	count = get_count(arr);
@@ -109,7 +136,7 @@ char	**env_add(char **arr, char *key)
 		return (0);
 	}
 	copy_arr(result, arr); // replace with memcpy?
-	result[count - 1] = ft_strdup(key);
+	result[count - 1] = ft_strdup(param);
 	if (!result[count - 1])
 		return (0);//error
 	result[count] = 0;

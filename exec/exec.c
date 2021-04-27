@@ -41,6 +41,7 @@ void	exec_init(t_parser *p, t_exec *e)
 
 int	exec_run(t_exec *e)
 {
+	//extern char	**environ;
 	pid_t		pid;
 
 
@@ -59,7 +60,7 @@ int	exec_run(t_exec *e)
 	}
 	if (eq(e->exec, "export"))
 	{
-		exec_builtin_export(e);
+		exec_builtin_export(e, "ZZ=zzz:");
 		return (0);
 	}
 	if (eq(e->exec, "unset"))
@@ -82,6 +83,7 @@ int	exec_run(t_exec *e)
 		//get_full_name(envp[0], e->exec);
 		//execve(e->exec, argv, envp);
 		execve(e->exec, e->argv, e->envp);
+		//execve(e->exec, e->argv, environ);
 		printf("%d, %s\n", errno, strerror(errno));
 		exit(127); // only if execv fails
 	}

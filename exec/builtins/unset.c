@@ -17,12 +17,12 @@ int	exec_builtin_unset(t_exec *e, char *key)
 	char	*result;
 	char	**tmp;
 
-	printf("[unset] addr before : %p\n", e->envp);
+	//printf("[unset] addr before : %p\n", e->envp);
 	result = env_get(e->envp, key);
 	if (!result)
 	{
 		// no key
-		return (-1);
+		return (0);
 	}
 	tmp = env_remove(e->envp, key);
 	if (tmp)
@@ -30,7 +30,7 @@ int	exec_builtin_unset(t_exec *e, char *key)
 		free(e->envp);
 		e->envp = tmp;
 	}
-	printf("[unset] addr after : %p\n", e->envp);
+	//printf("[unset] addr after : %p\n", e->envp);
 	return (0);
 }
 

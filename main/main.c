@@ -40,14 +40,17 @@ int	minishell_init(t_exec *e)
 		i++;
 	}
 	result[count] = 0;
+	e->environ_orig = environ;
 	e->envp = result;
-	e->pwd = ft_strdup(env_get(e->envp, "PWD"));
-	e->fd = 1;
+	environ = result;
+	//e->pwd = ft_strdup(env_get(e->envp, "PWD"));
+	//e->fd = 1;
 	return (1);
 }
 
 int		main(int argc, char** argv, char **envp)
 {
+	extern char **environ;
 	t_cli		cli;
 	t_parser	parser;
 	t_exec		ex;
@@ -76,8 +79,10 @@ int		main(int argc, char** argv, char **envp)
 		parser_init(&parser, cli.line->str);
 		while (parser_next(&parser))
 		{
+			printf("PWD: %s\n", getenv("PWD"));
 			exec_init(&parser, &ex);
 			exec_run(&ex);
+			environ = ex.envp;
 			free(parser.exec);
 			free_split(parser.argv);
 		}
