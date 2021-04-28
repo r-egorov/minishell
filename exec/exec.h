@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 16:15:58 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:52:27 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ int		exec_builtin_export(t_exec *e, char *param);
 int		exec_builtin_unset(t_exec *e, char *key);
 int		exec_builtin_pwd(t_exec *e);
 int		exec_builtin_env(t_exec *e);
+int		exec_builtin_cd(t_exec *e, char *path);
 
 #endif
