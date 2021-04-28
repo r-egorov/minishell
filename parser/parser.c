@@ -6,11 +6,21 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/28 17:58:45 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/28 18:36:43 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+int		is_tokensep(char c)
+{
+	if (c == '>' ||
+		c == '<' ||
+		c == '|' ||
+		c == ';')
+		return (1);
+	return (0);
+}
 
 void	lexer_del(t_lexer *self)
 {
@@ -76,7 +86,7 @@ void	lexer_expandvar(t_lexer *self)
 	size_t	position;
 
 	position = self->buf - self->string;
-	while (*self->buf && *self->buf != ' ') // HAS TO BE IF TOKEN SEPARATOR
+	while (*self->buf && *self->buf != ' ' && !is_tokensep(*self->buf))
 	{
 		if ((*self->buf == '$') && (ft_isalpha(*(self->buf + 1))))
 		{
@@ -88,6 +98,23 @@ void	lexer_expandvar(t_lexer *self)
 		self->buf++;
 	}
 	self->buf = self->string + position;
+}
+
+void	check_sep(char **ext_string)
+{
+	char 	*string;
+
+	string = *ext_string;
+	if (*string == '>')
+	{
+		if ((*string + 1) && ((*(string + 1)) == '>'))
+			string++;
+		else if ((*string + 1) && ((*string + 1) == '<'))
+			process_error(); // UNEXPECTED TOKEN  `><`
+	}
+	string++;
+	*ext_string = string;
+			
 }
 
 char	*lexer_get_token(t_lexer *self)
@@ -103,12 +130,17 @@ char	*lexer_get_token(t_lexer *self)
 	printf("string %s\nbuf %s\n", self->string, self->buf);
 	string = self->buf;
 	string_start = self->buf;
-	while (*string && *string != ' ')
+	while (*string && *string != ' ' && !is_tokensep(*string))
 		string++;
+
+	if (is_tokensep(*string) && is_tokensep(*self->buf))
+		check_sep(&string);
+
 	if (*string == ' ')
 		self->buf = string + 1;
 	else
 		self->buf = string;
+
 	tmp = *string;
 	*string = '\0';
 	token = ft_strdup(string_start);
