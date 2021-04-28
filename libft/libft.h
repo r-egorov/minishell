@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 16:23:50 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 12:24:22 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/28 13:03:28 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void			ft_btree_insert_data(t_btree **root, void *item,
 				int (*cmpf)(void *, void *));
 void			*ft_btree_search_item(t_btree *root, void *data_ref,
 				int (*cmpf)(void *, void *));
+void			ft_free_strs(char **strs);
 
 
 #endif
