@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/28 15:47:08 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/28 17:58:45 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,97 @@ void	lexer_del(t_lexer *self)
 	}
 }
 
-char	*get_token(char **original_string)
+char	*lexer_get_varname(t_lexer *self)
+{
+	char	*string;
+	char	*varname;
+	char	tmp;
+
+	varname = NULL;
+	if (self->buf + 1)
+	{
+		string = self->buf + 1;
+		while (ft_isalpha(*string))
+			string++;
+		tmp = *string;
+		*string = '\0';
+		varname = ft_strdup(self->buf + 1);
+		if (!varname)
+			process_syserror();
+		*string = tmp;
+	}
+	return (varname);
+}
+
+void	lexer_insert_varvalue(t_lexer *self, char *var_value)
+{
+	char	*tmp1;
+	char	*tmp2;
+	size_t	position;
+
+	position = self->buf - self->string;
+	*self->buf = '\0';
+	self->buf++;
+	tmp1 = ft_strjoin(self->string, var_value);
+	if (!tmp1)
+		process_syserror();
+	while (ft_isalpha(*self->buf))
+		self->buf++;
+	tmp2 = ft_strjoin(tmp1, self->buf);
+	if (!tmp2)
+		process_syserror();
+	free(tmp1);
+	free(self->string);
+	self->string = tmp2;
+	self->buf = self->string + position;
+}
+
+void	lexer_expandvar(t_lexer *self)
+{
+	char 	*var_name;
+	char	*var_value;
+	size_t	position;
+
+	position = self->buf - self->string;
+	while (*self->buf && *self->buf != ' ') // HAS TO BE IF TOKEN SEPARATOR
+	{
+		if ((*self->buf == '$') && (ft_isalpha(*(self->buf + 1))))
+		{
+			var_name = lexer_get_varname(self);
+			var_value = getenv(var_name);
+			free(var_name);
+			lexer_insert_varvalue(self, var_value);
+		}
+		self->buf++;
+	}
+	self->buf = self->string + position;
+}
+
+char	*lexer_get_token(t_lexer *self)
 {
 	char		*token;
 	char		*string;
 	char		*string_start;
+	char		tmp;
 
-	string = *original_string;
-	string_start = string;
+	lexer_expandvar(self);
+	while (*self->buf == ' ')
+		self->buf++;
+	printf("string %s\nbuf %s\n", self->string, self->buf);
+	string = self->buf;
+	string_start = self->buf;
 	while (*string && *string != ' ')
 		string++;
 	if (*string == ' ')
-		*original_string = string + 1;
+		self->buf = string + 1;
 	else
-		*original_string = string;
+		self->buf = string;
+	tmp = *string;
 	*string = '\0';
 	token = ft_strdup(string_start);
 	if (!token)
 		process_syserror();
+	*string = tmp;
 	return (token);
 }
 
@@ -78,15 +151,13 @@ void	lexer_tokenize(t_lexer *self)
 {
 	size_t		i;
 	char		*token;
-	char		*string_to_parse;
 
 	i = 0;
-	string_to_parse = self->string;
-	while (*string_to_parse)
+	while (*self->buf)
 	{
-		while (*string_to_parse == ' ')
-			string_to_parse++;
-		token = get_token(&string_to_parse);
+		while (*self->buf == ' ')
+			self->buf++;
+		token = lexer_get_token(self);
 		lexer_append_token(self, token);
 	}
 }
@@ -99,6 +170,7 @@ t_lexer	*lexer_new(char *string)
 	if (!self)
 		process_syserror();
 	self->string = ft_strdup(string);
+	self->buf = self->string;
 	self->del = lexer_del;
 	self->tokens = NULL;
 	self->tokens_len = 0;
@@ -149,6 +221,7 @@ int	parser_next(t_parser *self)
 		self->lexer = lexer_new(self->string);
 		self->lexer->tokenize(self->lexer);
 		printstrs(self->lexer->tokens); //FIXME
+		printf("ntok %zu\n", self->lexer->tokens_len);
 		self->argv = ft_split(self->lexer->string, ' ');
 		self->pos = ft_strlen(self->string);
 		self->lexer->del(self->lexer); 
