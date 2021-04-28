@@ -6,13 +6,13 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/05 14:39:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/15 13:53:24 by cisis            ###   ########.fr        #
+#    Updated: 2021/04/28 13:03:04 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS		= ft_putchar.c ft_strcmp.c ft_strlen.c ft_tolower.c ft_toupper.c ft_isalnum.c ft_isdigit.c ft_isalpha.c ft_isascii.c ft_isprint.c ft_memset.c ft_bzero.c ft_atoi.c ft_memcpy.c ft_memccpy.c ft_strncmp.c ft_strdup.c ft_calloc.c ft_memcmp.c ft_memchr.c ft_memmove.c ft_substr.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strnstr.c ft_putchar_fd.c ft_putstr_fd.c ft_putnbr_fd.c ft_putendl_fd.c ft_strtrim.c ft_strjoin.c ft_split.c ft_strmapi.c ft_itoa.c
 
-BONUS_SRCS	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_dlstadd_back.c  ft_dlstclear.c	ft_dlstiter.c	ft_dlstnew.c ft_dlstadd_front.c	ft_dlstdelone.c	ft_dlstlast.c	ft_dlstsize.c
+BONUS_SRCS	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_dlstadd_back.c  ft_dlstclear.c	ft_dlstiter.c	ft_dlstnew.c ft_dlstadd_front.c	ft_dlstdelone.c	ft_dlstlast.c	ft_dlstsize.c ft_btree_create_node.c ft_btree_apply_prefix.c ft_btree_apply_infix.c ft_btree_apply_suffix.c ft_btree_insert_data.c ft_free_strs.c
 
 HEADERS		= libft.h
 
