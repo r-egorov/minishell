@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 13:31:21 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/28 15:24:29 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@
 typedef struct s_lexer
 {
 	char	*string;
-	t_list	*tokens;
+	char	**tokens;
+	size_t	tokens_len;
 
 	void	(*del)(struct s_lexer *self);
+	void	(*tokenize)(struct s_lexer *self);
 }				t_lexer;
 
 typedef struct s_parser
