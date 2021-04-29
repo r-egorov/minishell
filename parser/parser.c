@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/29 15:28:02 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/29 17:42:33 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	token_append(t_token *self, char *src)
 	char			*string;
 
 	string = self->str;
-	tmp = (char *)malloc((self->len + 1) * sizeof(char));
+	tmp = (char *)malloc((self->len + 2) * sizeof(char));
 	if (!tmp)
 		process_syserror();
 	if (!string)
@@ -71,6 +71,14 @@ int		is_tokensep(char c)
 		c == '<' ||
 		c == '|' ||
 		c == ';')
+		return (1);
+	return (0);
+}
+
+int		is_quotes(char c)
+{
+	if (c == '\'' ||
+		c == '\"')
 		return (1);
 	return (0);
 }
@@ -146,7 +154,8 @@ void	lexer_expandvar(t_lexer *self)
 	size_t	position;
 
 	position = self->buf - self->string;
-	while (*self->buf && *self->buf != ' ' && !is_tokensep(*self->buf))
+	while (*self->buf && *self->buf != ' ' && !is_tokensep(*self->buf) &&
+			!is_quotes(*self->buf))
 	{
 		if ((*self->buf == '$') && (ft_isalpha(*(self->buf + 1))))
 		{
@@ -168,6 +177,38 @@ void	lexer_expandvar(t_lexer *self)
 	self->buf = self->string + position;
 }
 
+void	lexer_quotes_expandvar(t_lexer *self)
+{
+	char 	*var_name;
+	char	*var_value;
+	size_t	position;
+
+	position = self->buf - self->string;
+	while ((*self->buf) && (*self->buf != '\"'))
+	{
+		if ((*self->buf == '$') && (ft_isalpha(*(self->buf + 1))))
+		{
+			if ((self->buf - self->string) && (*(self->buf - 1) == '\\'))
+			{
+				self->buf++;
+				continue ;
+			}
+			else
+			{
+				var_name = lexer_get_varname(self);
+				var_value = getenv(var_name);
+				free(var_name);
+				lexer_insert_varvalue(self, var_value);
+			}
+		}
+		if (*self->buf != '\"')
+			self->buf++;
+	}
+	if (!*self->buf)
+		process_error(); // no matching quote
+	self->buf = self->string + position;
+}
+
 t_token	*lexer_get_token(t_lexer *self)
 {
 	t_token	*token;
@@ -176,18 +217,56 @@ t_token	*lexer_get_token(t_lexer *self)
 	lexer_expandvar(self);
 	token = token_new();
 	token_end = self->buf;
-
+	
 	while (*token_end && *token_end != ' ' && !is_tokensep(*token_end))
 	{
 		if (*token_end == '\\')
 		{
 			token_end++;
+			token->append(token, token_end);
+			token_end++;
 			token->screened = 1;
 		}
-		token->append(token, token_end);
-		token_end++;
+		else if (is_quotes(*token_end))
+		{
+			if (*token_end == '\'')
+			{
+				token_end++;
+				while (*token_end && *token_end != '\'')
+				{
+					token->append(token, token_end);
+					token_end++;
+				}
+			}
+			else
+			{
+				token_end++;
+				self->buf = token_end;
+				lexer_quotes_expandvar(self);
+				token_end = self->buf;
+				while ((*token_end) && (*token_end != '\"'))
+				{
+					if (*token_end == '\\')
+					{
+						if ((*(token_end + 1) == '\"') ||
+							(*(token_end + 1) == '$'))
+							token_end++;
+					}
+					token->append(token, token_end);
+					token_end++;
+				}
+			}
+			if (!*token_end)
+				process_error(); // NO MATCHING QUOTE
+			token_end++;
+		}
+		else
+		{
+			token->append(token, token_end);
+			token_end++;
+		}
 	}
-
+	
 	if (is_tokensep(*token_end) && is_tokensep(*self->buf))
 	{
 		token->append(token, token_end);
@@ -203,6 +282,8 @@ t_token	*lexer_get_token(t_lexer *self)
 		}
 		token_end++;
 	}
+
+	// QUOTES handling	
 
 	if (*token_end == ' ')
 		self->buf = token_end + 1;
@@ -267,6 +348,7 @@ t_lexer	*lexer_new(char *string)
 	self->del = lexer_del;
 	self->tokens = NULL;
 	self->tokens_len = 0;
+	self->quotes = 0;
 	self->tokenize = lexer_tokenize;
 	return (self);
 }
