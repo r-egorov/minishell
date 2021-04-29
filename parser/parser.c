@@ -6,11 +6,64 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/28 18:36:43 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/29 15:28:02 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+void	token_append(t_token *self, char *src)
+{
+	char			*tmp;
+	char			*string;
+
+	string = self->str;
+	tmp = (char *)malloc((self->len + 1) * sizeof(char));
+	if (!tmp)
+		process_syserror();
+	if (!string)
+	{
+		ft_strlcpy(tmp, src, 2);
+		self->len = 1;
+	}
+	else
+	{
+		ft_strlcpy(tmp, string, self->len + 1);
+		ft_strlcat(tmp, src, self->len + 2);
+		self->len += 1;
+		free(string);
+	}
+	self->str = tmp;
+}
+
+void	token_del(t_token *self)
+{
+	if (self)
+	{
+		if (self->str)
+		{
+			free(self->str);
+			self->str = NULL;
+		}
+		free(self);
+		self = NULL;
+	}
+}
+
+t_token	*token_new(void)
+{
+	t_token	*token;
+
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		process_syserror();
+	token->str = NULL;
+	token->len = 0;
+	token->screened = 0;
+	token->append = token_append;
+	token->del = token_del;
+	return (token);
+}
 
 int		is_tokensep(char c)
 {
@@ -24,12 +77,19 @@ int		is_tokensep(char c)
 
 void	lexer_del(t_lexer *self)
 {
+	int		i;
+
+	i = 0;
 	if (self)
 	{
 		if (self->string)
 			free(self->string);
 		if (self->tokens)
-			ft_free_strs(self->tokens);
+		{
+			while (self->tokens[i])
+				free(self->tokens[i++]);
+			free(self->tokens);
+		}
 		free(self);
 	}
 }
@@ -90,73 +150,74 @@ void	lexer_expandvar(t_lexer *self)
 	{
 		if ((*self->buf == '$') && (ft_isalpha(*(self->buf + 1))))
 		{
-			var_name = lexer_get_varname(self);
-			var_value = getenv(var_name);
-			free(var_name);
-			lexer_insert_varvalue(self, var_value);
+			if ((self->buf - self->string) && (*(self->buf - 1) == '\\'))
+			{
+				self->buf++;
+				continue ;
+			}
+			else
+			{
+				var_name = lexer_get_varname(self);
+				var_value = getenv(var_name);
+				free(var_name);
+				lexer_insert_varvalue(self, var_value);
+			}
 		}
 		self->buf++;
 	}
 	self->buf = self->string + position;
 }
 
-void	check_sep(char **ext_string)
+t_token	*lexer_get_token(t_lexer *self)
 {
-	char 	*string;
-
-	string = *ext_string;
-	if (*string == '>')
-	{
-		if ((*string + 1) && ((*(string + 1)) == '>'))
-			string++;
-		else if ((*string + 1) && ((*string + 1) == '<'))
-			process_error(); // UNEXPECTED TOKEN  `><`
-	}
-	string++;
-	*ext_string = string;
-			
-}
-
-char	*lexer_get_token(t_lexer *self)
-{
-	char		*token;
-	char		*string;
-	char		*string_start;
-	char		tmp;
+	t_token	*token;
+	char	*token_end;
 
 	lexer_expandvar(self);
-	while (*self->buf == ' ')
-		self->buf++;
-	printf("string %s\nbuf %s\n", self->string, self->buf);
-	string = self->buf;
-	string_start = self->buf;
-	while (*string && *string != ' ' && !is_tokensep(*string))
-		string++;
+	token = token_new();
+	token_end = self->buf;
 
-	if (is_tokensep(*string) && is_tokensep(*self->buf))
-		check_sep(&string);
+	while (*token_end && *token_end != ' ' && !is_tokensep(*token_end))
+	{
+		if (*token_end == '\\')
+		{
+			token_end++;
+			token->screened = 1;
+		}
+		token->append(token, token_end);
+		token_end++;
+	}
 
-	if (*string == ' ')
-		self->buf = string + 1;
+	if (is_tokensep(*token_end) && is_tokensep(*self->buf))
+	{
+		token->append(token, token_end);
+		if (*token_end == '>')
+		{
+			if ((*token_end + 1) && ((*(token_end + 1)) == '>'))
+			{
+				token_end++;
+				token_append(token, token_end);
+			}
+			else if ((*token_end + 1) && ((*token_end + 1) == '<'))
+				process_error(); // UNEXPECTED TOKEN  `><`
+		}
+		token_end++;
+	}
+
+	if (*token_end == ' ')
+		self->buf = token_end + 1;
 	else
-		self->buf = string;
-
-	tmp = *string;
-	*string = '\0';
-	token = ft_strdup(string_start);
-	if (!token)
-		process_syserror();
-	*string = tmp;
+		self->buf = token_end;
 	return (token);
 }
 
-void	lexer_append_token(t_lexer *self, char *token)
+void	lexer_append_token(t_lexer *self, t_token *token)
 {
-	char 	**tmp;
+	t_token	**tmp;
 	size_t	i;
 
 	i = 0;
-	tmp = (char **)malloc(sizeof(char *) * (self->tokens_len + 2));
+	tmp = (t_token **)malloc(sizeof(t_token *) * (self->tokens_len + 2));
 	if (!tmp)
 		process_syserror();
 	if (self->tokens_len == 0)
@@ -182,7 +243,7 @@ void	lexer_append_token(t_lexer *self, char *token)
 void	lexer_tokenize(t_lexer *self)
 {
 	size_t		i;
-	char		*token;
+	t_token		*token;
 
 	i = 0;
 	while (*self->buf)
@@ -235,13 +296,13 @@ void	parser_init(t_parser *self, char *string_to_parse)
 }
 
 
-void	printstrs(char **strs)
+void	printtokens(t_token **tokens, size_t len)
 {
-	int i = 0;
+	size_t i = 0;
 
-	while (strs[i])
+	while (i < len)
 	{
-		printf("|%s|\n", strs[i]);
+		printf("str|%s|\t\t\t\tlen|%d|\tscrnd|%d|\n", (tokens[i])->str, (tokens[i])->len, (tokens[i])->screened);
 		i++;
 	}
 }
@@ -252,9 +313,9 @@ int	parser_next(t_parser *self)
 	{
 		self->lexer = lexer_new(self->string);
 		self->lexer->tokenize(self->lexer);
-		printstrs(self->lexer->tokens); //FIXME
+		printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
 		printf("ntok %zu\n", self->lexer->tokens_len);
-		self->argv = ft_split(self->lexer->string, ' ');
+		self->argv = ft_split(self->string, ' ');
 		self->pos = ft_strlen(self->string);
 		self->lexer->del(self->lexer); 
 		return (1);

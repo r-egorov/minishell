@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 16:54:30 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/29 15:07:21 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,22 @@
 # include <stdio.h>
 //# include "line.h"
 
+typedef struct s_token
+{
+	char		*str;
+	int			len;
+	int			screened;
+	void		(*append)(struct s_token *self, char *to_append);
+	void		(*del)(struct s_token *self);
+}				t_token;
+
 typedef struct s_lexer
 {
 	char	*string;
 	char	*buf;
-	char	**tokens;
+	t_token	**tokens;
 	size_t	tokens_len;
+	int		quotes;
 
 	void	(*del)(struct s_lexer *self);
 	void	(*tokenize)(struct s_lexer *self);
@@ -42,14 +52,6 @@ typedef struct s_parser
 	
 	void	(*del)(struct s_parser *self);
 }				t_parser;
-
-typedef struct s_token
-{
-	char		*str;
-	int			len;
-	void		(*append)(struct s_line *self, char *to_append, int size);
-	void		(*del)(void *self);
-}				t_token;
 
 void	parser_init(t_parser *self, char *string_to_parse);
 void	parser_del(t_parser *self);
