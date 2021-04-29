@@ -21,6 +21,13 @@
 # include <sys/wait.h>
 # include "minishell.h"
 
+# define FAIL	0
+# define OK		1
+
+# define SHELL_NAME					"-minishell"
+# define BUILTIN_CD_NAME			"cd"
+# define ERR_EXEC_CD_TOO_MANY_ARGS	"too many arguments"
+
 typedef struct	s_exec {
 	char	*exec;
 	char	**argv;
@@ -31,24 +38,22 @@ typedef struct	s_exec {
 
 }				t_exec;
 
-# define FAIL	0
-# define OK		1
-
 void    exec_init(t_parser *p, t_exec *e);
 int		exec_run(t_exec *e);
 char	*env_get(char **arr, char *key);
 char	**env_add(char **arr, char *key);
 char	**env_remove(char **arr, char *key);
+int		env_update(char **arr, char *key, char *value);
 
 int		get_count(char **arr);
 void	print_arr(char **arr);
 int		eq(char *s1, char *s2);
 void	free_split(char **s);
 
-int		exec_builtin_export(t_exec *e, char *param);
-int		exec_builtin_unset(t_exec *e, char *key);
+int		exec_builtin_export(t_exec *e);
+int		exec_builtin_unset(t_exec *e);
 int		exec_builtin_pwd(t_exec *e);
 int		exec_builtin_env(t_exec *e);
-int		exec_builtin_cd(t_exec *e, char *path);
+int		exec_builtin_cd(t_exec *e);
 
 #endif

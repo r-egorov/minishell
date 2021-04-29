@@ -12,21 +12,26 @@
 
 #include "exec.h"
 
-int	exec_builtin_export(t_exec *e, char *param)
+int	exec_builtin_export(t_exec *e)
 {
+	extern char	**environ;
 	char    **tmp;
 
-	//printf("[export] addr before : %p\n", e->envp);
+	printf("[export] addr before : %p | %p\n", e->envp, environ);
 	//print_arr(e->envp, "environ --------------");
-	tmp = env_add(e->envp, param);
+	tmp = env_add(e->envp, e->argv[1]);
 	if (!tmp)
+	{
+		process_error();
 		return (-1); // error
+	}
 	if (tmp != e->envp)
 	{
+		printf("[export] do free old envp\n");
         free(e->envp);
         e->envp = tmp;
 	}
-    //printf("[export] addr after : %p\n", e->envp);
+    printf("[export] addr after : %p | %p\n", e->envp, environ);
     return (0);
 }
 

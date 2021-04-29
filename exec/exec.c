@@ -44,33 +44,35 @@ int	exec_run(t_exec *e)
 	//extern char	**environ;
 	pid_t		pid;
 
-
+	//printf("----------\n");
+	//print_arr(e->argv);
+	//printf("----------\n");
 	//printf("[exec run] run this: %s\n", e->exec);
 	//printf("env_get('PWD') : %s\n", env_get(e->envp, "PWD"));
 	// Spawn a child to run the program
-	if (eq(e->exec, "cd"))
+	if (eq(e->argv[0], "cd"))
 	{
-		exec_builtin_cd(e, "../..");
+		exec_builtin_cd(e);
 		return (0);
 	}
-	if (eq(e->exec, "env"))
+	if (eq(e->argv[0], "env"))
 	{
 		exec_builtin_env(e);
 		return (0);
 	}
-	if (eq(e->exec, "pwd"))
+	if (eq(e->argv[0], "pwd"))
 	{
 		exec_builtin_pwd(e);
 		return (0);
 	}
-	if (eq(e->exec, "export"))
+	if (eq(e->argv[0], "export"))
 	{
-		exec_builtin_export(e, "ZZ=zzz:");
+		exec_builtin_export(e);
 		return (0);
 	}
-	if (eq(e->exec, "unset"))
+	if (eq(e->argv[0], "unset"))
 	{
-		exec_builtin_unset(e, "PWD");
+		exec_builtin_unset(e);
 		//printf("environ addr after unset: %p\n", environ);
 		return (0);
 	}

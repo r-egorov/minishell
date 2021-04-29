@@ -43,7 +43,6 @@ int	minishell_init(t_exec *e)
 	e->environ_orig = environ;
 	e->envp = result;
 	environ = result;
-	//e->pwd = ft_strdup(env_get(e->envp, "PWD"));
 	//e->fd = 1;
 	return (1);
 }
@@ -79,16 +78,23 @@ int		main(int argc, char** argv, char **envp)
 		parser_init(&parser, cli.line->str);
 		while (parser_next(&parser))
 		{
-			printf("PWD: %s\n", getenv("PWD"));
 			exec_init(&parser, &ex);
 			exec_run(&ex);
+			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
+			//printf("[main] PWD: %s\n", getenv("PWD"));
+			//printf("[main] AA: %s\n", getenv("AA"));
 			environ = ex.envp;
+			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
+			//printf("[main] PWD: %s\n", getenv("PWD"));
+			//printf("[main] AA: %s\n", getenv("AA"));
 			free(parser.exec);
 			free_split(parser.argv);
+			//printf("[main] next parser loop\n");
 		}
+		//printf("[main] end parser loop - next cli loop\n");
 	}
+	//printf("[main] end cli loop\n");
 	cli_del(&cli);
 
-	free(ex.pwd);
 	return (0);
 }

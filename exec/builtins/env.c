@@ -14,13 +14,23 @@
 
 int	exec_builtin_env(t_exec *e)
 {
-	//extern char **environ;
+	extern char **environ;
 
 	//printf("[exec builtin env]\n");
 	if (!e->envp)
 	//if (!environ)
 		return (0);
 	print_arr(e->envp);
+
+	if (eq(e->argv[1], "p"))
+	{
+		printf("-----------------------------------\n");
+		print_arr(environ);
+		printf("-----------------------------------\n");
+		return (0);
+	}
+	if (e->argv[1])
+		printf("[env] %s : %s\n", e->argv[1], getenv(e->argv[1]));
 	//print_arr(environ);
 	return (0);
 }

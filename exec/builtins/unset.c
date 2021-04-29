@@ -12,25 +12,37 @@
 
 #include "exec.h"
 
-int	exec_builtin_unset(t_exec *e, char *key)
+int	exec_builtin_unset(t_exec *e)
 {
-	char	*result;
+	extern char	**environ;
+	//char	*result;
 	char	**tmp;
-
-	//printf("[unset] addr before : %p\n", e->envp);
-	result = env_get(e->envp, key);
-	if (!result)
+	char	*key;
+	
+	printf("[unset] addr before : %p | %p\n", e->envp, environ);
+	printf("[unset] PWD: %s\n", getenv("PWD"));
+	if (e->argv[1])
 	{
-		// no key
-		return (0);
+		key = e->argv[1];
+		printf("[unset] getenv(key): %p\n", getenv(key));
+		if (getenv(key))
+		{
+		//result = env_get(e->envp, key);
+		//if (!result)
+		//{
+			// no key
+			//return (0);
+		//}
+			printf("[unset] found key via getenv, now remove it\n");
+			tmp = env_remove(e->envp, key);
+			if (tmp)
+			{
+				free(e->envp);
+				e->envp = tmp;
+			}
+		}
 	}
-	tmp = env_remove(e->envp, key);
-	if (tmp)
-	{
-		free(e->envp);
-		e->envp = tmp;
-	}
-	//printf("[unset] addr after : %p\n", e->envp);
-	return (0);
+	printf("[unset] addr after : %p | %p\n", e->envp, environ);
+	printf("[unset] PWD: %s\n", getenv("PWD"));
+	return (OK);
 }
-

@@ -12,48 +12,101 @@
 
 #include "exec.h"
 
-int	exec_builtin_cd(t_exec *e, char *path)
+static char *make_path(char *part1, char *part2)
+{
+	char	*result;
+	char	*tmp;
+
+	result = 0;
+	if (part2[0] == '/')
+	{
+		// absolute
+		result = ft_strdup(part2);
+		// if null?
+		//printf("absolute path: %s\n", result);
+		//result = chdir(path);
+	}
+	else
+	{
+		// relative
+		tmp = ft_strjoin(part1, "/");
+		if (!tmp)
+			return (0);
+		result = ft_strjoin(tmp, part2);
+		free(tmp);
+		//printf("relative path: %s\n", result);
+		//if (!result)
+		//	return (0);
+	}
+	return (result);
+}
+
+void	update_env_vars(t_exec *e, char *oldpwd)
 {
 	char	*pwd;
-	char	*tmp;
-	int		result;
 
-	(void)e;
+	if (getenv("OLDPWD"))
+	{
+		// update
+		//pwd = ft_strjoin("OLDPWD=", oldpwd);
+		//if (!pwd)
+		//	; // error
+		env_update(e->envp, "OLDPWD", oldpwd);
+	}
+	if (getenv("PWD"))
+	{
+		pwd = getcwd(0, 0);
+		env_update(e->envp, "PWD", pwd);
+	}
+}
+
+int	exec_builtin_cd(t_exec *e)
+{
+	int		result;
+	char	*path;
+	char	*dest;
+	//char	*current;
+	char	*oldpwd;
+
+	if (e->argv[1] && e->argv[2])
+	{
+		printf("%s: %s: %s\n", SHELL_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_TOO_MANY_ARGS);
+		return (FAIL);
+	}
+
+	if (e->argv[1])
+		path = e->argv[1];
+	else
+		path = getenv("HOME");
+		// what if null? (unset HOME)
+ 
 	//printf("[cd] addr before : %p\n", e->envp);
-	pwd = getcwd(0, 0);
-	printf("pwd: %s\n", pwd);
-	if (!pwd)
+	oldpwd = getcwd(0, 0);
+	//printf("current dir: %s\n", current);
+	if (!oldpwd)
 	{
 		// error
 		return (FAIL);
 	}
 	result = -1;
-	if (path[0] == '/')
+	// if path = "" and unset HOME?
+	dest = make_path(oldpwd, path);
+	if (!dest)
 	{
-		// absolute
-		free(pwd);
-		printf("absolute: %s\n", path);
-		result = chdir(path);
+		// error
+		return (FAIL);
 	}
-	else
-	{
-		tmp = ft_strjoin(pwd, "/");
-		free(pwd);
-		pwd = ft_strjoin(tmp, path);
-		free(tmp);
-		printf("relative: %s\n", pwd);
-		result = chdir(pwd);
-		free(pwd);
-	}
-	//result = chdir(path);
+	result = chdir(dest);
+	free(dest);
 	if (result == -1)
 	{
 		// error
 		return (FAIL);
 	}
-	pwd = getcwd(0, 0);
-	printf("finally pwd: %s\n", pwd);
-	free(pwd);
+	update_env_vars(e, oldpwd);
+	//current = getcwd(0, 0);
+	//printf("new pwd: %s\n", current);
+	//free(current);
 	//printf("[cd] addr after : %p\n", e->envp);
 	return (OK);
 }
