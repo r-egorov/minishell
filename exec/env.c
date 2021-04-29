@@ -12,7 +12,7 @@
 
 #include "exec.h"
 
-char	*find(char **arr, char *key)
+static char	*find(char **arr, char *key)
 {
 	int		i;
 	char	*match;
@@ -26,7 +26,7 @@ char	*find(char **arr, char *key)
 		match = ft_strnstr(arr[i], key, ft_strlen(key));
 		if (match == arr[i] && arr[i][ft_strlen(key)] == '=')
 		{
-			printf("[env find] found key %s : %s\n", key, match);
+			//printf("[env find] found key %s : %s\n", key, match);
 			return (match);
 		}
 		i++;
@@ -34,6 +34,7 @@ char	*find(char **arr, char *key)
 	return (0);
 }
 
+/*
 char	*env_get(char **arr, char *key)
 {
 	char	*s;
@@ -44,8 +45,9 @@ char	*env_get(char **arr, char *key)
 	return (ft_strchr(s, '=') + 1);
 	//return (0);
 }
+*/
 
-void	copy_arr(char **dst, char **src)
+static void	copy_arr(char **dst, char **src)
 {
 	int	i;
 
@@ -58,7 +60,7 @@ void	copy_arr(char **dst, char **src)
 	dst[i] = src[i];
 }
 
-void	copy_arr_ex(char **dst, char **src, char *s)
+static void	copy_arr_ex(char **dst, char **src, char *s)
 {
 	int	from;
 	int	to;
@@ -67,10 +69,8 @@ void	copy_arr_ex(char **dst, char **src, char *s)
 	to = 0;
 	while (src[from])
 	{
-		//printf("to: %d, from: %d", to, from);
 		if (src[from] != s)
 		{
-			//printf(" +\n");
 			dst[to] = src[from];
 			to++;
 		}
@@ -78,6 +78,7 @@ void	copy_arr_ex(char **dst, char **src, char *s)
 	}
 }
 
+/*
 int	env_update(char **arr, char *key, char *value)
 {
 	char	*elem;
@@ -85,7 +86,7 @@ int	env_update(char **arr, char *key, char *value)
 	char	*str;
 
 	elem = find(arr, key);
-	printf("[env update] elem found: %p : %s\n", elem, elem);
+	//printf("[env update] elem found: %p : %s\n", elem, elem);
 	if (!elem)
 		return (-1);
 	i = 0;
@@ -95,18 +96,34 @@ int	env_update(char **arr, char *key, char *value)
 		{
 			free(arr[i]);
 			str = ft_strjoin(key, "=");
-			// error if null
 			if (!str)
-			{
-				process_error();
-			}
+				process_syserror();
 			arr[i] = ft_strjoin(str, value);
 			free(str);
-			// error if null
 			if (!arr[i])
-			{
-				process_error();
-			}
+				process_syserror();
+			break ;
+		}
+		i++;
+	}
+	return (0);
+}
+*/
+
+static int	env_update2(char **arr, char *elem, char *text)
+{
+	int		i;
+
+	//printf("[env update2] elem : %p : %s\n", elem, elem);
+	i = 0;
+	while (arr[i])
+	{
+		if (arr[i] == elem)
+		{
+			free(arr[i]);
+			arr[i] = ft_strdup(text);
+			if (!arr[i])
+				process_syserror();
 			break ;
 		}
 		i++;
@@ -114,48 +131,36 @@ int	env_update(char **arr, char *key, char *value)
 	return (0);
 }
 
-char	**env_add(char **arr, char *pair)
+char	**env_add(char **arr, char *text)
 {
 	int		count;
 	char	**result;
-	char	**parts;
-	//char	*ptr;
-	//int		i;
+	char	*ptr;
+	char	*elem;
 
-	parts = ft_split(pair, '=');
-	if (parts && parts[0] && parts[1] && !parts[2])
-	{
-		// key is OK
-		if (find(arr, parts[0]))
-		{
-			// already here - update
-			env_update(arr, parts[0], parts[1]);
-			return (arr);
-		}
+	result = 0;
+	ptr = ft_strchr(text, '=');
+	if (!ptr)
+		return (0);
+	*ptr = '\0';
+	elem = find(arr, text);
+	*ptr = '=';
+	if (elem)
+	{	// update
+		env_update2(arr, elem, text);
 	}
 	else
-	{
-		// error
-		process_error();
-		return (0);
+	{	// add
+		count = get_count(arr) + 1;
+		result = malloc(sizeof(*result) * (count + 1));
+		if (!result)
+			process_syserror();
+		copy_arr(result, arr); // replace with memcpy?
+		result[count - 1] = ft_strdup(text);
+		if (!result[count - 1])
+			process_syserror();
+		result[count] = 0;
 	}
-
-	count = get_count(arr);
-	result = malloc(sizeof(*result) * (count + 1 + 1));
-	if (!result)
-	{
-		//error
-		process_error();
-		return (0);
-	}
-	copy_arr(result, arr); // replace with memcpy?
-	result[count] = ft_strdup(pair);
-	if (!result[count])
-	{
-		process_error();
-		return (0);//error
-	}
-	result[count + 1] = 0;
 	return (result);
 }
 
@@ -166,20 +171,16 @@ char	**env_remove(char **arr, char *key)
 	char	*elem;
 
 	elem = find(arr, key);
-	printf("[env remove] found elem: %p : %s\n", elem, elem);
+	//printf("[env remove] found elem: %p : %s\n", elem, elem);
 	if (!elem)
 		return (0);
 	count = get_count(arr) - 1;
 	result = malloc(sizeof(*result) * (count + 1));
 	if (!result)
-	{
-		// error
-		process_error();
-		return (0);
-	}
+		process_syserror();
 	copy_arr_ex(result, arr, elem);
 	result[count] = 0;
 	free(elem);
-	printf("[env remove] elem removed\n");
+	//printf("[env remove] elem removed\n");
 	return (result);
 }

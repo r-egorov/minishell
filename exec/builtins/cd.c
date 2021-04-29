@@ -44,19 +44,28 @@ static char *make_path(char *part1, char *part2)
 void	update_env_vars(t_exec *e, char *oldpwd)
 {
 	char	*pwd;
+	char	*text;
 
 	if (getenv("OLDPWD"))
 	{
 		// update
-		//pwd = ft_strjoin("OLDPWD=", oldpwd);
-		//if (!pwd)
-		//	; // error
-		env_update(e->envp, "OLDPWD", oldpwd);
+		text = ft_strjoin("OLDPWD=", oldpwd);
+		if (!text)
+			process_syserror();
+		//env_update(e->envp, "OLDPWD", oldpwd);
+		env_add(e->envp, text);
+		free(text);
 	}
 	if (getenv("PWD"))
 	{
 		pwd = getcwd(0, 0);
-		env_update(e->envp, "PWD", pwd);
+		text = ft_strjoin("PWD=", pwd);
+		if (!text)
+			process_syserror();
+		//env_update(e->envp, "PWD", pwd);
+		free(pwd);
+		env_add(e->envp, text);
+		free(text);
 	}
 }
 
@@ -65,35 +74,34 @@ int	exec_builtin_cd(t_exec *e)
 	int		result;
 	char	*path;
 	char	*dest;
-	//char	*current;
 	char	*oldpwd;
 
 	if (e->argv[1] && e->argv[2])
 	{
 		printf("%s: %s: %s\n", SHELL_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_TOO_MANY_ARGS);
+		process_error();
 		return (FAIL);
 	}
-
 	if (e->argv[1])
 		path = e->argv[1];
 	else
 		path = getenv("HOME");
 		// what if null? (unset HOME)
- 
-	//printf("[cd] addr before : %p\n", e->envp);
+ 	if (!path)
+		return (0);
 	oldpwd = getcwd(0, 0);
-	//printf("current dir: %s\n", current);
 	if (!oldpwd)
 	{
 		// error
+		process_error();
 		return (FAIL);
 	}
 	result = -1;
-	// if path = "" and unset HOME?
 	dest = make_path(oldpwd, path);
 	if (!dest)
 	{
 		// error
+		process_error();
 		return (FAIL);
 	}
 	result = chdir(dest);

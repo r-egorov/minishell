@@ -24,9 +24,11 @@
 # define FAIL	0
 # define OK		1
 
-# define SHELL_NAME					"-minishell"
 # define BUILTIN_CD_NAME			"cd"
+# define BUILTIN_UNSET_NAME			"unset"
 # define ERR_EXEC_CD_TOO_MANY_ARGS	"too many arguments"
+# define ERR_EXEC_UNSET_INVALID_ID	"not a valid identifier"
+
 
 typedef struct	s_exec {
 	char	*exec;
@@ -40,7 +42,7 @@ typedef struct	s_exec {
 
 void    exec_init(t_parser *p, t_exec *e);
 int		exec_run(t_exec *e);
-char	*env_get(char **arr, char *key);
+//char	*env_get(char **arr, char *key);
 char	**env_add(char **arr, char *key);
 char	**env_remove(char **arr, char *key);
 int		env_update(char **arr, char *key, char *value);
