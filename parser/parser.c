@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/30 16:49:48 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:54:19 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	parser_next(t_parser *self)
 		//printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
 		//printf("ntok %zu\n", self->lexer->tokens_len);
 		self->argv = ft_split(self->string, ' ');
+		self->exec = ft_strdup(self->string);
 		self->pos = ft_strlen(self->string);
 		self->lexer->del(self->lexer); 
 		return (1);
