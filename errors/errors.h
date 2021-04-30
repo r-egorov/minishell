@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 13:43:37 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:29:53 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:28:33 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 void 	process_syserror();
 void 	process_error();
+int 	process_input_error(size_t errcode);
 
 #endif

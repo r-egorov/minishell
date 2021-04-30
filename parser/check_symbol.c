@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   check_symbol.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/10 15:58:11 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 14:39:47 by cisis            ###   ########.fr       */
+/*   Created: 2021/04/29 18:08:34 by cisis             #+#    #+#             */
+/*   Updated: 2021/04/30 15:12:33 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdio.h>
+#include "parser.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	is_tokensep(char c)
 {
-	if (lst && new)
-	{
-		if (*lst)
-			ft_lstlast(*lst)->next = new;
-		else
-			*lst = new;
-	}
+	if (c == '>'
+		|| c == '<'
+		|| c == '|'
+		|| c == ';')
+		return (1);
+	return (0);
+}
+
+int	is_quotes(char c)
+{
+	if (c == '\''
+		|| c == '\"')
+		return (1);
+	return (0);
 }

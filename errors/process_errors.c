@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:07:07 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/16 16:28:02 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:29:49 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,15 @@ void 	process_error()
 	msg = strerror(errno);
 	write(2, "Error: ", 7);
 	write(2, msg, ft_strlen(msg));
+}
+
+int	process_input_error(size_t errcode)
+{
+	char 	*msg[50];
+
+	msg[1] = "No matching quote\n";
+	msg[2] = "Unexpected token `><`\n";
+	write(2, "Error: ", 7);
+	write(2, msg[errcode], ft_strlen(msg[errcode]));
+	return (-1);
 }

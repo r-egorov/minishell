@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/04/28 12:41:04 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/04/30 16:53:42 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ ERRORS_SRCS	= process_errors.c
 ERRORS_SRCS	:= $(addprefix ${ERRORS_DIR}, ${ERRORS_SRCS})
 
 PARSE_DIR	= parser/
-PARSE_SRCS	= parser.c
+PARSE_SRCS	= parser.c token.c lexer.c lexer_expandvar.c lexer_get_token.c check_symbol.c lexer_quotes.c
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/
@@ -73,7 +73,7 @@ ${NAME}:	${LIBFT_DIR}${LIBFT} ${OBJS}
 			${CC} ${OBJS} ${INCLUDES} -L${LIBFT_DIR} -lft ${MLXFLAGS} -o ${NAME} -ltermcap
 
 debug:		${LIBFT_DIR}${LIBFT} ${OBJS}
-			${CC} -g ${OBJS} ${INCLUDES} -L${LIBFT_DIR} -lft ${MLXFLAGS} -o ${NAME} -ltermcap
+			${CC} -ggdb ${OBJS} ${INCLUDES} -L${LIBFT_DIR} -lft ${MLXFLAGS} -o ${NAME} -ltermcap -fsanitize=address -fno-omit-frame-pointer
 
 ${LIBFT_DIR}${LIBFT}:	${LIBFT_DIR}
 			${MAKE} -C ${LIBFT_DIR} bonus
