@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:58:21 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/29 18:01:31 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:39:15 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	lexer_append_token(t_lexer *self, t_token *token)
 	self->tokens_len += 1;
 }
 
-void	lexer_tokenize(t_lexer *self)
+int	lexer_tokenize(t_lexer *self)
 {
 	size_t		i;
 	t_token		*token;
@@ -52,8 +52,11 @@ void	lexer_tokenize(t_lexer *self)
 		while (*self->buf == ' ')
 			self->buf++;
 		token = lexer_get_token(self);
+		if (token == NULL)
+			return (-1);
 		lexer_append_token(self, token);
 	}
+	return (0);
 }
 
 void	lexer_del(t_lexer *self)
@@ -68,7 +71,10 @@ void	lexer_del(t_lexer *self)
 		if (self->tokens)
 		{
 			while (self->tokens[i])
-				free(self->tokens[i++]);
+			{
+				self->tokens[i]->del(self->tokens[i]);
+				i++;
+			}
 			free(self->tokens);
 		}
 		free(self);
@@ -77,7 +83,7 @@ void	lexer_del(t_lexer *self)
 
 t_lexer	*lexer_new(char *string)
 {
-	t_lexer *self;
+	t_lexer	*self;
 
 	self = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!self)

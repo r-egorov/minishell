@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 18:02:33 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/29 18:02:34 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:48:24 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,24 @@ void	lexer_insert_varvalue(t_lexer *self, char *var_value)
 	self->buf = self->string + position;
 }
 
+void	lexer_expansion_exec(t_lexer *self)
+{
+	char	*var_name;
+	char	*var_value;
+
+	var_name = lexer_get_varname(self);
+	var_value = getenv(var_name);
+	free(var_name);
+	lexer_insert_varvalue(self, var_value);
+}
+
 void	lexer_expandvar(t_lexer *self)
 {
-	char 	*var_name;
-	char	*var_value;
 	size_t	position;
 
 	position = self->buf - self->string;
-	while (*self->buf && *self->buf != ' ' && !is_tokensep(*self->buf) &&
-			!is_quotes(*self->buf))
+	while (*self->buf && *self->buf != ' ' && !is_tokensep(*self->buf)
+		&& !is_quotes(*self->buf))
 	{
 		if ((*self->buf == '$') && (ft_isalpha(*(self->buf + 1))))
 		{
@@ -75,12 +84,7 @@ void	lexer_expandvar(t_lexer *self)
 				continue ;
 			}
 			else
-			{
-				var_name = lexer_get_varname(self);
-				var_value = getenv(var_name);
-				free(var_name);
-				lexer_insert_varvalue(self, var_value);
-			}
+				lexer_expansion_exec(self);
 		}
 		self->buf++;
 	}
@@ -89,8 +93,6 @@ void	lexer_expandvar(t_lexer *self)
 
 void	lexer_quotes_expandvar(t_lexer *self)
 {
-	char 	*var_name;
-	char	*var_value;
 	size_t	position;
 
 	position = self->buf - self->string;
@@ -104,17 +106,10 @@ void	lexer_quotes_expandvar(t_lexer *self)
 				continue ;
 			}
 			else
-			{
-				var_name = lexer_get_varname(self);
-				var_value = getenv(var_name);
-				free(var_name);
-				lexer_insert_varvalue(self, var_value);
-			}
+				lexer_expansion_exec(self);
 		}
 		if (*self->buf != '\"')
 			self->buf++;
 	}
-	if (!*self->buf)
-		process_error(); // no matching quote
 	self->buf = self->string + position;
 }

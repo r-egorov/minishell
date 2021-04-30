@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/29 18:10:19 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:49:14 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_lexer
 	int		quotes;
 
 	void	(*del)(struct s_lexer *self);
-	void	(*tokenize)(struct s_lexer *self);
+	int		(*tokenize)(struct s_lexer *self);
 }				t_lexer;
 
 typedef struct s_parser
@@ -52,7 +52,7 @@ typedef struct s_parser
 	int		pipe;
 	int		redir_out;
 	int		redir_in;
-	
+
 	void	(*del)(struct s_parser *self);
 }				t_parser;
 
@@ -63,7 +63,7 @@ int		parser_next(t_parser *self);
 t_lexer	*lexer_new(char *string);
 void	lexer_del(t_lexer *self);
 
-void	lexer_tokenize(t_lexer *self);
+int		lexer_tokenize(t_lexer *self);
 void	lexer_append_token(t_lexer *self, t_token *token);
 t_token	*lexer_get_token(t_lexer *self);
 void	lexer_quotes_expandvar(t_lexer *self);
@@ -77,5 +77,7 @@ void	token_append(t_token *self, char *src);
 
 int		is_quotes(char c);
 int		is_tokensep(char c);
+
+void	lexer_quotes(t_lexer *self, t_token *token, char **p_token_end);
 
 #endif

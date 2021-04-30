@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/29 17:42:33 by cisis            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:49:48 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,13 @@ int	parser_next(t_parser *self)
 	if (self->pos < ft_strlen(self->string)) // should be if (!self->lexer->tokens)
 	{
 		self->lexer = lexer_new(self->string);
-		self->lexer->tokenize(self->lexer);
-		printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
-		printf("ntok %zu\n", self->lexer->tokens_len);
+		if (self->lexer->tokenize(self->lexer) == -1)
+		{
+			self->lexer->del(self->lexer);
+			return (0);
+		}
+		//printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
+		//printf("ntok %zu\n", self->lexer->tokens_len);
 		self->argv = ft_split(self->string, ' ');
 		self->pos = ft_strlen(self->string);
 		self->lexer->del(self->lexer); 
