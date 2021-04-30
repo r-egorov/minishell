@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 12:34:59 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 13:06:17 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/30 13:19:04 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	exec_builtin_cd(t_exec *e)
 	if (!dest)
 	{
 		// error
+		free(oldpwd);
 		process_error();
 		return (FAIL);
 	}
@@ -109,9 +110,11 @@ int	exec_builtin_cd(t_exec *e)
 	if (result == -1)
 	{
 		// error
+		free(oldpwd);
 		return (FAIL);
 	}
 	update_env_vars(e, oldpwd);
+	free(oldpwd);
 	//current = getcwd(0, 0);
 	//printf("new pwd: %s\n", current);
 	//free(current);

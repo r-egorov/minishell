@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 13:07:39 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/04/30 13:20:24 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	exec_run(t_exec *e)
 	//printf("[exec run] run this: %s\n", e->exec);
 	//printf("env_get('PWD') : %s\n", env_get(e->envp, "PWD"));
 	// Spawn a child to run the program
-	if (eq(e->argv[0], "cd"))
-	{
-		exec_builtin_cd(e);
-		return (0);
-	}
 	if (eq(e->argv[0], "env"))
 	{
 		exec_builtin_env(e);
+		return (0);
+	}
+	if (eq(e->argv[0], "cd"))
+	{
+		exec_builtin_cd(e);
 		return (0);
 	}
 	if (eq(e->argv[0], "pwd"))
