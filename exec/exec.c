@@ -43,12 +43,14 @@ int	exec_run(t_exec *e)
 {
 	//extern char	**environ;
 	pid_t		pid;
-	int fd[2];
+	//int fd[2];
+	int **fd;
 	int	i;
+	int	j;
 	int	count;
 
-	pipe(fd);
-	printf("fd0: %d, fd[1]: %d\n", fd[0], fd[1]);
+	//pipe(fd);
+	//printf("fd0: %d, fd[1]: %d\n", fd[0], fd[1]);
 
 	//printf("----------\n");
 	//print_arr(e->argv);
@@ -85,12 +87,37 @@ int	exec_run(t_exec *e)
 
 	count = get_count(e->argv);
 	printf("cmds count: %d\n", count);
+
+	fd = malloc(sizeof(*fd) * (count - 1));
+	// error
+	i = 0;
+	while (i < count - 1)
+	{
+		fd[i] = malloc(sizeof(**fd) * 2);
+		// error
+		pipe(fd[i]);
+		printf("fd[%d][0]: %d, fd[%d][1]: %d\n", i, fd[i][0], i, fd[i][1]);
+		i++;
+	}
+
 	i = 0;
 	while (i < count)
 	{
 		pid = fork();
 		if (pid == 0)
 		{	// child
+			if (i - 1 >= 0)
+			{
+				printf("i - 1: %d, dup2(fd[%d][0], 0)\n", i - 1, i - 1);
+				dup2(fd[i - 1][0], 0);
+			}			
+			if (i < count - 1)
+			{
+				printf("i: %d, dup2(fd[%d][1], 1)\n", i, i);
+				dup2(fd[i][1], 1);
+			}
+
+			/*
 			if (i != 0)
 			{
 				printf("i: %d, dup2(fd[0], 0)\n", i);
@@ -101,8 +128,15 @@ int	exec_run(t_exec *e)
 				printf("i: %d, dup2(fd[1], 1)\n", i);
 				dup2(fd[1], 1);
 			}
-			close(fd[0]);
-			close(fd[1]);
+			*/
+
+			j = 0;
+			while (j < count - 1)
+			{
+				close(fd[j][0]);
+				close(fd[j][1]);
+				j++;
+			}
 			char *argv[] = {e->argv[i], NULL};
 			execve(e->argv[i], argv, e->envp);
 			printf("%s: %s\n", APP_NAME, strerror(errno));
@@ -110,8 +144,15 @@ int	exec_run(t_exec *e)
 		}
 		i++;
 	}
-	close(fd[0]);
-	close(fd[1]);
+	//close(fd[0]);
+	//close(fd[1]);
+	j = 0;
+	while (j < count - 1)
+	{
+		close(fd[j][0]);
+		close(fd[j][1]);
+		j++;
+	}
 	waitpid(pid, 0, 0); // wait for last child to exit
 
 /*
