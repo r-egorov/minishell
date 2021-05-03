@@ -62,7 +62,8 @@ CC			= gcc
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror
+#CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= 
 
 %.o:		%.c 
 			${CC} ${CFLAGS} ${INCLUDES} -c $< -o ${<:.c=.o}

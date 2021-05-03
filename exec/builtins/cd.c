@@ -78,7 +78,7 @@ int	exec_builtin_cd(t_exec *e)
 
 	if (e->argv[1] && e->argv[2])
 	{
-		printf("%s: %s: %s\n", SHELL_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_TOO_MANY_ARGS);
+		printf("%s: %s: %s\n", APP_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_TOO_MANY_ARGS);
 		process_error();
 		return (FAIL);
 	}

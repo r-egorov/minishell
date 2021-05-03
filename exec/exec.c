@@ -43,6 +43,12 @@ int	exec_run(t_exec *e)
 {
 	//extern char	**environ;
 	pid_t		pid;
+	int fd[2];
+	int	i;
+	int	count;
+
+	pipe(fd);
+	printf("fd0: %d, fd[1]: %d\n", fd[0], fd[1]);
 
 	//printf("----------\n");
 	//print_arr(e->argv);
@@ -76,6 +82,39 @@ int	exec_run(t_exec *e)
 		//printf("environ addr after unset: %p\n", environ);
 		return (0);
 	}
+
+	count = get_count(e->argv);
+	printf("cmds count: %d\n", count);
+	i = 0;
+	while (i < count)
+	{
+		pid = fork();
+		if (pid == 0)
+		{	// child
+			if (i != 0)
+			{
+				printf("i: %d, dup2(fd[0], 0)\n", i);
+				dup2(fd[0], 0);
+			}
+			if (i != count - 1)
+			{
+				printf("i: %d, dup2(fd[1], 1)\n", i);
+				dup2(fd[1], 1);
+			}
+			close(fd[0]);
+			close(fd[1]);
+			char *argv[] = {e->argv[i], NULL};
+			execve(e->argv[i], argv, e->envp);
+			printf("%s: %s\n", APP_NAME, strerror(errno));
+			exit(127); // only if execv fails
+		}
+		i++;
+	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid, 0, 0); // wait for last child to exit
+
+/*
 	pid = fork();
 	if (pid == -1)
 	{
@@ -91,7 +130,8 @@ int	exec_run(t_exec *e)
 		//execve(e->exec, argv, envp);
 		execve(e->exec, argv, e->envp);
 		//execve(e->exec, e->argv, environ);
-		printf("%d, %s\n", errno, strerror(errno));
+		//printf("%d, %s\n", errno, strerror(errno));
+		printf("%s: %s\n", APP_NAME, strerror(errno));
 		exit(127); // only if execv fails
 	}
 	else
@@ -100,5 +140,7 @@ int	exec_run(t_exec *e)
 		waitpid(pid, 0, 0); // wait for child to exit
 		//printf("%d, %s\n", errno, strerror(errno));
 	}
+*/
+
 	return (0);
 }
