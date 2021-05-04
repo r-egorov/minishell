@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/30 13:10:47 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/04 14:06:35 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ int		main(int argc, char** argv, char **envp)
 	extern char **environ;
 	t_cli		cli;
 	t_parser	parser;
-	t_exec		ex;
+	/*t_exec		ex;
 
 	if (!minishell_init(&ex))
 	{
 		// init error
 		exit(1);
 	}
+	*/
 
 	cli_init(&cli);
 
@@ -72,21 +73,41 @@ int		main(int argc, char** argv, char **envp)
 	while (cli_readline(&cli))
 	{
 		printf("input = |%s|\nlen = %d\n", cli.line->str, cli.line->len);
-		printf("in list = |%s|\n", (((t_line *)cli.hist->content)->str));
 		if (cli.line->len == 0)
 			break ;
 		parser_init(&parser, cli.line->str);
 		while (parser_next(&parser))
 		{
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+			printf("PWD: %s\n", getenv("PWD"));
+>>>>>>> Stashed changes
 			exec_init(&parser, &ex);
 			exec_run(&ex);
 			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 			//printf("[main] PWD: %s\n", getenv("PWD"));
 			//printf("[main] AA: %s\n", getenv("AA"));
 			environ = ex.envp;
+<<<<<<< Updated upstream
 			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 			//printf("[main] PWD: %s\n", getenv("PWD"));
 			//printf("[main] AA: %s\n", getenv("AA"));
+=======
+=======
+			/*
+			exec_init(&parser, &ex);
+			exec_run(&ex);
+			*/
+			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
+			//printf("[main] PWD: %s\n", getenv("PWD"));
+			//printf("[main] AA: %s\n", getenv("AA"));
+			//environ = ex.envp;
+			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
+			//printf("[main] PWD: %s\n", getenv("PWD"));
+			//printf("[main] AA: %s\n", getenv("AA"));
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 			free(parser.exec);
 			free_split(parser.argv);
 			//printf("[main] next parser loop\n");
