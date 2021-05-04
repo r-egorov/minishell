@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:58:21 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 13:37:22 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 15:10:58 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	lexer_tokenize(t_lexer *self)
 		token = lexer_get_token(self);
 		if (token == NULL)
 			return (-1);
+		lexer_token_type(self, token);
 		lexer_append_token(self, token);
 	}
 	return (0);

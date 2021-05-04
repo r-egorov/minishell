@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:54:31 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/29 17:54:31 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 14:27:38 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_token	*token_new(void)
 	token->str = NULL;
 	token->len = 0;
 	token->screened = 0;
+	token->type = 0;
 	token->append = token_append;
 	token->del = token_del;
 	return (token);

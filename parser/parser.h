@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/04 13:37:10 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 14:22:36 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ typedef struct s_token
 	char		*str;
 	int			len;
 	int			screened;
+	enum		e_type
+	{
+		CMD,
+		ARG,
+		REDIR_IN,
+		REDIR_OUT,
+		REDIR_APPEND,
+		REDIR_FILE,
+		PIPE,
+		SEP
+	}			type;
 	void		(*append)(struct s_token *self, char *to_append);
 	void		(*del)(struct s_token *self);
 }				t_token;
@@ -66,6 +77,7 @@ void	lexer_del(t_lexer *self);
 
 int		lexer_tokenize(t_lexer *self);
 void	lexer_append_token(t_lexer *self, t_token *token);
+void	lexer_token_type(t_lexer *self, t_token *token);
 t_token	*lexer_get_token(t_lexer *self);
 void	lexer_quotes_expandvar(t_lexer *self);
 void	lexer_expandvar(t_lexer *self);
