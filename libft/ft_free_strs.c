@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:01:39 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/28 13:02:45 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 18:39:04 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void	ft_free_strs(char **strs)
 	if (strs)
 	{
 		while (strs[i])
-			free(strs[i++]);
+		{
+			free(strs[i]);
+			strs[i++] = NULL;
+		}
 		free(strs);
+		strs = NULL;
 	}
 }

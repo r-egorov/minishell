@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 13:22:28 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 16:02:57 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 16:32:48 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	lexer_check_redir(t_lexer *self, size_t i)
 {
 	t_token	*token_prev;
 
+	if (i == self->tokens_len - 1)
+		return (-1);
 	if (i > 0)
 	{
 		token_prev = self->tokens[i - 1];
@@ -60,7 +62,6 @@ int	lexer_check_grammar(t_lexer *self)
 {
 	t_token *token_cur;
 	size_t	i;
-	char	*token_str;
 
 	i = 0;
 	while (i < self->tokens_len)

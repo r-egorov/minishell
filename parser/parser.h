@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/04 14:22:36 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 18:21:12 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,24 @@ typedef struct s_lexer
 	int		(*check_grammar)(struct s_lexer *self);
 }				t_lexer;
 
+typedef struct s_job
+{
+	char	*cmd;
+	char	**argv;
+	size_t	argc;
+	char	*redir_in;
+	char	*redir_out;
+	char	*redir_append;
+
+	void	(*del)(struct s_job *self);
+}				t_job;
+
 typedef struct s_parser
 {
 	char	*string;
 	t_lexer	*lexer;
+	t_job	**jobs;
+	size_t	jobs_len;
 	size_t	pos;
 	char	*exec;
 	char	**argv;
@@ -71,6 +85,9 @@ typedef struct s_parser
 void	parser_init(t_parser *self, char *string_to_parse);
 void	parser_del(t_parser *self);
 int		parser_next(t_parser *self);
+void	parser_clean(t_parser *self);
+
+int		parser_make_jobs(t_parser *self);
 
 t_lexer	*lexer_new(char *string);
 void	lexer_del(t_lexer *self);

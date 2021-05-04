@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:58:21 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 15:10:58 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/04 16:40:00 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ void	lexer_del(t_lexer *self)
 	if (self)
 	{
 		if (self->string)
+		{
 			free(self->string);
+			self->string = NULL;
+		}
 		if (self->tokens)
 		{
 			while (self->tokens[i])
@@ -77,8 +80,10 @@ void	lexer_del(t_lexer *self)
 				i++;
 			}
 			free(self->tokens);
+			self->tokens = NULL;
 		}
 		free(self);
+		self = NULL;
 	}
 }
 
