@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 10:47:48 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 11:04:48 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	parser_del(t_parser *self)
 	{
 		free(self->string);
 		self->string = NULL;
-		ft_free_strs(self->argv);
-		self->argv = NULL;
 		if (self->lexer)
 		{
 			self->lexer->del(self->lexer);
@@ -48,13 +46,6 @@ void	parser_clean(t_parser *self)
 	i = 0;
 	if (self)
 	{
-		if (self->exec)
-		{
-			free(self->exec);
-			self->exec = NULL;
-		}
-		ft_free_strs(self->argv);
-		self->argv = NULL;
 		if (self->jobs)
 		{
 			while (i < self->jobs_len)
@@ -75,12 +66,8 @@ void	parser_init(t_parser *self, char *string_to_parse)
 	self->string = string_to_parse;
 	self->lexer = NULL;
 	self->jobs = NULL;
+	self->jobs_len = 0;
 	self->pos = 0;
-	self->exec = NULL;
-	self->argv = NULL;
-	self->pipe = 0;
-	self->redir_out = 0;
-	self->redir_in = 0;
 	self->del = parser_del;
 }
 
@@ -113,9 +100,6 @@ int	parser_next(t_parser *self)
 		
 	//	printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
 	//	printf("ntok %zu\n", self->lexer->tokens_len);
-	//	self->argv = ft_split(self->string, ' ');
-	//	self->exec = ft_strdup(self->string);
-	//	self->pos = ft_strlen(self->string);
 		return (1);
 	}
 	else

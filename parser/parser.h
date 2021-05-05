@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/04 18:21:12 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 11:02:28 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,6 @@ typedef struct s_parser
 	t_job	**jobs;
 	size_t	jobs_len;
 	size_t	pos;
-	char	*exec;
-	char	**argv;
-	t_btree	*ast;
-	int		pipe;
-	int		redir_out;
-	int		redir_in;
 
 	void	(*del)(struct s_parser *self);
 }				t_parser;
