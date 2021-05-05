@@ -37,7 +37,8 @@ typedef struct	s_exec {
 	char	**environ_orig;
 	int		fd;
 	char	*pwd;
-
+	t_job   **jobs;
+	size_t  jobs_len;
 }				t_exec;
 
 void    exec_init(t_parser *p, t_exec *e);
