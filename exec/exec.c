@@ -66,9 +66,7 @@ int	exec_run(t_exec *e)
 	pid_t	pid;
 	int		**fd;
 	int		i;
-	int		j;
 	int		count;
-	char	*cmd;
 
 	//pipe(fd);
 	//printf("fd0: %d, fd[1]: %d\n", fd[0], fd[1]);
@@ -85,7 +83,7 @@ int	exec_run(t_exec *e)
 	fd = prepare_pipes(count - 1);
 
 	i = 0;
-	while (i < e->jobs_len)
+	while (i < count)
 	{
 		e->argv = e->jobs[i]->argv;
 		e->exec = e->argv[0];
