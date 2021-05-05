@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:23:09 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 14:25:39 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 17:05:44 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ static void	lexer_previous_type(t_lexer *self, t_token *token)
 void	lexer_token_type(t_lexer *self, t_token *token)
 {
 	char	*token_str;
-	size_t	len;
 
 	token_str = token->str;
-	len = self->tokens_len;
 	if (!ft_strcmp(token_str, "|") && !token->screened)
 		token->type = PIPE;
 	else if (!ft_strcmp(token_str, ";") && !token->screened)
