@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:23:09 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 15:32:57 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 10:39:14 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ void	lexer_token_type(t_lexer *self, t_token *token)
 
 	token_str = token->str;
 	len = self->tokens_len;
-	if (!ft_strcmp(token_str, "|"))
+	if (!ft_strcmp(token_str, "|") && !token->screened)
 		token->type = PIPE;
-	else if (!ft_strcmp(token_str, ";"))
+	else if (!ft_strcmp(token_str, ";") && !token->screened)
 		token->type = SEP;
-	else if (!ft_strcmp(token_str, ">"))
+	else if (!ft_strcmp(token_str, ">") && !token->screened)
 		token->type = REDIR_OUT;
-	else if (!ft_strcmp(token_str, ">>"))
+	else if (!ft_strcmp(token_str, ">>") && !token->screened)
 		token->type = REDIR_APPEND;
-	else if (!ft_strcmp(token_str, "<"))
+	else if (!ft_strcmp(token_str, "<") && !token->screened)
 		token->type = REDIR_IN;
 	else
 		lexer_previous_type(self, token);
