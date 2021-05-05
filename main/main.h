@@ -27,8 +27,8 @@
 #include <signal.h>
 //#include <stdlib.h>
 
-int		catch_signal(int sig, void (*handler)(int));
-void	exit_func(int sig);
-void	noop_func(int sig);
+//int		catch_signal(int sig, void (*handler)(int));
+void	sigint_handler(int sig);
+//void	noop_func(int sig);
 
 #endif

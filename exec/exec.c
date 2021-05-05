@@ -79,7 +79,7 @@ int	exec_run(t_exec *e)
 	int		count;
 	int 	(*builtins[])(t_exec*) = {exec_builtin_env, exec_builtin_export, exec_builtin_pwd, exec_builtin_cd, exec_builtin_unset};
 	int		idx;
-	int		fd0;
+	//int		fd0;
 	int		fd1;
 
 	count = (int)e->jobs_len;
@@ -98,12 +98,13 @@ int	exec_run(t_exec *e)
 		fprintf(stderr, "index : %d\n", idx);
 		if (idx != -1)
 		{
-				fd0 = dup(0);
+			wait(0);
+				//fd0 = dup(0);
 				fd1 = dup(1);
 				if (i - 1 >= 0)
 				{
-					fprintf(stderr, "[bt] i: %d, dup2(fd[%d][0], 0)\n", i, i - 1);
-					dup2(fd[i - 1][0], 0);
+					//fprintf(stderr, "[bt] i: %d, dup2(fd[%d][0], 0)\n", i, i - 1);
+					//dup2(fd[i - 1][0], 0);
 				}			
 				if (i < count - 1)
 				{
@@ -111,8 +112,14 @@ int	exec_run(t_exec *e)
 					dup2(fd[i][1], 1);
 				}
 			builtins[idx](e);
-			dup2(fd0, 0);
+			//close(1);
+			//close(fd[0][1]);
+			//close(0);
+			fflush(stdout);
+			//dup2(fd0, 0);
 			dup2(fd1, 1);
+			//close(fd0);
+			close(fd1);
 			fprintf(stderr, "restored fd 0 and 1\n");
 			//return (0);
 		}
@@ -123,24 +130,26 @@ int	exec_run(t_exec *e)
 			pid = fork();
 			if (pid == 0)
 			{	// child
-				//printf("argv[0]: %s\n", e->argv[0]);
+				//fprintf(stderr, "argv[0]: %s\n", e->argv[0]);
+				//fprintf(stderr, "reset signal: %s\n", signal(SIGINT, SIG_DFL));
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
 				if (find_command(&e->argv[0]) == FAIL)
 				{
 					fprintf(stderr, "%s: %s\n", e->argv[0], ERR_COMMAND_NOT_FOUND);
 					exit(127);
 				}
-				//printf("argv[0]: %s\n", e->argv[0]);
+				//fprintf(stderr, "argv[0]: %s\n", e->argv[0]);
 				if (i - 1 >= 0)
 				{
 					fprintf(stderr, "[child] i: %d, dup2(fd[%d][0], 0)\n", i, i - 1);
-					dup2(fd[i - 1][0], 0);
+					dup2(fd[i - 1][0], STDIN_FILENO);
 				}			
 				if (i < count - 1)
 				{
 					fprintf(stderr, "[child] i: %d, dup2(fd[%d][1], 1)\n", i, i);
-					dup2(fd[i][1], 1);
+					dup2(fd[i][1], STDOUT_FILENO);
 				}
-				//close_fds(fd, count - 1);
 				free_pipes(fd, count - 1);
 				//char *argv[] = {e->argv[i], NULL};
 				//execve(e->argv[i], argv, e->envp);
@@ -150,7 +159,7 @@ int	exec_run(t_exec *e)
 				exit(127); // only if execv fails
 			}
 		}
-		//waitpid(pid, 0, 0); // wait for last child to exit
+		//wait(0); // wait for last child to exit
 		i++;
 	}
 	//dup2(STDIN_FILENO, 0);

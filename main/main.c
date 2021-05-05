@@ -98,8 +98,9 @@ int		main(int argc, char** argv, char **envp)
 	(void)argv;
 	(void)envp;
 
-	catch_signal(SIGINT, exit_func);
-	catch_signal(SIGQUIT, noop_func);
+	//signal(SIGINT, sigint_handler);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 
 	while (cli_readline(&cli))
 	{

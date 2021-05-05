@@ -12,19 +12,14 @@
 
 #include "main.h"
 
-void	exit_func(int sig)
+void	sigint_handler(int sig)
 {
 
-	printf("sig: %d. Exiting....\n", sig);
+	fprintf(stderr, "sig: %d. Exiting....\n", sig);
 	exit (1);
 }
 
-void	noop_func(int sig)
-{
-	(void)sig;
-	return ;
-}
-
+/*
 int	catch_signal(int sig, void (*handler)(int))
 {
 	struct sigaction action;
@@ -34,3 +29,4 @@ int	catch_signal(int sig, void (*handler)(int))
 	action.sa_flags = 0;
 	return (sigaction(sig, &action, 0));
 }
+*/
