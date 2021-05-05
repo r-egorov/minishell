@@ -1,28 +1,12 @@
 #include "exec.h"
 
-char	*get_path(const char *s)
+static char *get_fullpath(char **parts, char *name)
 {
-	char	*result;
-	char	*path;
-	char	**parts;
-	char	*name;
-	int		i;
-	struct stat sb;
+	int			i;
+	char		*result;
+	struct stat	sb;
 
 	result = 0;
-	path = getenv("PATH");
-	if (!path)
-		return (0);
-	//printf("path: %s\n", path);
-	parts = ft_split(path, ':');
-	if (!parts)
-		process_syserror();
-	//printf("=========\n");
-	//print_arr(parts);
-	//printf("=========\n");
-	name = ft_strjoin("/", s);
-	if (!name)
-		process_syserror();
 	i = 0;
 	while (parts[i])
 	{
@@ -30,14 +14,39 @@ char	*get_path(const char *s)
 		if (!result)
 			process_syserror();
 		if (lstat(result, &sb) != -1)
-		{	// file exists
 			break ;
-		}
 		free(result);
 		result = 0;
 		i++;
 	}
+	return (result);
+}
+
+int	find_command(char **s)
+{
+	char	*result;
+	char	*path;
+	char	**parts;
+	char	*name;
+
+	if (ft_strchr(*s, '/'))
+		return (OK);
+	path = getenv("PATH");
+	if (!path)
+		return (FAIL);
+	//printf("path: %s\n", path);
+	parts = ft_split(path, ':');
+	if (!parts)
+		process_syserror();
+	name = ft_strjoin("/", *s);
+	if (!name)
+		process_syserror();
+	result = get_fullpath(parts, name);
 	free_split(parts);
 	free(name);
-	return (result);
+	if (!result)
+		return (FAIL);
+	free(*s);
+	*s = result;
+	return (OK);
 }

@@ -52,7 +52,7 @@ void	print_arr(char **arr);
 int		eq(char *s1, char *s2);
 void	free_split(char **s);
 
-char	*get_path(const char *s);
+int		find_command(char **s);
 
 int		exec_builtin_export(t_exec *e);
 int		exec_builtin_unset(t_exec *e);

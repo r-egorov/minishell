@@ -18,7 +18,7 @@ void	exec_init(t_parser *p, t_exec *e)
 	e->argv = p->argv;
 }
 
-static void	close_fds(int **fd, int n)
+static void	free_pipes(int **fd, int n)
 {
 	int	i;
 
@@ -61,11 +61,10 @@ static int	**prepare_pipes(int n)
 
 int	exec_run(t_exec *e)
 {
-	//extern char	**environ;
-	pid_t		pid;
-	int **fd;
-	int	i;
-	int	count;
+	pid_t	pid;
+	int		**fd;
+	int		i;
+	int		count;
 	char	*cmd;
 
 	//pipe(fd);
@@ -115,22 +114,10 @@ int	exec_run(t_exec *e)
 		if (pid == 0)
 		{	// child
 			printf("argv[i]: %s\n", e->argv[i]);
-			if (!ft_strchr(e->argv[i], '/'))
+			if (find_command(&e->argv[i]) == FAIL)
 			{
-				cmd = get_path(e->argv[i]);
-				if (cmd)
-				{
-					free(e->argv[i]);
-					e->argv[i] = cmd;
-				}
-				
-				if (!cmd)
-				{
-					printf("%s: %s\n", e->argv[i], ERR_COMMAND_NOT_FOUND);
-					exit(127);
-				}
-				
-				//	cmd = e->argv[i];
+				printf("%s: %s\n", e->argv[i], ERR_COMMAND_NOT_FOUND);
+				exit(127);
 			}
 			printf("argv[i]: %s\n", e->argv[i]);
 			if (i - 1 >= 0)
@@ -143,7 +130,8 @@ int	exec_run(t_exec *e)
 				printf("i: %d, dup2(fd[%d][1], 1)\n", i, i);
 				dup2(fd[i][1], 1);
 			}
-			close_fds(fd, count - 1);
+			//close_fds(fd, count - 1);
+			free_pipes(fd, count - 1);
 			//char *argv[] = {e->argv[i], NULL};
 			char *argv[] = {e->argv[i], NULL};
 			//execve(e->argv[i], argv, e->envp);
@@ -154,7 +142,8 @@ int	exec_run(t_exec *e)
 		}
 		i++;
 	}
-	close_fds(fd, count - 1);
+	//close_fds(fd, count - 1);
+	free_pipes(fd, count - 1);
 	waitpid(pid, 0, 0); // wait for last child to exit
 
 /*
