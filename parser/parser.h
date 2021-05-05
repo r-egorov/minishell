@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/30 16:49:14 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 11:02:28 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ typedef struct s_token
 	char		*str;
 	int			len;
 	int			screened;
+	enum		e_type
+	{
+		CMD,
+		ARG,
+		REDIR_IN,
+		REDIR_OUT,
+		REDIR_APPEND,
+		REDIR_FILE,
+		PIPE,
+		SEP
+	}			type;
 	void		(*append)(struct s_token *self, char *to_append);
 	void		(*del)(struct s_token *self);
 }				t_token;
@@ -39,19 +50,28 @@ typedef struct s_lexer
 
 	void	(*del)(struct s_lexer *self);
 	int		(*tokenize)(struct s_lexer *self);
+	int		(*check_grammar)(struct s_lexer *self);
 }				t_lexer;
+
+typedef struct s_job
+{
+	char	*cmd;
+	char	**argv;
+	size_t	argc;
+	char	*redir_in;
+	char	*redir_out;
+	char	*redir_append;
+
+	void	(*del)(struct s_job *self);
+}				t_job;
 
 typedef struct s_parser
 {
 	char	*string;
 	t_lexer	*lexer;
+	t_job	**jobs;
+	size_t	jobs_len;
 	size_t	pos;
-	char	*exec;
-	char	**argv;
-	t_btree	*ast;
-	int		pipe;
-	int		redir_out;
-	int		redir_in;
 
 	void	(*del)(struct s_parser *self);
 }				t_parser;
@@ -59,12 +79,16 @@ typedef struct s_parser
 void	parser_init(t_parser *self, char *string_to_parse);
 void	parser_del(t_parser *self);
 int		parser_next(t_parser *self);
+void	parser_clean(t_parser *self);
+
+int		parser_make_jobs(t_parser *self);
 
 t_lexer	*lexer_new(char *string);
 void	lexer_del(t_lexer *self);
 
 int		lexer_tokenize(t_lexer *self);
 void	lexer_append_token(t_lexer *self, t_token *token);
+void	lexer_token_type(t_lexer *self, t_token *token);
 t_token	*lexer_get_token(t_lexer *self);
 void	lexer_quotes_expandvar(t_lexer *self);
 void	lexer_expandvar(t_lexer *self);
@@ -79,5 +103,7 @@ int		is_quotes(char c);
 int		is_tokensep(char c);
 
 void	lexer_quotes(t_lexer *self, t_token *token, char **p_token_end);
+
+int		lexer_check_grammar(t_lexer *self);
 
 #endif
