@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 13:22:28 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 16:32:48 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 14:24:40 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	lexer_check_pipe(t_lexer *self, size_t i)
 	token_prev = self->tokens[i - 1];
 	if ((token_prev->type == PIPE)
 		|| (token_prev->type == SEP))
-		return (-1);	
-	return(0);
+		return (-1);
+	return (0);
 }
 
 int	lexer_check_redir(t_lexer *self, size_t i)
@@ -60,7 +60,7 @@ int	lexer_check_redir(t_lexer *self, size_t i)
 
 int	lexer_check_grammar(t_lexer *self)
 {
-	t_token *token_cur;
+	t_token	*token_cur;
 	size_t	i;
 
 	i = 0;
@@ -72,8 +72,8 @@ int	lexer_check_grammar(t_lexer *self)
 		if ((token_cur->type == SEP) && lexer_check_sep(self, i) == -1)
 			return (process_input_error(4));
 		if (((token_cur->type == REDIR_IN)
-			|| (token_cur->type == REDIR_OUT)
-			|| (token_cur->type == REDIR_APPEND))
+				|| (token_cur->type == REDIR_OUT)
+				|| (token_cur->type == REDIR_APPEND))
 			&& (lexer_check_redir(self, i) == -1))
 			return (process_input_error(5));
 		i++;

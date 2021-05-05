@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/05 11:02:28 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 15:38:39 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,25 @@
 # include "errors.h"
 //# include "line.h"
 
+typedef enum e_type
+{
+	CMD,
+	ARG,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	REDIR_FILE,
+	PIPE,
+	SEP
+}				t_type;
+
 typedef struct s_token
 {
 	char		*str;
 	int			len;
 	int			screened;
-	enum		e_type
-	{
-		CMD,
-		ARG,
-		REDIR_IN,
-		REDIR_OUT,
-		REDIR_APPEND,
-		REDIR_FILE,
-		PIPE,
-		SEP
-	}			type;
+	t_type		type;
+
 	void		(*append)(struct s_token *self, char *to_append);
 	void		(*del)(struct s_token *self);
 }				t_token;
@@ -58,9 +61,9 @@ typedef struct s_job
 	char	*cmd;
 	char	**argv;
 	size_t	argc;
-	char	*redir_in;
-	char	*redir_out;
-	char	*redir_append;
+	t_list	*redir_in;
+	t_list	*redir_out;
+	t_list	*redir_append;
 
 	void	(*del)(struct s_job *self);
 }				t_job;
@@ -82,6 +85,8 @@ int		parser_next(t_parser *self);
 void	parser_clean(t_parser *self);
 
 int		parser_make_jobs(t_parser *self);
+t_job	*job_new(void);
+void	job_append_arg(t_job *self, char *arg);
 
 t_lexer	*lexer_new(char *string);
 void	lexer_del(t_lexer *self);

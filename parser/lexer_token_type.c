@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:23:09 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 10:39:14 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 14:25:39 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ static void	lexer_previous_type(t_lexer *self, t_token *token)
 	if (len == 0)
 		token->type = CMD;
 	else if ((self->tokens[len - 1])->type == CMD
-			|| (self->tokens[len - 1])->type == ARG)
+		|| (self->tokens[len - 1])->type == ARG)
 		token->type = ARG;
 	else if ((self->tokens[len - 1])->type == REDIR_OUT
-			|| (self->tokens[len - 1])->type == REDIR_IN
-			|| (self->tokens[len - 1])->type == REDIR_APPEND)
+		|| (self->tokens[len - 1])->type == REDIR_IN
+		|| (self->tokens[len - 1])->type == REDIR_APPEND)
 		token->type = REDIR_FILE;
-	else if ((self->tokens[len - 1])->type == PIPE 
-			|| (self->tokens[len - 1])->type == SEP)
+	else if ((self->tokens[len - 1])->type == PIPE
+		|| (self->tokens[len - 1])->type == SEP)
 		token->type = CMD;
 	else
 		token->type = CMD;
