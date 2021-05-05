@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/20 16:25:29 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 13:40:54 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int 	cli_readline(t_cli *self)
 	if (cli_readbuf(self, buf))
 	{
 		cli_update_history(self);
-		write(1, "\n", 1);
+		//write(1, "\n", 1);
 		return (1);
 	}
 	write(1, "exit\n", 5);

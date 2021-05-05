@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/05 11:08:03 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 13:39:57 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,23 @@ int		main(int argc, char** argv, char **envp)
 
 	while (cli_readline(&cli))
 	{
-		printf("input = |%s|\nlen = %d\n", cli.line->str, cli.line->len);
-		if (cli.line->len == 0)
-			break ;
-		parser_init(&parser, cli.line->str);
-		while (parser_next(&parser))
+		//printf("input = |%s|\nlen = %d\n", cli.line->str, cli.line->len);
+		if (cli.line->len > 0) //FIXME
 		{
-			exec_init(&parser, &ex);
-			exec_run(&ex);
-			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
-			//printf("[main] PWD: %s\n", getenv("PWD"));
-			//printf("[main] AA: %s\n", getenv("AA"));
-			environ = ex.envp;
-			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
-			//printf("[main] PWD: %s\n", getenv("PWD"));
-			//printf("[main] AA: %s\n", getenv("AA"));
-			parser_clean(&parser);
+			parser_init(&parser, cli.line->str);
+			while (parser_next(&parser))
+			{
+				exec_init(&parser, &ex);
+				exec_run(&ex);
+				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
+				//printf("[main] PWD: %s\n", getenv("PWD"));
+				//printf("[main] AA: %s\n", getenv("AA"));
+				environ = ex.envp;
+				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
+				//printf("[main] PWD: %s\n", getenv("PWD"));
+				//printf("[main] AA: %s\n", getenv("AA"));
+				parser_clean(&parser);
+			}
 		}
 		//printf("[main] end parser loop - next cli loop\n");
 	}
