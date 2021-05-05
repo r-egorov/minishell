@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 11:04:48 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 16:02:31 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,6 @@ void	parser_init(t_parser *self, char *string_to_parse)
 	self->del = parser_del;
 }
 
-void	printtokens(t_token **tokens, size_t len)
-{
-	size_t i = 0;
-
-	while (i < len)
-	{
-		printf("str|%s|\t\t\t\ttype|%d|\tlen|%d|\tscrnd|%d|\n", (tokens[i])->str, (tokens[i])->type, (tokens[i])->len, (tokens[i])->screened);
-		i++;
-	}
-}
-
 int	parser_next(t_parser *self)
 {
 	if (!self->lexer)
@@ -94,12 +83,10 @@ int	parser_next(t_parser *self)
 			return (0);
 		}
 	}
-	if (self->pos < self->lexer->tokens_len) // should be if (!self->lexer->tokens)
+	if (self->pos < self->lexer->tokens_len)
 	{
+		printf("pos %zu, len %zu\n", self->pos, self->lexer->tokens_len);
 		parser_make_jobs(self);
-		
-	//	printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
-	//	printf("ntok %zu\n", self->lexer->tokens_len);
 		return (1);
 	}
 	else
