@@ -15,11 +15,11 @@
 
 # include <stdio.h>
 # include "main.h"
-//# include "parse.h"
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "minishell.h"
+# include <sys/stat.h>
 
 # define FAIL	0
 # define OK		1
@@ -28,7 +28,7 @@
 # define BUILTIN_UNSET_NAME			"unset"
 # define ERR_EXEC_CD_TOO_MANY_ARGS	"too many arguments"
 # define ERR_EXEC_UNSET_INVALID_ID	"not a valid identifier"
-
+# define ERR_COMMAND_NOT_FOUND		"command not found"
 
 typedef struct	s_exec {
 	char	*exec;
@@ -51,6 +51,8 @@ int		get_count(char **arr);
 void	print_arr(char **arr);
 int		eq(char *s1, char *s2);
 void	free_split(char **s);
+
+char	*get_path(const char *s);
 
 int		exec_builtin_export(t_exec *e);
 int		exec_builtin_unset(t_exec *e);
