@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 16:02:31 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 16:11:20 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	parser_next(t_parser *self)
 	}
 	if (self->pos < self->lexer->tokens_len)
 	{
-		printf("pos %zu, len %zu\n", self->pos, self->lexer->tokens_len);
 		parser_make_jobs(self);
 		return (1);
 	}
