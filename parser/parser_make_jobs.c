@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:35:33 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 18:34:53 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 10:49:17 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ int		parser_make_jobs(t_parser *self)
 	i = self->pos;
 	tokens_len = self->lexer->tokens_len;
 	tokens = self->lexer->tokens;
+	if (i < tokens_len && tokens[i]->type == SEP)
+		i++;
 	while (i < tokens_len && tokens[i]->type != SEP)
 	{
 		job = job_new();
@@ -167,8 +169,9 @@ int		parser_make_jobs(t_parser *self)
 			i++;
 		}
 		job->cmd = job->argv[0];
-		print_job(job);
+	//	print_job(job);
 		parser_append_job(self, job);
 	}
+	self->pos = i;
 	return (0);
 }

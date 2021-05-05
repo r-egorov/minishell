@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 18:37:54 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 10:47:48 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	printtokens(t_token **tokens, size_t len)
 
 int	parser_next(t_parser *self)
 {
-	if (self->pos < ft_strlen(self->string)) // should be if (!self->lexer->tokens)
+	if (!self->lexer)
 	{
 		self->lexer = lexer_new(self->string);
 		if ((self->lexer->tokenize(self->lexer) == -1)
@@ -106,15 +106,21 @@ int	parser_next(t_parser *self)
 			self->lexer->del(self->lexer);
 			return (0);
 		}
+	}
+	if (self->pos < self->lexer->tokens_len) // should be if (!self->lexer->tokens)
+	{
 		parser_make_jobs(self);
 		
-		printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
-		printf("ntok %zu\n", self->lexer->tokens_len);
-		self->argv = ft_split(self->string, ' ');
-		self->exec = ft_strdup(self->string);
-		self->pos = ft_strlen(self->string);
-		self->lexer->del(self->lexer);  // FIXME
+	//	printtokens(self->lexer->tokens, self->lexer->tokens_len); //FIXME
+	//	printf("ntok %zu\n", self->lexer->tokens_len);
+	//	self->argv = ft_split(self->string, ' ');
+	//	self->exec = ft_strdup(self->string);
+	//	self->pos = ft_strlen(self->string);
 		return (1);
 	}
-	return (0);
+	else
+	{
+		self->lexer->del(self->lexer);
+		return (0);
+	}
 }
