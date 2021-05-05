@@ -12,42 +12,61 @@
 
 #include "exec.h"
 
-char *get_full_name(char *path, char *name)
-{
-	char	**parts;
-	int		i;
-
-	(void)name;
-	parts = ft_split(path, ':');
-	if (!parts)
-	{
-		//free_split(parts);
-		printf("error while split $PATH\n");
-	}
-	i = 0;
-	while (parts[i])
-	{
-		printf("parts[%d]: %s\n", i, parts[i]);
-		i++;
-	}
-	return (0);
-}
-
 void	exec_init(t_parser *p, t_exec *e)
 {
 	e->exec = p->exec;
 	e->argv = p->argv;
 }
 
+static void	close_fds(int **fd, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		close(fd[i][0]);
+		close(fd[i][1]);
+		free(fd[i]);
+		i++;
+	}
+	free(fd);
+}
+
+static int	**prepare_pipes(int n)
+{
+	int	**result;
+	int	i;
+
+	result = malloc(sizeof(*result) * n);
+	if (!result)
+	{
+		process_syserror();
+	}
+	i = 0;
+	while (i < n)
+	{
+		result[i] = malloc(sizeof(**result) * 2);
+		if (!result)
+		{
+			process_syserror();
+		}
+		if ((pipe(result[i])) == -1)
+			process_syserror();
+		printf("pipe %d : fd[%d][0]: %d, fd[%d][1]: %d\n", i, i, result[i][0], i, result[i][1]);
+		i++;
+	}
+	return (result);
+}
+
 int	exec_run(t_exec *e)
 {
 	//extern char	**environ;
 	pid_t		pid;
-	//int fd[2];
 	int **fd;
 	int	i;
-	int	j;
 	int	count;
+	char	*cmd;
 
 	//pipe(fd);
 	//printf("fd0: %d, fd[1]: %d\n", fd[0], fd[1]);
@@ -86,19 +105,8 @@ int	exec_run(t_exec *e)
 	}
 
 	count = get_count(e->argv);
-	printf("cmds count: %d\n", count);
-
-	fd = malloc(sizeof(*fd) * (count - 1));
-	// error
-	i = 0;
-	while (i < count - 1)
-	{
-		fd[i] = malloc(sizeof(**fd) * 2);
-		// error
-		pipe(fd[i]);
-		printf("fd[%d][0]: %d, fd[%d][1]: %d\n", i, fd[i][0], i, fd[i][1]);
-		i++;
-	}
+	printf("commands count: %d\n", count);
+	fd = prepare_pipes(count - 1);
 
 	i = 0;
 	while (i < count)
@@ -106,9 +114,28 @@ int	exec_run(t_exec *e)
 		pid = fork();
 		if (pid == 0)
 		{	// child
+			printf("argv[i]: %s\n", e->argv[i]);
+			if (!ft_strchr(e->argv[i], '/'))
+			{
+				cmd = get_path(e->argv[i]);
+				if (cmd)
+				{
+					free(e->argv[i]);
+					e->argv[i] = cmd;
+				}
+				
+				if (!cmd)
+				{
+					printf("%s: %s\n", e->argv[i], ERR_COMMAND_NOT_FOUND);
+					exit(127);
+				}
+				
+				//	cmd = e->argv[i];
+			}
+			printf("argv[i]: %s\n", e->argv[i]);
 			if (i - 1 >= 0)
 			{
-				printf("i - 1: %d, dup2(fd[%d][0], 0)\n", i - 1, i - 1);
+				printf("i: %d, dup2(fd[%d][0], 0)\n", i, i - 1);
 				dup2(fd[i - 1][0], 0);
 			}			
 			if (i < count - 1)
@@ -116,51 +143,21 @@ int	exec_run(t_exec *e)
 				printf("i: %d, dup2(fd[%d][1], 1)\n", i, i);
 				dup2(fd[i][1], 1);
 			}
-
-			/*
-			if (i != 0)
-			{
-				printf("i: %d, dup2(fd[0], 0)\n", i);
-				dup2(fd[0], 0);
-			}
-			if (i != count - 1)
-			{
-				printf("i: %d, dup2(fd[1], 1)\n", i);
-				dup2(fd[1], 1);
-			}
-			*/
-
-			j = 0;
-			while (j < count - 1)
-			{
-				close(fd[j][0]);
-				close(fd[j][1]);
-				j++;
-			}
+			close_fds(fd, count - 1);
+			//char *argv[] = {e->argv[i], NULL};
 			char *argv[] = {e->argv[i], NULL};
+			//execve(e->argv[i], argv, e->envp);
 			execve(e->argv[i], argv, e->envp);
 			printf("%s: %s\n", APP_NAME, strerror(errno));
+			// free fd?
 			exit(127); // only if execv fails
 		}
 		i++;
 	}
-	//close(fd[0]);
-	//close(fd[1]);
-	j = 0;
-	while (j < count - 1)
-	{
-		close(fd[j][0]);
-		close(fd[j][1]);
-		j++;
-	}
+	close_fds(fd, count - 1);
 	waitpid(pid, 0, 0); // wait for last child to exit
 
 /*
-	pid = fork();
-	if (pid == -1)
-	{
-		// error happens
-	}
 	if (pid == 0)
 	{
 		// child process
@@ -174,12 +171,6 @@ int	exec_run(t_exec *e)
 		//printf("%d, %s\n", errno, strerror(errno));
 		printf("%s: %s\n", APP_NAME, strerror(errno));
 		exit(127); // only if execv fails
-	}
-	else
-	{
-		// pid!=0; parent process
-		waitpid(pid, 0, 0); // wait for child to exit
-		//printf("%d, %s\n", errno, strerror(errno));
 	}
 */
 

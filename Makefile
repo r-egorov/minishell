@@ -37,7 +37,7 @@ PARSE_SRCS	= parser.c token.c lexer.c lexer_expandvar.c lexer_get_token.c check_
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/
-EXEC_SRCS	= exec.c env.c utils.c
+EXEC_SRCS	= exec.c env.c path.c utils.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 EXEC_BUILTIN_DIR	= exec/builtins/
