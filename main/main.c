@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/04 14:06:35 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 11:08:03 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ int		main(int argc, char** argv, char **envp)
 	extern char **environ;
 	t_cli		cli;
 	t_parser	parser;
-	/*t_exec		ex;
+	t_exec		ex;
 
 	if (!minishell_init(&ex))
 	{
 		// init error
 		exit(1);
 	}
-	*/
 
 	cli_init(&cli);
 
@@ -78,39 +77,16 @@ int		main(int argc, char** argv, char **envp)
 		parser_init(&parser, cli.line->str);
 		while (parser_next(&parser))
 		{
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-			printf("PWD: %s\n", getenv("PWD"));
->>>>>>> Stashed changes
 			exec_init(&parser, &ex);
 			exec_run(&ex);
 			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 			//printf("[main] PWD: %s\n", getenv("PWD"));
 			//printf("[main] AA: %s\n", getenv("AA"));
 			environ = ex.envp;
-<<<<<<< Updated upstream
 			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 			//printf("[main] PWD: %s\n", getenv("PWD"));
 			//printf("[main] AA: %s\n", getenv("AA"));
-=======
-=======
-			/*
-			exec_init(&parser, &ex);
-			exec_run(&ex);
-			*/
-			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
-			//printf("[main] PWD: %s\n", getenv("PWD"));
-			//printf("[main] AA: %s\n", getenv("AA"));
-			//environ = ex.envp;
-			//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
-			//printf("[main] PWD: %s\n", getenv("PWD"));
-			//printf("[main] AA: %s\n", getenv("AA"));
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-			free(parser.exec);
-			free_split(parser.argv);
-			//printf("[main] next parser loop\n");
+			parser_clean(&parser);
 		}
 		//printf("[main] end parser loop - next cli loop\n");
 	}
