@@ -20,7 +20,7 @@ int	exec_builtin_env(t_exec *e)
 	if (!e->envp)
 	//if (!environ)
 		return (0);
-	printf("count: %d\n", get_count(e->envp));
+	fprintf(stderr, "count: %d\n", get_count(e->envp));
 	print_arr(e->envp);
 
 	/*

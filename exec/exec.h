@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include "minishell.h"
 # include <sys/stat.h>
+//# include <stdarg.h>
 
 # define FAIL	0
 # define OK		1
@@ -50,7 +51,7 @@ int		env_update(char **arr, char *key, char *value);
 
 int		get_count(char **arr);
 void	print_arr(char **arr);
-int		eq(char *s1, char *s2);
+int		eq(const char *s1, const char *s2);
 void	free_split(char **s);
 
 int		find_command(char **s);
