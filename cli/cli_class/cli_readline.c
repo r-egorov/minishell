@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 13:54:12 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/06 14:00:02 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,10 @@ int 	cli_readline(t_cli *self)
 			self->hist->prev = NULL;
 			ft_dlstdelone(self->hist_cur, hnode_del);
 		}
+		cli_stop_term(self);
 		return (1);
 	}
+	cli_stop_term(self);
 	write(1, "exit\n", 5);
 	return (0);
 }

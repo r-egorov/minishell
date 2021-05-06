@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 14:59:54 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/20 16:24:46 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/05 17:14:17 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int		cli_readline(t_cli *self);
 void	cli_init(t_cli *self);
 void	cli_del(t_cli *self);
 void	cli_launch_term(t_cli *self);
+void	cli_stop_term(t_cli *self);
 
 #endif
