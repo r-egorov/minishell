@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:22:04 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/20 16:25:03 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/06 13:59:19 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,12 @@ void	cli_launch_term(t_cli *self)
 		process_syserror();
 	write(1, "minihell > ", 11);
 	tputs(save_cursor, 1, ft_putchar);
+}
+
+void	cli_stop_term(t_cli *self)
+{
+	self->term.c_lflag |= (ECHO);
+	self->term.c_lflag |= (ICANON);
+	if (tcsetattr(0, TCSANOW, &self->term) == -1)
+		process_syserror();
 }
