@@ -6,13 +6,16 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:20:36 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/19 16:17:40 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/06 11:35:33 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 
 void	print_arr(char **arr, char *name)
 {
@@ -34,7 +37,37 @@ int	main(int argc, char **argv, char **envp)
 	char *envp2[] = {"A1=a1", "A2=a2", 0};
 	extern char **environ;
 	char **old_environ;
+	int	fd[2];
+	int id;
+	int a;
+	int y;
+	
 
+	pipe(fd);
+
+	a = 42;
+	y = 21;
+	printf("a: %d, y: %d\n", a, y);
+	id = fork();
+	if (id == 0)
+	{
+		close(fd[0]);
+		write(fd[1], &a, sizeof(int));
+		close(fd[1]);
+	}
+   	else
+ 	{
+		wait(0);
+		close(fd[1]);
+		read(fd[0], &y, sizeof(int));
+		close(fd[0]);
+		printf("a: %d, y: %d\n", a, y);
+	}
+
+	printf("end\n");
+	return (0);
+
+	//---------------------
 	printf("argc: %d\n", argc);
 	printf("   envp pointer : %p\n", envp);
 	printf("environ pointer : %p\n", environ);

@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/30 13:20:24 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/06 16:21:05 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ int	exec_run(t_exec *e)
 	fprintf(stderr, "commands count: %d\n", count);
 	fd = prepare_pipes(count - 1);
 
-	i = 0;
-	while (i < count)
+	//i = 0;
+	//while (i < count)
+	i = count - 1;
+	while (i >= 0)
 	{
 		e->argv = e->jobs[i]->argv;
 		fprintf(stderr, "i : %d, jobs_len : %d\n", i, count);
@@ -160,11 +162,16 @@ int	exec_run(t_exec *e)
 			}
 		}
 		//wait(0); // wait for last child to exit
-		i++;
+		//i++;
+		i--;
 	}
 	//dup2(STDIN_FILENO, 0);
 	//dup2(STDOUT_FILENO, 1);
 	free_pipes(fd, count - 1);
-	waitpid(pid, 0, 0); // wait for last child to exit
+	while (wait(0) != -1);
+	//int st;
+	//waitpid(pid, 0, 0); // wait for last child to exit
+	//waitpid(pid, &st, 0); // wait for last child to exit
+	//printf("errno: %d, stat: %d\n", errno, st);
 	return (0);
 }
