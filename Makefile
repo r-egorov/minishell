@@ -37,11 +37,11 @@ PARSE_SRCS	= parser.c token.c lexer.c lexer_expandvar.c lexer_get_token.c check_
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/
-EXEC_SRCS	= exec.c env.c path.c utils.c
+EXEC_SRCS	= exec.c env.c path.c utils.c pipes.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 EXEC_BUILTIN_DIR	= exec/builtins/
-EXEC_BUILTIN_SRCS	= export.c unset.c pwd.c env.c cd.c
+EXEC_BUILTIN_SRCS	= export.c unset.c pwd.c env.c cd.c echo.c
 EXEC_BUILTIN_SRCS	:= $(addprefix ${EXEC_BUILTIN_DIR}, ${EXEC_BUILTIN_SRCS})
 
 SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${HNODE_SRCS} ${ERRORS_SRCS} ${PARSE_SRCS} ${EXEC_SRCS} ${EXEC_BUILTIN_SRCS}

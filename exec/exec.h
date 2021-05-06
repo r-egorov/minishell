@@ -32,14 +32,17 @@
 # define ERR_COMMAND_NOT_FOUND		"command not found"
 
 typedef struct	s_exec {
-	char	*exec;
+//	char	*exec;
+	int		argc;
 	char	**argv;
 	char	**envp;
 	char	**environ_orig;
-	int		fd;
-	char	*pwd;
+	int		fd0;
+	int		fd1;
+//	char	*pwd;
 	t_job   **jobs;
-	size_t  jobs_len;
+	int		count;
+	int		**fd;
 }				t_exec;
 
 void    exec_init(t_parser *p, t_exec *e);
@@ -48,6 +51,9 @@ int		exec_run(t_exec *e);
 char	**env_add(char **arr, char *key);
 char	**env_remove(char **arr, char *key);
 int		env_update(char **arr, char *key, char *value);
+
+void	free_pipes(int **fd);
+int		**prepare_pipes(int n);
 
 int		get_count(char **arr);
 void	print_arr(char **arr);
@@ -61,5 +67,6 @@ int		exec_builtin_unset(t_exec *e);
 int		exec_builtin_pwd(t_exec *e);
 int		exec_builtin_env(t_exec *e);
 int		exec_builtin_cd(t_exec *e);
+int		exec_builtin_echo(t_exec *e);
 
 #endif
