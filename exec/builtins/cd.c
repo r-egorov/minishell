@@ -12,31 +12,30 @@
 
 #include "exec.h"
 
-static char *make_path(char *part1, char *part2)
+static char	*make_path(char *part1, char *part2)
 {
 	char	*result;
 	char	*tmp;
 
 	result = 0;
-	if (part2[0] == '/')
+	if (part2[0] == '/')	// absolute
 	{
-		// absolute
 		result = ft_strdup(part2);
-		// if null?
-		//printf("absolute path: %s\n", result);
+		if (!result)
+			process_syserror();
+		//fprintf(stderr, "absolute path: %s\n", result);
 		//result = chdir(path);
 	}
-	else
+	else	// relative
 	{
-		// relative
 		tmp = ft_strjoin(part1, "/");
 		if (!tmp)
-			return (0);
+			process_syserror();
 		result = ft_strjoin(tmp, part2);
 		free(tmp);
-		//printf("relative path: %s\n", result);
-		//if (!result)
-		//	return (0);
+		if (!result)
+			process_syserror();
+		//fprintf(stderr, "relative path: %s\n", result);
 	}
 	return (result);
 }
@@ -121,4 +120,3 @@ int	exec_builtin_cd(t_exec *e)
 	//printf("[cd] addr after : %p\n", e->envp);
 	return (OK);
 }
-

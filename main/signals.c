@@ -19,6 +19,19 @@ void	sigint_handler(int sig)
 	exit (1);
 }
 
+void	restore_child_sig()
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	ignore_parent_sig()
+{
+	//signal(SIGINT, sigint_handler);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 /*
 int	catch_signal(int sig, void (*handler)(int))
 {

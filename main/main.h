@@ -27,8 +27,10 @@
 #include <signal.h>
 //#include <stdlib.h>
 
-//int		catch_signal(int sig, void (*handler)(int));
 void	sigint_handler(int sig);
+void	restore_child_sig();
+void	ignore_parent_sig();
+
 //void	noop_func(int sig);
 
 #endif

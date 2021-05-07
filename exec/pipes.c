@@ -51,3 +51,12 @@ int	**prepare_pipes(int n)
 	result[i] = 0;
 	return (result);
 }
+
+void	pipes_redir(t_exec *e, int job)
+{
+	if (job - 1 >= 0)
+		dup2(e->fd[job - 1][0], 0), fprintf(stderr, "[builtin fork] job: %d / %d, dup2(fd[%d][0], 0)\n", job, e->count - 1, job - 1);
+	if (job < e->count - 1)
+		dup2(e->fd[job][1], 1), fprintf(stderr, "[builtin fork] job: %d / %d, dup2(fd[%d][1], 1)\n", job, e->count - 1, job);
+	free_pipes(e->fd);
+}

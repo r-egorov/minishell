@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/05 16:05:49 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/07 10:34:53 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	minishell_init(t_exec *e)
 	count = get_count(environ);
 	result = malloc(sizeof(*result) * (count + 1));
 	if (!result)
-	{
-		//error
-		return (0);
-	}
+		process_syserror();
 	i = 0;
 	while (environ[i])
 	{
@@ -35,7 +32,7 @@ int	minishell_init(t_exec *e)
 		{
 			// error
 			free_split(result);
-			return (0);
+			process_syserror();
 		}
 		i++;
 	}
@@ -43,7 +40,6 @@ int	minishell_init(t_exec *e)
 	e->environ_orig = environ;
 	e->envp = result;
 	environ = result;
-	//e->fd = 1;
 	return (1);
 }
 
@@ -86,21 +82,14 @@ int		main(int argc, char** argv, char **envp)
 	t_parser	parser;
 	t_exec		ex;
 
-	if (!minishell_init(&ex))
-	{
-		// init error
-		exit(1);
-	}
-
+	minishell_init(&ex);
 	cli_init(&cli);
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 
-	//signal(SIGINT, sigint_handler);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	ignore_parent_sig();
 
 	while (cli_readline(&cli))
 	{
@@ -135,6 +124,6 @@ int		main(int argc, char** argv, char **envp)
 	}
 	//printf("[main] end cli loop\n");
 	cli_del(&cli);
-
+	environ = ex.environ_orig;
 	return (0);
 }
