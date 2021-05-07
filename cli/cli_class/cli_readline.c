@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 13:21:30 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/06 14:00:02 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/07 12:14:29 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,15 +102,15 @@ int 	cli_readline(t_cli *self)
 	self->line = (t_line *)((t_hnode *)self->hist_cur->content)->buf;
 	if (cli_readbuf(self, buf))
 	{
-		if (ft_strcmp(self->line->str, ""))
-			cli_update_history(self);
-		else
+		cli_update_history(self);
+		if (!ft_strcmp(self->line->str, ""))
 		{
+			self->hist_cur = self->hist;
 			self->hist = self->hist->next;
-			self->hist->prev = NULL;
+			if (self->hist)
+				self->hist->prev = NULL;
 			ft_dlstdelone(self->hist_cur, hnode_del);
 		}
-		cli_stop_term(self);
 		return (1);
 	}
 	cli_stop_term(self);
