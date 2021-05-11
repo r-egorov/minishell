@@ -29,9 +29,12 @@ int	match_builtin(const char *s)
 
 int	exec_builtins(t_exec *e, int idx, int job)
 {
-	pid_t	pid;
+	pid_t		pid;
 	//int		pid;
-	int 	(*builtins[])(t_exec*) = {exec_builtin_env, exec_builtin_export, exec_builtin_pwd, exec_builtin_cd, exec_builtin_unset, exec_builtin_echo};
+	const int	(*builtins[])(t_exec*) = {
+		exec_builtin_env, exec_builtin_export, exec_builtin_pwd,
+		exec_builtin_cd, exec_builtin_unset, exec_builtin_echo
+	};
 
 	pid = 0;
 	if (e->count > 1)

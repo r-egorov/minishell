@@ -56,6 +56,7 @@ pid_t	exec_command(t_exec *e, int job)
 	{
 		//fprintf(stderr, "argv[0]: %s\n", e->argv[0]);
 		restore_child_sig();
+		//fprintf(stderr, "PATH: %s\n", getenv("PATH"));
 		if (getenv("PATH") && find_command(&e->argv[0]) == FAIL)
 		{
 			printf("%s: %s\n", e->argv[0], ERR_COMMAND_NOT_FOUND);
@@ -78,6 +79,7 @@ int	exec_run(t_exec *e)
 	int		idx;
 	pid_t	last;
 	int		status;
+	int		j;
 
 	fprintf(stderr, "commands count: %d\n", e->count);
 	e->fd = prepare_pipes(e->count - 1);
@@ -97,6 +99,14 @@ int	exec_run(t_exec *e)
 			pid = exec_command(e, i);
 		//i--;
 		i++;
+		/*
+		j = 0;
+		while (j < 3)
+		{
+			sleep(1);
+			j++;
+		}
+		*/
 	}
 	last = pid;
 	//dup2(STDIN_FILENO, 0);

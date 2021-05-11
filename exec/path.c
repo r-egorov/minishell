@@ -13,12 +13,16 @@ static char *get_fullpath(char **parts, char *name)
 		result = ft_strjoin(parts[i], name);
 		if (!result)
 			process_syserror();
-		if (lstat(result, &sb) != -1)
+		//if (lstat(result, &sb) != -1)
+		if (stat(result, &sb) != -1)
 			break ;
 		free(result);
 		result = 0;
 		i++;
 	}
+	fprintf(stderr, "st_mode: %d & IFMT: %d ==> %d | %d <== Regular file (S_IFREG)\n", sb.st_mode, S_IFMT, sb.st_mode & S_IFMT, S_IFREG);
+	if (result && ((sb.st_mode & S_IFMT) != S_IFREG))
+		return (0);
 	return (result);
 }
 
