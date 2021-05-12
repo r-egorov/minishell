@@ -14,9 +14,8 @@
 
 void	sigint_handler(int sig)
 {
-
 	fprintf(stderr, "sig: %d. Exiting....\n", sig);
-	exit (1);
+	exit(1);
 }
 
 void	restore_child_sig()
@@ -27,19 +26,6 @@ void	restore_child_sig()
 
 void	ignore_parent_sig()
 {
-	//signal(SIGINT, sigint_handler);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
-
-/*
-int	catch_signal(int sig, void (*handler)(int))
-{
-	struct sigaction action;
-
-	action.sa_handler = handler;
-	sigemptyset(&action.sa_mask);
-	action.sa_flags = 0;
-	return (sigaction(sig, &action, 0));
-}
-*/

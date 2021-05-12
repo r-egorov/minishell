@@ -1,5 +1,17 @@
 #include "exec.h"
 
+int	is_directory(char *path)
+{
+	struct stat	sb;
+
+	if (stat(path, &sb) == -1)
+		return (FAIL);
+	// fprintf(stderr, "%sst_mode: %d & IFMT: %d ==> %d | %d <== Regular file (S_IFDIR)%s\n", DCOLOR, sb.st_mode, S_IFMT, sb.st_mode & S_IFMT, S_IFDIR, DEFAULT);
+	if ((sb.st_mode & S_IFMT) == S_IFDIR)
+		return (OK);
+	return (FAIL);
+}
+
 static char *get_fullpath(char **parts, char *name)
 {
 	int			i;
@@ -13,16 +25,12 @@ static char *get_fullpath(char **parts, char *name)
 		result = ft_strjoin(parts[i], name);
 		if (!result)
 			process_syserror();
-		// if (lstat(result, &sb) != -1)
-		if (stat(result, &sb) != -1)
+		if (stat(result, &sb) != -1 && ((sb.st_mode & S_IFMT) != S_IFDIR))
 			break ;
 		free(result);
 		result = 0;
 		i++;
 	}
-	fprintf(stderr, "st_mode: %d & IFMT: %d ==> %d | %d <== Regular file (S_IFREG)\n", sb.st_mode, S_IFMT, sb.st_mode & S_IFMT, S_IFREG);
-	if (result && ((sb.st_mode & S_IFMT) != S_IFREG))
-		return (0);
 	return (result);
 }
 
@@ -38,7 +46,6 @@ int	find_command(char **s)
 	path = getenv("PATH");
 	if (!path)
 		return (FAIL);
-	//printf("path: %s\n", path);
 	parts = ft_split(path, ':');
 	if (!parts)
 		process_syserror();

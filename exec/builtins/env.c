@@ -20,7 +20,7 @@ int	exec_builtin_env(t_exec *e)
 	if (!e->envp)
 	//if (!environ)
 		return (0);
-	fprintf(stderr, "count: %d\n", get_count(e->envp));
+	fprintf(stderr, "%s[builtin env] count: %d%s\n", BLT_COLOR, get_count(e->envp), DEFAULT);
 	print_arr(e->envp);
 
 	/*
@@ -33,7 +33,7 @@ int	exec_builtin_env(t_exec *e)
 	}
 	*/
 	if (e->argv[1])
-		printf("[builtin env] getenv(%s) : %s\n", e->argv[1], getenv(e->argv[1]));
+		fprintf(stderr, "%s[builtin env] getenv(%s) : %s%s\n", BLT_COLOR, e->argv[1], getenv(e->argv[1]), DEFAULT);
 	//print_arr(environ);
 	return (0);
 }

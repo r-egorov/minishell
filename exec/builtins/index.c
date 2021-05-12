@@ -32,7 +32,6 @@ int	exec_builtins(t_exec *e, int idx, int job)
 	pid_t		pid;
 	int			fd0;
 	int			fd1;
-	//int		pid;
 	/*const*/ int	(*builtins[])(t_exec*) = {
 		exec_builtin_env, exec_builtin_export, exec_builtin_pwd,
 		exec_builtin_cd, exec_builtin_unset, exec_builtin_echo
@@ -43,8 +42,6 @@ int	exec_builtins(t_exec *e, int idx, int job)
 		pid = fork();
 		if (pid == -1)
 			process_syserror();
-		//fd0 = dup(0);
-		//fd1 = dup(1);
 	if (e->count > 1 && pid == 0)
 	{
 		restore_child_sig();
@@ -64,10 +61,5 @@ int	exec_builtins(t_exec *e, int idx, int job)
 		dup2(fd0, STDIN_FILENO);
 		dup2(fd1, STDOUT_FILENO);
 	}
-	//dup2(fd0, 0);
-	//dup2(fd1, 1);
-	//close(fd0);
-	//close(fd1);
-	//fprintf(stderr, "restored fd 0 and 1\n");
 	return (pid);
 }

@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:38:29 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/12 14:39:40 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/12 19:23:38 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,7 @@ static int	fd_redir_do(t_list *lst, t_op op, int oflag)
 	{
 		if (fd)
 			close(fd);
-		// if (op == READ)
 		fd = open((char *)lst->content, oflag, 0666);
-		// else if (op == WRITE)
-			// fd = open((char *)lst->content, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		// else
-			// fd = open((char *)lst->content, O_WRONLY | O_APPEND | O_CREAT, 0666);
-		// fprintf(stderr, "fd open : %d for file: %s\n", fd, lst->content);
 		if (fd == -1)
 		{
 			printf("%s: %s: %s\n", APP_NAME, lst->content, strerror(errno));
@@ -47,33 +41,14 @@ int	fd_redir(t_exec *e, int job)
 {
 	int	result;
 
-	(void)job;
-	if (e->redir_in)
-	// {
-		result = fd_redir_do(e->redir_in, READ, O_RDONLY);
-	// 	if (result == -1)
-	// 	{
-	// 		// printf("%s: %s: %s\n", APP_NAME, e->argv[0], strerror(errno));
-	// 		return (-1);
-	// 	}
-	// }
-	if (e->redir_append)
-	// {
-		result = fd_redir_do(e->redir_append, APPEND, O_WRONLY | O_APPEND | O_CREAT);
-	// 	if (result == -1)
-	// 	{
-	// 		// printf("%s: %s: %s\n", APP_NAME, e->argv[0], strerror(errno));
-	// 		return (-1);
-	// 	}
-	// }
-	if (e->redir_out)
-	// {
-		result = fd_redir_do(e->redir_out, WRITE, O_WRONLY | O_CREAT | O_TRUNC);
-	// 	if (result == -1)
-	// 	{
-	// 		// printf("%s: %s: %s\n", APP_NAME, e->argv[0], strerror(errno));
-	// 		return (-1);
-	// 	}
-	// }
-	return (0);
+	result = 0;
+	if (e->jobs[job]->redir_in)
+		result = fd_redir_do(e->jobs[job]->redir_in, READ, O_RDONLY);
+	if (e->jobs[job]->redir_append)
+		result = fd_redir_do(e->jobs[job]->redir_append, \
+								APPEND, O_WRONLY | O_APPEND | O_CREAT);
+	if (e->jobs[job]->redir_out)
+		result = fd_redir_do(e->jobs[job]->redir_out, \
+								WRITE, O_WRONLY | O_CREAT | O_TRUNC);
+	return (result);
 }

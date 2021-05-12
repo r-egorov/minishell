@@ -23,14 +23,25 @@
 //# include <stdarg.h>
 # include <fcntl.h>
 
-# define FAIL	0
-# define OK		1
+# define FAIL		0
+# define OK			1
+
+# define RED		"\033[0;31m"
+# define GREEN		"\033[0;32m"
+# define ORANGE		"\033[0;33m"
+# define PURPLE		"\033[0;35m"
+# define CYAN		"\033[0;36m"
+# define DEFAULT	"\033[0m"
+# define DCOLOR		GREEN
+# define BLT_COLOR	GREEN
+# define PCOLOR		GREEN
 
 # define BUILTIN_CD_NAME			"cd"
 # define BUILTIN_UNSET_NAME			"unset"
 # define ERR_EXEC_CD_TOO_MANY_ARGS	"too many arguments"
 # define ERR_EXEC_UNSET_INVALID_ID	"not a valid identifier"
 # define ERR_COMMAND_NOT_FOUND		"command not found"
+# define ERR_IS_A_DIRECTORY			"is a directory"
 
 typedef enum	e_op {
 	READ,
@@ -72,6 +83,7 @@ int		eq(const char *s1, const char *s2);
 void	free_split(char **s);
 
 int		find_command(char **s);
+int		is_directory(char *path);
 
 int		match_builtin(const char *s);
 int		exec_builtins(t_exec *e, int idx, int job);

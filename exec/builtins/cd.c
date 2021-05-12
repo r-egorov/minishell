@@ -18,15 +18,15 @@ static char	*make_path(char *part1, char *part2)
 	char	*tmp;
 
 	result = 0;
-	if (part2[0] == '/')	// absolute
+	if (part2[0] == '/')
 	{
 		result = ft_strdup(part2);
 		if (!result)
 			process_syserror();
-		//fprintf(stderr, "absolute path: %s\n", result);
+		fprintf(stderr, "%sabsolute path: %s%s\n", BLT_COLOR, result, DEFAULT);
 		//result = chdir(path);
 	}
-	else	// relative
+	else
 	{
 		tmp = ft_strjoin(part1, "/");
 		if (!tmp)
@@ -35,7 +35,7 @@ static char	*make_path(char *part1, char *part2)
 		free(tmp);
 		if (!result)
 			process_syserror();
-		//fprintf(stderr, "relative path: %s\n", result);
+		fprintf(stderr, "%srelative path: %s%s\n", BLT_COLOR, result, DEFAULT);
 	}
 	return (result);
 }
@@ -85,13 +85,12 @@ int	exec_builtin_cd(t_exec *e)
 		path = e->argv[1];
 	else
 		path = getenv("HOME");
-		// what if null? (unset HOME)
  	if (!path)
 		return (0);
 	oldpwd = getcwd(0, 0);
+	fprintf(stderr, "%soldpwd: %s%s\n", BLT_COLOR, oldpwd, DEFAULT);
 	if (!oldpwd)
 	{
-		// error
 		process_error();
 		return (FAIL);
 	}
