@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/05/07 14:37:00 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/05/12 15:07:56 by cisis            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ ERRORS_SRCS	= process_errors.c
 ERRORS_SRCS	:= $(addprefix ${ERRORS_DIR}, ${ERRORS_SRCS})
 
 PARSE_DIR	= parser/
-PARSE_SRCS	= parser.c token.c lexer.c lexer_expandvar.c lexer_get_token.c check_symbol.c lexer_quotes.c lexer_check_grammar.c lexer_token_type.c parser_make_jobs.c job.c
+PARSE_SRCS	= parser.c token.c lexer.c lexer_get_token.c check_symbol.c lexer_quotes.c lexer_check_grammar.c lexer_token_type.c parser_make_jobs.c job.c token_prepare.c
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/

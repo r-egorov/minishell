@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:35:33 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/05 16:04:20 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 14:50:36 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	parser_make_jobs(t_parser *self)
 		while (i < self->lexer->tokens_len && (tokens[i]->type != PIPE
 				&& tokens[i]->type != SEP))
 		{
+			tokens[i]->prepare(tokens[i]);
 			parser_fill_job(self, job, &i);
 			i++;
 		}

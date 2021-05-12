@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/12 14:17:49 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 16:55:44 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	parser_next(t_parser *self)
 			self->lexer->del(self->lexer);
 			return (0);
 		}
-		print_tokens(self->lexer);
+		//print_tokens(self->lexer);
 	}
 	if (self->pos < self->lexer->tokens_len)
 	{

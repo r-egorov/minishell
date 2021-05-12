@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/12 14:27:26 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 14:55:44 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_token
 	t_type		type;
 
 	void		(*append)(struct s_token *self, char *to_append);
+	void		(*remove)(struct s_token *self, size_t i);
+	void		(*prepare)(struct s_token *self);
 	void		(*del)(struct s_token *self);
 }				t_token;
 
@@ -102,6 +104,7 @@ char	*lexer_get_varname(t_lexer *self);
 t_token	*token_new(void);
 void	token_del(t_token *self);
 void	token_append(t_token *self, char *src);
+void	token_prepare(t_token *self);
 
 int		is_quotes(char c);
 int		is_tokensep(char c);
