@@ -30,8 +30,10 @@ int	match_builtin(const char *s)
 int	exec_builtins(t_exec *e, int idx, int job)
 {
 	pid_t		pid;
+	int			fd0;
+	int			fd1;
 	//int		pid;
-	const int	(*builtins[])(t_exec*) = {
+	/*const*/ int	(*builtins[])(t_exec*) = {
 		exec_builtin_env, exec_builtin_export, exec_builtin_pwd,
 		exec_builtin_cd, exec_builtin_unset, exec_builtin_echo
 	};
@@ -47,11 +49,21 @@ int	exec_builtins(t_exec *e, int idx, int job)
 	{
 		restore_child_sig();
 		pipes_redir(e, job);
+		if (fd_redir(e, job) == -1)
+			exit(1);
 		builtins[idx](e);
 		exit(0);
 	}
 	if (e->count == 1)
+	{
+		fd0 = dup(STDIN_FILENO);
+		fd1 = dup(STDOUT_FILENO);
+		if (fd_redir(e, job) == -1)
+			return (-1);
 		builtins[idx](e);
+		dup2(fd0, STDIN_FILENO);
+		dup2(fd1, STDOUT_FILENO);
+	}
 	//dup2(fd0, 0);
 	//dup2(fd1, 1);
 	//close(fd0);

@@ -21,6 +21,7 @@
 # include "minishell.h"
 # include <sys/stat.h>
 //# include <stdarg.h>
+# include <fcntl.h>
 
 # define FAIL	0
 # define OK		1
@@ -40,6 +41,9 @@ typedef struct	s_exec {
 	int		fd1;
 	t_job   **jobs;
 	int		count;
+	t_list	*redir_in;
+	t_list	*redir_out;
+	t_list	*redir_append;
 	int		**fd;
 	int		status;
 }				t_exec;
@@ -53,6 +57,8 @@ int		env_update(char **arr, char *key, char *value);
 int		**prepare_pipes(int n);
 void	pipes_redir(t_exec *e, int job);
 void	free_pipes(int **fd);
+
+int		fd_redir(t_exec *e, int job);
 
 int		get_count(char **arr);
 void	print_arr(char **arr);
