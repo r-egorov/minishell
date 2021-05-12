@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:54:31 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/04 14:27:38 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 16:30:13 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,41 @@ void	token_append(t_token *self, char *src)
 	self->str = tmp;
 }
 
+void	token_remove(t_token *self, size_t i)
+{
+	char			*tmp;
+	char			*string;
+	char			*to_join;
+
+	string = self->str;
+	if (string)
+	{
+		string[i] = '\0';
+		to_join = string + i + 1;
+		tmp = ft_strjoin(string, to_join);
+		if (!tmp)
+			process_syserror();
+		free(string);
+		self->len -= 1;
+		self->str = tmp;
+	}
+}
+
+void	token_join(t_token *self, char *src)
+{
+	char			*tmp;
+	char			*string;
+
+	string = self->str;
+	tmp = ft_strjoin(string, src);
+	if (!tmp)
+		process_syserror();
+	if (string)
+		free(string);
+	self->len = ft_strlen(tmp);
+	self->str = tmp;
+}
+
 void	token_del(t_token *self)
 {
 	if (self)
@@ -62,6 +97,8 @@ t_token	*token_new(void)
 	token->screened = 0;
 	token->type = 0;
 	token->append = token_append;
+	token->remove = token_remove;
+	token->prepare = token_prepare;
 	token->del = token_del;
 	return (token);
 }

@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:58:21 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/06 15:12:35 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 14:15:23 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ t_lexer	*lexer_new(char *string)
 	self->del = lexer_del;
 	self->tokens = NULL;
 	self->tokens_len = 0;
-	self->quotes = 0;
 	self->tokenize = lexer_tokenize;
 	self->check_grammar = lexer_check_grammar;
 	return (self);
