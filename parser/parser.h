@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/05 15:38:39 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 14:27:26 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_lexer
 	char	*buf;
 	t_token	**tokens;
 	size_t	tokens_len;
-	int		quotes;
 
 	void	(*del)(struct s_lexer *self);
 	int		(*tokenize)(struct s_lexer *self);
@@ -107,7 +106,7 @@ void	token_append(t_token *self, char *src);
 int		is_quotes(char c);
 int		is_tokensep(char c);
 
-void	lexer_quotes(t_lexer *self, t_token *token, char **p_token_end);
+void	lexer_quotes(t_token *token, char **p_token_end);
 
 int		lexer_check_grammar(t_lexer *self);
 
