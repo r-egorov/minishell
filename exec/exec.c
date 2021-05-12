@@ -41,7 +41,7 @@ int	get_status_code(pid_t last)
 		}
 		else
 		{
-			code = WTERMSIG(status);
+			code = WTERMSIG(status) + 128;
 			fprintf(stderr, "process %d WTERMSIG(status) : %d, errno : %d\n", pid, code, errno);
 		}
         if (pid == last)
@@ -72,7 +72,6 @@ pid_t	exec_command(t_exec *e, int job)
 		}
 		//fprintf(stderr, "argv[0]: %s\n", e->argv[0]);
 		pipes_redir(e, job);
-		// fd_redir(e, job);
 		if (fd_redir(e, job) == -1)
 			exit(1);
 		execve(e->argv[0], e->argv, e->envp);
