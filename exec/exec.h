@@ -32,14 +32,20 @@
 # define ERR_EXEC_UNSET_INVALID_ID	"not a valid identifier"
 # define ERR_COMMAND_NOT_FOUND		"command not found"
 
-typedef struct	s_exec {
+typedef enum	e_op {
+	READ,
+	WRITE,
+	APPEND
+}				t_op;
+
+typedef struct s_exec {
 	int		argc;
 	char	**argv;
 	char	**envp;
 	char	**environ_orig;
 	int		fd0;
 	int		fd1;
-	t_job   **jobs;
+	t_job	**jobs;
 	int		count;
 	t_list	*redir_in;
 	t_list	*redir_out;

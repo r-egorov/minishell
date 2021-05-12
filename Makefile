@@ -6,7 +6,7 @@
 #    By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:47:19 by lelderbe          #+#    #+#              #
-#    Updated: 2021/05/07 14:37:00 by lelderbe         ###   ########.fr        #
+#    Updated: 2021/05/12 14:39:54 by lelderbe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ PARSE_SRCS	= parser.c token.c lexer.c lexer_expandvar.c lexer_get_token.c check_
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/
-EXEC_SRCS	= exec.c env.c path.c utils.c pipes.c
+EXEC_SRCS	= exec.c env.c path.c utils.c pipes.c redirects.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 EXEC_BUILTIN_DIR	= exec/builtins/

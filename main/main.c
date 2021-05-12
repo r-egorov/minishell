@@ -110,10 +110,13 @@ int		main(int argc, char** argv, char **envp)
 				*/
 				exec_init(&parser, &ex);
 				exec_run(&ex);
+
 				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 				//printf("[main] PWD: %s\n", getenv("PWD"));
 				//printf("[main] AA: %s\n", getenv("AA"));
+				
 				environ = ex.envp;
+				
 				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 				//printf("[main] PWD: %s\n", getenv("PWD"));
 				//printf("[main] AA: %s\n", getenv("AA"));

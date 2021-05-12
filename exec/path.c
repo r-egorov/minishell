@@ -13,7 +13,7 @@ static char *get_fullpath(char **parts, char *name)
 		result = ft_strjoin(parts[i], name);
 		if (!result)
 			process_syserror();
-		//if (lstat(result, &sb) != -1)
+		// if (lstat(result, &sb) != -1)
 		if (stat(result, &sb) != -1)
 			break ;
 		free(result);
