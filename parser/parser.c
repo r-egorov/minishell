@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/12 16:55:44 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 17:32:26 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,23 +71,6 @@ void	parser_init(t_parser *self, char *string_to_parse)
 	self->del = parser_del;
 }
 
-#include <stdio.h>
-int		print_tokens(t_lexer *lexer)
-{
-	size_t 	i = 0;
-	t_token	*token;
-
-	printf("=======TOKENS=====\n");
-	while (i < lexer->tokens_len)
-	{
-		token = lexer->tokens[i];
-		printf("str |%s| len |%d| type |%d|\n", token->str, token->len, token->type);
-		i++;
-	}
-	printf("============\n");
-	return (0);
-}
-
 int	parser_next(t_parser *self)
 {
 	if (!self->lexer)
@@ -99,7 +82,6 @@ int	parser_next(t_parser *self)
 			self->lexer->del(self->lexer);
 			return (0);
 		}
-		//print_tokens(self->lexer);
 	}
 	if (self->pos < self->lexer->tokens_len)
 	{

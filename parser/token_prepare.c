@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:51:38 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/12 17:23:36 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/12 17:36:49 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*token_get_varname(t_token *self, size_t i)
 	return (varname);
 }
 
-void	token_insert_varvalue(t_token *self, size_t *index, char *varvalue,
+static void	token_insert_varvalue(t_token *self, size_t *index, char *varvalue,
 		char *varname)
 {
 	char		*tmp1;
@@ -62,7 +62,7 @@ void	token_insert_varvalue(t_token *self, size_t *index, char *varvalue,
 	self->len = ft_strlen(tmp2);
 }
 
-void	token_expandvar(t_token *self, size_t *i)
+static void	token_expandvar(t_token *self, size_t *i)
 {
 	char		*varname;
 	char		*varvalue;
@@ -80,6 +80,31 @@ void	token_expandvar(t_token *self, size_t *i)
 	token_insert_varvalue(self, i, varvalue, varname);
 	free(varname);
 	*i += ft_strlen(varvalue);
+}
+
+static void	token_handle_dquotes(t_token *self, size_t *index)
+{
+	size_t		i;
+
+	i = *index;
+	self->remove(self, i);
+	while (self->str[i] != '\"')
+	{
+		if ((self->str[i] == '\\')
+			&& (self->str[i + 1] == '\\'
+				|| self->str[i + 1] == '$'
+				|| self->str[i + 1] == '\"'))
+		{
+			self->remove(self, i);
+			i++;
+		}
+		else if (self->str[i] == '$')
+			token_expandvar(self, &i);
+		else
+			i++;
+	}
+	self->remove(self, i);
+	*index = i;
 }
 
 void	token_prepare(t_token *self)
@@ -104,29 +129,7 @@ void	token_prepare(t_token *self)
 			self->remove(self, i);
 		}
 		else if (self->str[i] == '\"')
-		{
-			//printf("HERE\n");
-			self->remove(self, i);
-			while (self->str[i] != '\"')
-			{
-			//	printf("|%c|\n", self->str[i]);
-				if ((self->str[i] == '\\')
-						&& (self->str[i + 1] == '\\'
-							|| self->str[i + 1] == '$'
-							|| self->str[i + 1] == '\"'))
-				{
-			//		printf("REMOVING |%c|\n", self->str[i]);
-					self->remove(self, i);
-					i++;
-				}
-				else if (self->str[i] == '$')
-					token_expandvar(self, &i);
-				else
-					i++;
-			}
-			self->remove(self, i);
-
-		}
+			token_handle_dquotes(self, &i);
 		else
 			i++;
 	}
