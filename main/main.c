@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/07 10:34:53 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/12 18:19:17 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		main(int argc, char** argv, char **envp)
 		//printf("input = |%s|\nlen = %d\n", cli.line->str, cli.line->len);
 		if (cli.line->len > 0)
 		{
-			parser_init(&parser, cli.line->str);
+			parser_init(&parser, cli.line->str, ex.status);
 			while (parser_next(&parser))
 			{
 				/*
@@ -117,7 +117,7 @@ int		main(int argc, char** argv, char **envp)
 				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 				//printf("[main] PWD: %s\n", getenv("PWD"));
 				//printf("[main] AA: %s\n", getenv("AA"));
-				parser_clean(&parser);
+				parser_refresh(&parser, ex.status);
 			}
 		}
 		//printf("[main] end parser loop - next cli loop\n");
