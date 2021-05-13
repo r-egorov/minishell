@@ -112,7 +112,7 @@ char	**env_add(char **arr, char *text)
 	if (!key || is_valid_key(key) == FAIL)
 	{
 		free(key);
-		perr("export", text, ERR_EXEC_UNSET_INVALID_ID, 0);
+		perr(BLTN_EXPORT_NAME, text, ERR_INVALID_ID, 0);
 		return (0);
 	}
 	elem = find(arr, key);

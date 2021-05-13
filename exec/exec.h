@@ -38,13 +38,19 @@
 
 # define EXPORT_PREFIX				"declare -x "
 
-# define BUILTIN_CD_NAME			"cd"
-# define BUILTIN_UNSET_NAME			"unset"
-# define ERR_EXEC_CD_TOO_MANY_ARGS	"too many arguments"
-# define ERR_EXEC_UNSET_INVALID_ID	"not a valid identifier"
+# define BLTN_CD_NAME				"cd"
+# define BLTN_EXPORT_NAME			"export"
+# define BLTN_UNSET_NAME			"unset"
+# define BLTN_EXIT_NAME				"exit"
+# define BLTN_ECHO_NAME				"echo"
+# define BLTN_ENV_NAME				"env"
+
+# define ERR_TOO_MANY_ARGS			"too many arguments"
+# define ERR_INVALID_ID				"not a valid identifier"
 # define ERR_COMMAND_NOT_FOUND		"command not found"
 # define ERR_IS_A_DIRECTORY			"is a directory"
-# define ERR_EXEC_CD_HOME_NOT_SET	"HOME not set"
+# define ERR_CD_HOME_NOT_SET		"HOME not set"
+# define ERR_NUMERIC_REQ			"numeric argument required"
 
 typedef enum	e_op {
 	READ,
@@ -78,7 +84,7 @@ char	*get_key(char *s);
 char	*get_value(char *s);
 int		is_valid_key(char *key);
 
-int		**prepare_pipes(int n);
+int		**create_pipes(int n);
 void	pipes_redir(t_exec *e, int job);
 void	free_pipes(int **fd);
 
@@ -102,5 +108,6 @@ int		exec_builtin_pwd(t_exec *e);
 int		exec_builtin_env(t_exec *e);
 int		exec_builtin_cd(t_exec *e);
 int		exec_builtin_echo(t_exec *e);
+int		exec_builtin_exit(t_exec *e);
 
 #endif

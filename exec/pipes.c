@@ -27,7 +27,7 @@ void	free_pipes(int **fd)
 	free(fd);
 }
 
-int	**prepare_pipes(int n)
+int	**create_pipes(int n)
 {
 	int	**result;
 	int	i;

@@ -14,7 +14,7 @@
 
 int	match_builtin(const char *s)
 {
-	const char	*cmds[] = {"env", "export", "pwd", "cd", "unset", "echo"};
+	const char	*cmds[] = {BLTN_ENV_NAME, BLTN_EXPORT_NAME, "pwd", BLTN_CD_NAME, BLTN_UNSET_NAME, BLTN_ECHO_NAME, BLTN_EXIT_NAME};
 	int			i;
 
 	i = 0;
@@ -35,14 +35,14 @@ int	exec_builtins(t_exec *e, int idx, int job)
 	// int			code;
 	/*const*/ int	(*builtins[])(t_exec*) = {
 		exec_builtin_env, exec_builtin_export, exec_builtin_pwd,
-		exec_builtin_cd, exec_builtin_unset, exec_builtin_echo
+		exec_builtin_cd, exec_builtin_unset, exec_builtin_echo, exec_builtin_exit
 	};
 
 	pid = 0;
 	if (e->count > 1)
 		pid = fork();
-		if (pid == -1)
-			process_syserror();
+	if (pid == -1)
+		process_syserror();
 	if (e->count > 1 && pid == 0)
 	{
 		restore_child_sig();

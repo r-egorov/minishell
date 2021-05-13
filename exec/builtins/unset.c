@@ -28,7 +28,7 @@ int	exec_builtin_unset(t_exec *e)
 		if (is_valid_key(key) == FAIL)
 		{
 			// printf("%s: %s: `%s': %s\n", APP_NAME, BUILTIN_UNSET_NAME, key, ERR_EXEC_UNSET_INVALID_ID);
-			perr(BUILTIN_UNSET_NAME, key, ERR_EXEC_UNSET_INVALID_ID, 0);
+			perr(BLTN_UNSET_NAME, key, ERR_INVALID_ID, 0);
 		}
 		else if (getenv(key))
 		{

@@ -41,7 +41,7 @@ EXEC_SRCS	= exec.c env.c env_part2.c path.c utils.c pipes.c redirects.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 EXEC_BUILTIN_DIR	= exec/builtins/
-EXEC_BUILTIN_SRCS	= index.c export.c unset.c pwd.c env.c cd.c echo.c
+EXEC_BUILTIN_SRCS	= index.c export.c unset.c pwd.c env.c cd.c echo.c exit.c
 EXEC_BUILTIN_SRCS	:= $(addprefix ${EXEC_BUILTIN_DIR}, ${EXEC_BUILTIN_SRCS})
 
 SRCS		= ${MAIN_SRCS} ${CLICL_SRCS} ${LINE_SRCS} ${HNODE_SRCS} ${ERRORS_SRCS} ${PARSE_SRCS} ${EXEC_SRCS} ${EXEC_BUILTIN_SRCS}

@@ -17,7 +17,7 @@ void	exec_init(t_parser *p, t_exec *e)
 	e->jobs = p->jobs;
 	e->count = (int)p->jobs_len;
 	e->fd = 0;
-	e->status = 0;
+	//e->status = 0;
 }
 
 int	get_status_code(pid_t last)
@@ -26,7 +26,7 @@ int	get_status_code(pid_t last)
 	int		status;
 	int		code;
 
-	code = 0;
+	code = last;
 	if (last == -1)
 		return (1);
     while (1) {
@@ -84,8 +84,8 @@ int	exec_run(t_exec *e)
 	int		idx;
 	pid_t	last;
 
-	// fprintf(stderr, "%scommands count: %d%s\n", DCOLOR, e->count, DEFAULT);
-	e->fd = prepare_pipes(e->count - 1);
+	fprintf(stderr, "%scommands count: %d%s\n", DCOLOR, e->count, DEFAULT);
+	e->fd = create_pipes(e->count - 1);
 	i = 0;
 	while (i < e->count)
 	{
@@ -108,3 +108,4 @@ int	exec_run(t_exec *e)
 	fprintf(stderr, "%sStatus code is : %d%s\n", DCOLOR, e->status, DEFAULT);
 	return (0);
 }
+

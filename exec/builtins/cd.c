@@ -77,7 +77,7 @@ int	exec_builtin_cd(t_exec *e)
 
 	if (e->argv[1] && e->argv[2])
 	{
-		printf("%s: %s: %s\n", APP_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_TOO_MANY_ARGS);
+		printf("%s: %s: %s\n", APP_NAME, BLTN_CD_NAME, ERR_TOO_MANY_ARGS);
 		process_error();
 		return (1);
 	}
@@ -87,7 +87,7 @@ int	exec_builtin_cd(t_exec *e)
 		path = getenv("HOME");
  	if (!path)
 	{
-		printf("%s: %s: %s\n", APP_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_HOME_NOT_SET);
+		printf("%s: %s: %s\n", APP_NAME, BLTN_CD_NAME, ERR_CD_HOME_NOT_SET);
 		return (1);
 	}
 	//oldpwd = getenv("PWD");
