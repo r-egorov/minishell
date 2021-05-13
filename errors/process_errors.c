@@ -47,32 +47,20 @@ int	process_input_error(size_t errcode)
 
 int	perr(char *cmd, char *arg, char *err, int code)
 {
-	// if (app)
-	// {
-	// 	write(2, app, ft_strlen(app));
-	// 	write(2, ": ", 2);
-	// }
 	ft_putstr_fd(APP_NAME, 2);
 	ft_putstr_fd(": ", 2);
-	// write(2, APP_NAME, ft_strlen(APP_NAME));
-	// write(2, ": ", 2);
 	if (cmd)
 	{
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": ", 2);
-		// write(2, cmd, ft_strlen(cmd));
-		// write(2, ": ", 2);
 	}
 	if (arg)
 	{
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd(": ", 2);
-		// write(2, arg, ft_strlen(arg));
-		// write(2, ": ", 2);
 	}
 	if (err)
 		ft_putstr_fd(err, 2);
-		// write(2, err, ft_strlen(err));
 	ft_putstr_fd("\n", 2);
 	return (code);
 }

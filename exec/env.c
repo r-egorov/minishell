@@ -24,7 +24,7 @@ static char	*find(char **arr, char *key)
 	while (arr[i])
 	{
 		match = ft_strnstr(arr[i], key, ft_strlen(key));
-		if (match == arr[i] && arr[i][ft_strlen(key)] == '=')
+		if (match == arr[i] && (arr[i][ft_strlen(key)] == '=' || arr[i][ft_strlen(key)] == '\0'))
 		{
 			//printf("[env find] found key %s : %s\n", key, match);
 			return (match);
@@ -52,7 +52,7 @@ static void	copy_arr_ex(char **dst, char **src, char *s)
 	}
 	dst[to] = src[from];
 }
-
+/*
 static int	env_update2(char **arr, char *elem, char *text)
 {
 	int		i;
@@ -73,23 +73,52 @@ static int	env_update2(char **arr, char *elem, char *text)
 	}
 	return (0);
 }
+*/
+static int	env_update3(char **arr, char *elem, char *text)
+{
+	int		i;
+	char	*value;
+
+	//printf("[env update2] elem : %p : %s\n", elem, elem);
+	value = get_value(text);
+	if (!value)
+		return (0);
+	free(value);
+	i = 0;
+	while (arr[i])
+	{
+		if (arr[i] == elem)
+		{
+			free(arr[i]);
+			arr[i] = ft_strdup(text);
+			if (!arr[i])
+				process_syserror();
+			break ;
+		}
+		i++;
+	}
+	return (0);
+}
 
 char	**env_add(char **arr, char *text)
 {
 	int		count;
 	char	**result;
-	char	*ptr;
 	char	*elem;
+	char	*key;
 
 	result = 0;
-	ptr = ft_strchr(text, '=');
-	if (!ptr)
+	key = get_key(text);
+	fprintf(stderr, "%skey: %s%s\n", DCOLOR, key, DEFAULT);
+	if (!key)
+	{
+		perr("export", text, ERR_EXEC_UNSET_INVALID_ID, 0);
 		return (0);
-	*ptr = '\0';
-	elem = find(arr, text);
-	*ptr = '=';
-	if (elem)	// update
-		env_update2(arr, elem, text);
+	}
+	elem = find(arr, key);
+	free(key);
+	if (elem)
+		env_update3(arr, elem, text);
 	else
 	{	// add
 		count = get_count(arr) + 1;

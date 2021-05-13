@@ -23,12 +23,7 @@ static int	fd_redir_do(t_list *lst, t_op op, int oflag)
 			close(fd);
 		fd = open((char *)lst->content, oflag, 0666);
 		if (fd == -1)
-		{
-			// printf("%s: %s: %s\n", APP_NAME, lst->content, strerror(errno));
-			// perr(APP_NAME, lst->content, 0, strerror(errno));
-			// return (-1);
 			return (perr(lst->content, 0, strerror(errno), -1));
-		}
 		lst = lst->next;
 	}
 	if (op == READ)

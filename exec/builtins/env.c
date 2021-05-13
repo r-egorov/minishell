@@ -12,6 +12,24 @@
 
 #include "exec.h"
 
+static void	print_env(char **arr)
+{
+	int		i;
+	char	*value;
+
+	i = 0;
+	while (arr[i])
+	{
+		value = get_value(arr[i]);
+		if (value)
+		{
+			free(value);
+			printf("%s\n", arr[i]);
+		}
+		i++;
+	}
+}
+
 int	exec_builtin_env(t_exec *e)
 {
 	//extern char **environ;
@@ -21,7 +39,7 @@ int	exec_builtin_env(t_exec *e)
 	//if (!environ)
 		return (0);
 	fprintf(stderr, "%s[builtin env] count: %d%s\n", BLT_COLOR, get_count(e->envp), DEFAULT);
-	print_arr(e->envp);
+	print_env(e->envp);
 
 	/*
 	if (eq(e->argv[1], "p"))
