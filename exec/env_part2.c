@@ -1,35 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_part2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 16:11:36 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 16:14:27 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/05/13 13:01:42 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/05/13 13:02:52 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_builtin_env(t_exec *e)
+char	*get_key(char *s)
 {
-	int		i;
+	char	*ptr;
+	char	*key;
+
+	if (ft_strlen(s) == 0)
+		return (0);
+	ptr = ft_strchr(s, '=');
+	if (ptr)
+		*ptr = '\0';
+	key = ft_strdup(s);
+	if (!key)
+		process_syserror();
+	if (ptr)
+		*ptr = '=';
+	return (key);
+}
+
+char	*get_value(char *s)
+{
+	char	*ptr;
 	char	*value;
 
-	if (!e->envp)
+	if (ft_strlen(s) == 0)
 		return (0);
-	fprintf(stderr, "%s[builtin env] count: %d%s\n", BLT_COLOR, get_count(e->envp), DEFAULT);
-	i = 0;
-	while (e->envp[i])
-	{
-		value = get_value(e->envp[i]);
-		if (value)
-		{
-			free(value);
-			printf("%s\n", e->envp[i]);
-		}
-		i++;
-	}
-	return (0);
+	ptr = ft_strchr(s, '=');
+	if (!ptr)
+		return (0);
+	*ptr = '\0';
+	value = ft_strdup(ptr + 1);
+	if (!value)
+		process_syserror();
+	*ptr = '=';
+	return (value);
 }

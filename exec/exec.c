@@ -40,11 +40,12 @@ int	get_status_code(pid_t last)
 		else
 		{
 			status = WTERMSIG(status) + 128;
+			if (status == 131)
+				ft_putstr_fd("Quit: 3\n", 1);
 			fprintf(stderr, "%s[fork]process %d WTERMSIG(status) : %d, errno : %d%s\n", DCOLOR, pid, code, errno, DEFAULT);
 		}
         if (pid == last)
 			code = status;
-			// return (code);
         if (pid <= 0)
 			break;
     }
@@ -67,23 +68,10 @@ pid_t	exec_command(t_exec *e, int job)
 		if (!e->argv)
 			exit(0);
 		if (getenv("PATH") && find_command(&e->argv[0]) == FAIL)
-		{
-			// printf("%s: %s\n", e->argv[0], ERR_COMMAND_NOT_FOUND);
-			// perr(0, e->argv[0], 0, ERR_COMMAND_NOT_FOUND);
-			// exit(127);
 			exit(perr(e->argv[0], 0, ERR_COMMAND_NOT_FOUND, 127));
-		}
 		if (is_directory(e->argv[0]))
-		{
-			//printf("%s: %s: %s\n", APP_NAME, e->argv[0], ERR_IS_A_DIRECTORY);
-			// perr(APP_NAME, e->argv[0], 0, ERR_IS_A_DIRECTORY);
-			// exit(126);
 			exit(perr(e->argv[0], 0, ERR_IS_A_DIRECTORY, 126));
-		}
 		execve(e->argv[0], e->argv, e->envp);
-		//printf("%s: %s: %s\n", APP_NAME, e->argv[0], strerror(errno));
-		// perr(APP_NAME, e->argv[0], 0, strerror(errno));
-		// exit(127);
 		exit(perr(e->argv[0], 0, strerror(errno), 127));
 	}
 	return (pid);
