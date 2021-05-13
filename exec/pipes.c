@@ -35,7 +35,7 @@ int	**prepare_pipes(int n)
 	result = malloc(sizeof(*result) * (n + 1));
 	if (!result)
 		process_syserror();
-	fprintf(stderr, "%screate pipes ------------%s\n", PCOLOR, DEFAULT);
+	// fprintf(stderr, "%screate pipes ------------%s\n", PCOLOR, DEFAULT);
 	i = 0;
 	while (i < n)
 	{
@@ -44,10 +44,10 @@ int	**prepare_pipes(int n)
 			process_syserror();
 		if ((pipe(result[i])) == -1)
 			process_syserror();
-		fprintf(stderr, "%spipe %d : fd[%d][0]: %d, fd[%d][1]: %d%s\n", PCOLOR, i, i, result[i][0], i, result[i][1], DEFAULT);
+		// fprintf(stderr, "%spipe %d : fd[%d][0]: %d, fd[%d][1]: %d%s\n", PCOLOR, i, i, result[i][0], i, result[i][1], DEFAULT);
 		i++;
 	}
-	fprintf(stderr, "%sdone --------------------%s\n", PCOLOR, DEFAULT);
+	// fprintf(stderr, "%sdone --------------------%s\n", PCOLOR, DEFAULT);
 	result[i] = 0;
 	return (result);
 }
@@ -59,14 +59,14 @@ void	pipes_redir(t_exec *e, int job)
 	if (job - 1 >= 0)
 	{
 		result = dup2(e->fd[job - 1][0], 0);
-		fprintf(stderr, "%s[fork] pipe redir for job: %d / %d, fd[%d][0] => 0%s\n", PCOLOR, job, e->count - 1, job - 1, DEFAULT);
+		// fprintf(stderr, "%s[fork] pipe redir for job: %d / %d, fd[%d][0] => 0%s\n", PCOLOR, job, e->count - 1, job - 1, DEFAULT);
 		if (result == -1)
 			process_syserror();
 	}
 	if (job < e->count - 1)
 	{
 		result = dup2(e->fd[job][1], 1);
-		fprintf(stderr, "%s[fork] pipe redir for job: %d / %d, fd[%d][1] => 1%s\n", PCOLOR, job, e->count - 1, job, DEFAULT);
+		// fprintf(stderr, "%s[fork] pipe redir for job: %d / %d, fd[%d][1] => 1%s\n", PCOLOR, job, e->count - 1, job, DEFAULT);
 		if (result == -1)
 			process_syserror();
 	}

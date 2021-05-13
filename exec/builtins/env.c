@@ -12,24 +12,6 @@
 
 #include "exec.h"
 
-static void	print_env(char **arr)
-{
-	int		i;
-	char	*value;
-
-	i = 0;
-	while (arr[i])
-	{
-		value = get_value(arr[i]);
-		if (value)
-		{
-			free(value);
-			printf("%s\n", arr[i]);
-		}
-		i++;
-	}
-}
-
 int	exec_builtin_env(t_exec *e)
 {
 	int		i;
