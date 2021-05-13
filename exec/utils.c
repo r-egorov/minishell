@@ -77,7 +77,7 @@ char	**get_copy_arr(char **arr)
 	return (result);
 }
 
-void	sort_array(char **arr)
+void	sort_str_array(char **arr)
 {
 	int		i;
 	int		j;
@@ -93,7 +93,6 @@ void	sort_array(char **arr)
 		{
 			if (ft_strncmp(arr[j], arr[j + 1], ft_strlen(arr[j] + 1)) > 0)
 			{
-				// fprintf(stderr, "%sarr[j] > arr[j+1]: '%s' > '%s'%s\n", DCOLOR, arr[j], arr[j+1], DEFAULT);
 				ptr = arr[j];
 				arr[j] = arr[j + 1];
 				arr[j + 1] = ptr;

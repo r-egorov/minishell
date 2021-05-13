@@ -12,8 +12,6 @@
 
 #include "exec.h"
 
-
-
 static void	print_all(t_exec *e)
 {
 	int		i;
@@ -22,7 +20,7 @@ static void	print_all(t_exec *e)
 	char	**arr;
 
 	arr = get_copy_arr(e->envp);
-	sort_array(arr);
+	sort_str_array(arr);
 	i = 0;
 	while (arr[i])
 	{
@@ -50,7 +48,9 @@ int	exec_builtin_export(t_exec *e)
 	extern char	**environ;
 	char		**tmp;
 	int			i;
+	int			code;
 
+	code = 0;
 	fprintf(stderr, "%s[builtin export] count: %d%s\n", BLT_COLOR, get_count(e->envp), DEFAULT);
 	if (!e->argv[1])
 	{
@@ -61,6 +61,8 @@ int	exec_builtin_export(t_exec *e)
 	while (e->argv[i])
 	{
 			tmp = env_add(e->envp, e->argv[i]);
+			if (!tmp)
+				code = 1;
 			if (tmp && tmp != e->envp)
 			{
 				free(e->envp);
@@ -69,5 +71,5 @@ int	exec_builtin_export(t_exec *e)
 			}
 		i++;
 	}
-    return (0);
+    return (code);
 }

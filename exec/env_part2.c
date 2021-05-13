@@ -47,3 +47,19 @@ char	*get_value(char *s)
 	*ptr = '=';
 	return (value);
 }
+
+int	is_valid_key(char *key)
+{
+	int		i;
+
+	i = 0;
+	while (key[i])
+	{
+		if (i == 0 && ft_isdigit(key[i]))
+			return (FAIL);
+		if (!(ft_strchr("_", key[i]) || ft_isalnum(key[i])))
+			return (FAIL);
+		i++;
+	}
+	return (OK);
+}

@@ -76,6 +76,7 @@ int		env_update(char **arr, char *key, char *value);
 
 char	*get_key(char *s);
 char	*get_value(char *s);
+int		is_valid_key(char *key);
 
 int		**prepare_pipes(int n);
 void	pipes_redir(t_exec *e, int job);
@@ -88,7 +89,7 @@ void	print_arr(char **arr);
 int		eq(const char *s1, const char *s2);
 void	free_split(char **s);
 char	**get_copy_arr(char **arr);
-void	sort_array(char **arr);
+void	sort_str_array(char **arr);
 
 int		find_command(char **s);
 int		is_directory(char *path);

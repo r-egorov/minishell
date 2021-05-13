@@ -17,7 +17,6 @@ static char	*find(char **arr, char *key)
 	int		i;
 	char	*match;
 
-	// no '=' in s
 	if (ft_strchr(key, '='))
 		return (0);
 	i = 0;
@@ -107,11 +106,12 @@ char	**env_add(char **arr, char *text)
 	char	*elem;
 	char	*key;
 
-	result = 0;
+	result = arr;
 	key = get_key(text);
 	fprintf(stderr, "%skey: %s%s\n", DCOLOR, key, DEFAULT);
-	if (!key)
+	if (!key || is_valid_key(key) == FAIL)
 	{
+		free(key);
 		perr("export", text, ERR_EXEC_UNSET_INVALID_ID, 0);
 		return (0);
 	}
