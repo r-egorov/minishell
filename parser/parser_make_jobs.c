@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:35:33 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/12 18:11:43 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/13 10:28:47 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ int	parser_make_jobs(t_parser *self)
 			parser_fill_job(self, job, &i);
 			i++;
 		}
-		job->cmd = job->argv[0];
+		if (job->argv)
+			job->cmd = job->argv[0];
 		parser_append_job(self, job);
 	}
 	parser_check_sep(self, &i);
