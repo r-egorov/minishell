@@ -43,7 +43,8 @@ int	exec_builtin_unset(t_exec *e)
 		//fprintf(stderr, "[unset] getenv(key): %p\n", getenv(key));
 		if (is_valid_key(key) == FAIL)
 		{
-			printf("%s: %s: `%s': %s\n", APP_NAME, BUILTIN_UNSET_NAME, key, ERR_EXEC_UNSET_INVALID_ID);
+			// printf("%s: %s: `%s': %s\n", APP_NAME, BUILTIN_UNSET_NAME, key, ERR_EXEC_UNSET_INVALID_ID);
+			perr(BUILTIN_UNSET_NAME, key, ERR_EXEC_UNSET_INVALID_ID, 0);
 		}
 		else if (getenv(key))
 		{

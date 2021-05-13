@@ -13,8 +13,9 @@
 #ifndef ERRORS_H
 # define ERRORS_H
 
-void 	process_syserror();
-void 	process_error();
+void 	process_syserror(void);
+void 	process_error(void);
 int 	process_input_error(size_t errcode);
+int		perr(char *cmd, char *arg, char *err, int code);
 
 #endif
