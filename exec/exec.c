@@ -61,19 +61,21 @@ pid_t	exec_command(t_exec *e, int job)
 	if (pid == 0)
 	{
 		restore_child_sig();
+		pipes_redir(e, job);
+		if (fd_redir(e, job) == -1)
+			exit(1);
+		if (!e->argv)
+			exit(0);
 		if (getenv("PATH") && find_command(&e->argv[0]) == FAIL)
 		{
 			printf("%s: %s\n", e->argv[0], ERR_COMMAND_NOT_FOUND);
 			exit(127);
 		}
-		if (is_directory(e->argv[0]))
+		if (is_directory(e->argv[0]) == OK)
 		{
 			printf("%s: %s: %s\n", APP_NAME, e->argv[0], ERR_IS_A_DIRECTORY);
 			exit(126);
 		}
-		pipes_redir(e, job);
-		if (fd_redir(e, job) == -1)
-			exit(1);
 		execve(e->argv[0], e->argv, e->envp);
 		printf("%s: %s: %s\n", APP_NAME, e->argv[0], strerror(errno));
 		exit(127);
@@ -88,18 +90,17 @@ int	exec_run(t_exec *e)
 	int		idx;
 	pid_t	last;
 
-	fprintf(stderr, "%sjobs: %p%s\n", DCOLOR, e->jobs, DEFAULT);
-
 	fprintf(stderr, "%scommands count: %d%s\n", DCOLOR, e->count, DEFAULT);
 	e->fd = prepare_pipes(e->count - 1);
 	i = 0;
 	while (i < e->count)
 	{
-		fprintf(stderr, "%sjobs: %p%s\n", DCOLOR, e->jobs, DEFAULT);
 		e->argc = e->jobs[i]->argc;
 		e->argv = e->jobs[i]->argv;
 		fprintf(stderr, "%sargv: %p%s\n", DCOLOR, e->argv, DEFAULT);
-		idx = match_builtin(e->argv[0]);
+		idx = -1;
+		if (e->argv)
+			idx = match_builtin(e->argv[0]);
 		fprintf(stderr, "%sstart job: %d / %d, %s%s\n", CYAN, i, e->count - 1, idx == -1 ? "[ ] builtin command" : "[x] builtin command", DEFAULT);
 		if (idx != -1)
 			pid = exec_builtins(e, idx, i);
