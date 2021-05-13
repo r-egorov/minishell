@@ -79,20 +79,24 @@ int	exec_builtin_cd(t_exec *e)
 	{
 		printf("%s: %s: %s\n", APP_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_TOO_MANY_ARGS);
 		process_error();
-		return (FAIL);
+		return (1);
 	}
 	if (e->argv[1])
 		path = e->argv[1];
 	else
 		path = getenv("HOME");
  	if (!path)
-		return (0);
+	{
+		printf("%s: %s: %s\n", APP_NAME, BUILTIN_CD_NAME, ERR_EXEC_CD_HOME_NOT_SET);
+		return (1);
+	}
+	//oldpwd = getenv("PWD");
 	oldpwd = getcwd(0, 0);
 	fprintf(stderr, "%soldpwd: %s%s\n", BLT_COLOR, oldpwd, DEFAULT);
 	if (!oldpwd)
 	{
 		process_error();
-		return (FAIL);
+		return (1);
 	}
 	result = -1;
 	dest = make_path(oldpwd, path);

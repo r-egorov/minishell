@@ -42,6 +42,7 @@
 # define ERR_EXEC_UNSET_INVALID_ID	"not a valid identifier"
 # define ERR_COMMAND_NOT_FOUND		"command not found"
 # define ERR_IS_A_DIRECTORY			"is a directory"
+# define ERR_EXEC_CD_HOME_NOT_SET	"HOME not set"
 
 typedef enum	e_op {
 	READ,
