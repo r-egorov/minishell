@@ -6,58 +6,36 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:06:56 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 14:06:57 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/14 18:13:43 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static char	*find(char **arr, char *key)
+char	*find(char **arr, char *key)
 {
 	int		i;
 	char	*match;
 
-	// if (ft_strchr(key, '='))
-	// 	return (0);
+	if (ft_strchr(key, '='))
+		return (0);
 	i = 0;
 	while (arr[i])
 	{
 		match = ft_strnstr(arr[i], key, ft_strlen(key));
-		if (match == arr[i] && (arr[i][ft_strlen(key)] == '=' || arr[i][ft_strlen(key)] == '\0'))
-		{
-			//printf("[env find] found key %s : %s\n", key, match);
+		if (match == arr[i] && (arr[i][ft_strlen(key)] == '=' \
+									|| arr[i][ft_strlen(key)] == '\0'))
 			return (match);
-		}
 		i++;
 	}
 	return (0);
 }
 
-static void	copy_arr_ex(char **dst, char **src, char *s)
-{
-	int	from;
-	int	to;
-
-	from = 0;
-	to = 0;
-	while (src[from])
-	{
-		if (src[from] != s)
-		{
-			dst[to] = src[from];
-			to++;
-		}
-		from++;
-	}
-	dst[to] = src[from];
-}
-
-static int	env_update3(char **arr, char *elem, char *text)
+static int	env_update(char **arr, char *elem, char *text)
 {
 	int		i;
 	char	*value;
 
-	// printf("%s[env update3] elem : %p : %s%s\n", DCOLOR, elem, elem, DEFAULT);
 	value = get_value(text);
 	if (!value)
 		return (0);
@@ -69,6 +47,7 @@ static int	env_update3(char **arr, char *elem, char *text)
 		{
 			free(arr[i]);
 			arr[i] = ft_strdup(text);
+			// arr[i] = ft_strjoin(get(keytext);
 			if (!arr[i])
 				process_syserror();
 			break ;
@@ -77,13 +56,37 @@ static int	env_update3(char **arr, char *elem, char *text)
 	}
 	return (0);
 }
+/*
+char	*get_new_text(char *text)
+{
+	char		*key;
+	char		*value;
+	t_exp_op	op;
+	char		*result;
 
+	key = get_key(text);
+	value = get_value(text);
+	op = get_operation(text);
+	if (!value)
+		return (key);
+	result = ft_strjoin(key, "=");
+	if (!result)
+		process_syserror();
+	free(key);
+	key = ft_strjoin(result, value);
+	if (!key)
+		process_syserror();
+	free(value);
+	return (key);
+}
+*/
 char	**env_add(char **arr, char *text)
 {
-	int		count;
-	char	**result;
-	char	*elem;
-	char	*key;
+	int			count;
+	char		**result;
+	char		*elem;
+	char		*key;
+	// t_exp_op	op;
 
 	result = arr;
 	key = get_key(text);
@@ -93,10 +96,11 @@ char	**env_add(char **arr, char *text)
 		perr(BLTN_EXPORT_NAME, text, ERR_INVALID_ID, 0);
 		return (0);
 	}
+	// op = get_operation(text);
 	elem = find(arr, key);
 	free(key);
 	if (elem)
-		env_update3(arr, elem, text);
+		env_update(arr, elem, text);
 	else
 	{
 		count = get_count(arr) + 1;
@@ -105,10 +109,12 @@ char	**env_add(char **arr, char *text)
 			process_syserror();
 		copy_arr_ex(result, arr, NULL);
 		result[count - 1] = ft_strdup(text);
+		// result[count - 1] = ft_strjoin(get_key(text), get_value(text));
 		if (!result[count - 1])
 			process_syserror();
 		result[count] = 0;
 	}
+	// free(key);
 	return (result);
 }
 

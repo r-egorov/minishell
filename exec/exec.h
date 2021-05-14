@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 12:52:27 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/14 18:07:51 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define BLTN_EXIT_NAME				"exit"
 # define BLTN_ECHO_NAME				"echo"
 # define BLTN_ENV_NAME				"env"
+# define BLTN_PWD_NAME				"pwd"
 
 # define ERR_TOO_MANY_ARGS			"too many arguments"
 # define ERR_INVALID_ID				"not a valid identifier"
@@ -49,11 +50,18 @@
 # define ERR_CD_HOME_NOT_SET		"HOME not set"
 # define ERR_NUMERIC_REQ			"numeric argument required"
 
-typedef enum	e_op {
+
+typedef enum e_op {
 	READ,
 	WRITE,
 	APPEND
-}				t_op;
+}			t_op;
+
+typedef enum e_exp_op {
+	EXPORT_NOOP,
+	EXPORT_UPDATE,
+	EXPORT_JOIN
+}			t_exp_op;
 
 typedef struct s_exec {
 	int		argc;
@@ -72,11 +80,15 @@ typedef struct s_exec {
 	char	*pwd;
 }				t_exec;
 
+typedef int (*t_bltn)(t_exec*);
+
 void	exec_init(t_parser *p, t_exec *e);
 int		exec_run(t_exec *e);
+
 char	**env_add(char **arr, char *key);
 char	**env_remove(char **arr, char *key);
-int		env_update(char **arr, char *key, char *value);
+//int		env_update(char **arr, char *key, char *value);
+char	*find(char **arr, char *key);
 
 char	*get_key(char *s);
 char	*get_value(char *s);
@@ -93,6 +105,7 @@ int		eq(const char *s1, const char *s2);
 void	free_split(char **s);
 char	**get_copy_arr(char **arr);
 char	**sort_str_array(char **arr);
+void	copy_arr_ex(char **dst, char **src, char *s);
 
 int		find_command(char **s);
 int		is_directory(char *path);

@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   utils_part2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 16:11:36 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/14 18:14:55 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/05/14 20:05:53 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/05/14 20:06:06 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_builtin_env(t_exec *e)
+void	copy_arr_ex(char **dst, char **src, char *s)
 {
-	int		i;
-	char	*value;
+	int	from;
+	int	to;
 
-	if (!e->envp)
-		return (0);
-	i = 0;
-	while (e->envp[i])
+	from = 0;
+	to = 0;
+	while (src[from])
 	{
-		value = get_value(e->envp[i]);
-		if (value)
+		if (src[from] != s)
 		{
-			free(value);
-			printf("%s\n", e->envp[i]);
+			dst[to] = src[from];
+			to++;
 		}
-		i++;
+		from++;
 	}
-	return (0);
+	dst[to] = src[from];
 }

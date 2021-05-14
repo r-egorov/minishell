@@ -16,18 +16,40 @@ char	*get_key(char *s)
 {
 	char	*ptr;
 	char	*key;
+	char	c;
 
 	if (ft_strlen(s) == 0)
 		return (0);
 	ptr = ft_strchr(s, '=');
 	if (ptr)
+	{
+		if (ptr != s && *(ptr - 1) == '+')
+			ptr = ptr - 1;
+		c = *ptr;
 		*ptr = '\0';
+	}
 	key = ft_strdup(s);
 	if (!key)
 		process_syserror();
 	if (ptr)
-		*ptr = '=';
+		*ptr = c;
 	return (key);
+}
+
+t_exp_op	get_operation(char *s)
+{
+	char	*ptr;
+
+	if (ft_strlen(s) == 0)
+		return (EXPORT_NOOP);
+	ptr = ft_strchr(s, '=');
+	if (!ptr)
+		return (EXPORT_NOOP);
+	if (ptr != s && *(ptr - 1) == '+')
+	// if (ptr)
+		// if (ptr != s && *(ptr - 1) == '+')
+			return (EXPORT_JOIN);
+	return (EXPORT_UPDATE);
 }
 
 char	*get_value(char *s)

@@ -67,6 +67,7 @@ static int	print_all_and_free(char **arr)
 	i = 0;
 	while (arr[i])
 	{
+		fprintf(stderr, "%s%s%s\n", DCOLOR, arr[i], DEFAULT);
 		key = get_key(arr[i]);
 		if (!key)
 			process_syserror();

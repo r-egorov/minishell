@@ -6,18 +6,20 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 12:34:59 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/30 13:19:04 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/14 20:02:22 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static char	*cut_last_dir(char *s)
+static char	*cut_last_dir(char *s, const char *part2)
 {
 	char	*result;
 	char	*ptr;
 
 	result = 0;
+	if (!eq(part2, ".."))
+		return (0);
 	ptr = 0;
 	ptr = ft_strrchr(s, '/');
 	if (ptr)
@@ -47,9 +49,8 @@ static char	*make_path(char *part1, char *part2)
 	}
 	else
 	{
-		if (eq(part2, ".."))
-			result = cut_last_dir(part1);
-		else
+		result = cut_last_dir(part1, part2);
+		if (!result)
 		{
 			tmp = ft_strjoin(part1, "/");
 			if (!tmp)
@@ -63,14 +64,25 @@ static char	*make_path(char *part1, char *part2)
 	return (result);
 }
 
-static void	update_env_vars(t_exec *e)
+static void	update_pwd_variable(t_exec *e)
 {
 	char	*pwd;
+
+	pwd = getcwd(0, 0);
+	if (pwd)
+	{
+		free(e->pwd);
+		e->pwd = pwd;
+	}
+}
+
+static void	update_env_vars(t_exec *e)
+{
 	char	*text;
 
-	if (getenv("OLDPWD"))
+	if (find(e->envp, "OLDPWD"))
 	{
-		if (getenv("PWD"))
+		if (find(e->envp, "PWD"))
 			text = ft_strjoin("OLDPWD=", getenv("PWD"));
 		else
 			text = ft_strjoin("OLDPWD=", e->pwd);
@@ -79,13 +91,8 @@ static void	update_env_vars(t_exec *e)
 		env_add(e->envp, text);
 		free(text);
 	}
-	pwd = getcwd(0, 0);
-	if (pwd)
-	{
-		free(e->pwd);
-		e->pwd = pwd;
-	}
-	if (getenv("PWD"))
+	update_pwd_variable(e);
+	if (find(e->envp, "PWD"))
 	{
 		text = ft_strjoin("PWD=", e->pwd);
 		if (!text)
@@ -116,5 +123,5 @@ int	exec_builtin_cd(t_exec *e)
 	}
 	update_env_vars(e);
 	free(dest);
-	return (OK);
+	return (0);
 }

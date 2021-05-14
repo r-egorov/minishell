@@ -11,7 +11,7 @@ int	is_directory(char *path)
 	return (FAIL);
 }
 
-static char *get_fullpath(char **parts, char *name)
+static char	*get_fullpath(char **parts, char *name)
 {
 	int			i;
 	char		*result;
@@ -65,23 +65,9 @@ char	*get_pwd(t_exec *e)
 {
 	char	*result;
 
-	// result = getenv("PWD");
-	// if (result)
-	// {
-	// 	result = ft_strdup(result);
-	// 	if (!result)
-	// 		process_syserror();
-	// 	return (result);
-	// }
 	result = getcwd(0, 0);
 	if (result)
 		return (result);
 	perr("getcwd", "cannot access parent directories", strerror(errno), 1);
-	return(e->pwd);
-	// if (!e->pwd)
-	// 	return (0);
-	// result = ft_strdup(e->pwd);
-	// if (!result)
-	// 	process_syserror();
-	// return (result);
+	return (e->pwd);
 }

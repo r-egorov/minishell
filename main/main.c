@@ -84,6 +84,7 @@ int		main(int argc, char** argv, char **envp)
 
 	minishell_init(&ex);
 	cli_init(&cli);
+	
 
 	(void)argc;
 	(void)argv;

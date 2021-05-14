@@ -28,26 +28,22 @@ int	get_status_code(pid_t last)
 	code = last;
 	if (last == -1)
 		return (1);
-    while (1) {
-        pid = wait(&status);
-        if (pid <= 0)
-			break;
-		// fprintf(stderr, "%s[fork] process %d finished, status code : %d, errno : %d%s\n", DCOLOR, pid, status, errno, DEFAULT);
+	while (1)
+	{
+		pid = wait(&status);
+		if (pid <= 0)
+			break ;
 		if (WIFEXITED(status))
-		{
 			status = WEXITSTATUS(status);
-			// fprintf(stderr, "%s[fork] process %d WEXITSTATUS(status) : %d, errno : %d%s\n", DCOLOR, pid, code, errno, DEFAULT);
-		}
 		else
 		{
 			status = WTERMSIG(status) + 128;
 			if (status == 131)
 				ft_putstr_fd("Quit: 3\n", 2);
-			// fprintf(stderr, "%s[fork]process %d WTERMSIG(status) : %d, errno : %d%s\n", DCOLOR, pid, code, errno, DEFAULT);
 		}
-        if (pid == last)
+		if (pid == last)
 			code = status;
-    }
+	}
 	return (code);
 }
 
@@ -66,7 +62,8 @@ pid_t	exec_command(t_exec *e, int job)
 			exit(1);
 		if (!e->argv)
 			exit(0);
-		if (getenv("PATH") && find_command(&e->argv[0]) == FAIL)
+		if (getenv("PATH") && ft_strlen(getenv("PATH")) > 0 \
+							&& find_command(&e->argv[0]) == FAIL)
 			exit(perr(e->argv[0], 0, ERR_COMMAND_NOT_FOUND, 127));
 		if (is_directory(e->argv[0]))
 			exit(perr(e->argv[0], 0, ERR_IS_A_DIRECTORY, 126));
@@ -85,19 +82,15 @@ int	exec_run(t_exec *e)
 	int		idx;
 	pid_t	last;
 
-	// fprintf(stderr, "%scommands count: %d%s\n", DCOLOR, e->count, DEFAULT);
-	// fprintf(stderr, "%se->pwd : %s%s\n", DCOLOR, e->pwd, DEFAULT);
 	e->fd = create_pipes(e->count - 1);
 	i = 0;
 	while (i < e->count)
 	{
 		e->argc = e->jobs[i]->argc;
 		e->argv = e->jobs[i]->argv;
-		// fprintf(stderr, "%sargv: %p%s\n", DCOLOR, e->argv, DEFAULT);
 		idx = -1;
 		if (e->argv)
 			idx = match_builtin(e->argv[0]);
-		// fprintf(stderr, "%sstart job: %d / %d, %s%s\n", CYAN, i, e->count - 1, idx == -1 ? "[ ] builtin command" : "[x] builtin command", DEFAULT);
 		if (idx != -1)
 			pid = exec_builtins(e, idx, i);
 		else
@@ -107,7 +100,5 @@ int	exec_run(t_exec *e)
 	last = pid;
 	free_pipes(e->fd);
 	e->status = get_status_code(last);
-	// fprintf(stderr, "%sStatus code is : %d%s\n", DCOLOR, e->status, DEFAULT);
 	return (0);
 }
-
