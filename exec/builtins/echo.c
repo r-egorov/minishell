@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 12:11:03 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/07 12:11:07 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/14 15:05:17 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	write_arr(char **arr, char *sep)
 
 int	exec_builtin_echo(t_exec *e)
 {
-	int		nl;
+	int	nl;
 
 	nl = 0;
 	if (e->argc >= 2)
@@ -33,10 +33,10 @@ int	exec_builtin_echo(t_exec *e)
 		if (eq(e->argv[1], "-n"))
 			nl = 1;
 		if (write_arr(e->argv + 1 + nl, "") == -1)
-			return (FAIL);
+			return (1);
 	}
 	if (!nl)
 		if (write(1, "\n", 1) == -1)
-			return (FAIL);
-	return (OK);
+			return (1);
+	return (0);
 }

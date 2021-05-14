@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 15:40:06 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/22 16:13:39 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/14 16:17:57 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,18 @@ int	get_count(char **arr)
 	return (i);
 }
 
-void	print_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		//printf("[%d]: %s\n", i, arr[i]);
-		printf("%s\n", arr[i]);
-		i++;
-	}
-}
-
 int	eq(const char *s1, const char *s2)
 {
 	int	len;
 
+	if (!s1 && !s2)
+		return (OK);
 	if (!s1 || !s2)
 		return (FAIL);
-	len = ft_strlen(s1) > ft_strlen(s2) ? ft_strlen(s1) : ft_strlen(s2);
+	if (ft_strlen(s1) > ft_strlen(s2))
+		len = ft_strlen(s1);
+	else
+		len = ft_strlen(s2);
 	if (ft_strncmp(s1, s2, len) == 0)
 		return (OK);
 	return (FAIL);
@@ -77,7 +69,7 @@ char	**get_copy_arr(char **arr)
 	return (result);
 }
 
-void	sort_str_array(char **arr)
+char	**sort_str_array(char **arr)
 {
 	int		i;
 	int		j;
@@ -101,5 +93,5 @@ void	sort_str_array(char **arr)
 		}
 		i++;
 	}
+	return (arr);
 }
-

@@ -17,8 +17,8 @@ static char	*find(char **arr, char *key)
 	int		i;
 	char	*match;
 
-	if (ft_strchr(key, '='))
-		return (0);
+	// if (ft_strchr(key, '='))
+	// 	return (0);
 	i = 0;
 	while (arr[i])
 	{
@@ -86,10 +86,8 @@ char	**env_add(char **arr, char *text)
 	char	*key;
 
 	result = arr;
-	// fprintf(stderr, "%sgot text: %s%s\n", DCOLOR, text, DEFAULT);
 	key = get_key(text);
-	// fprintf(stderr, "%sfound key: %s%s\n", DCOLOR, key, DEFAULT);
-	if (!key || is_valid_key(key) == FAIL)
+	if (!key || !is_valid_key(key))
 	{
 		free(key);
 		perr(BLTN_EXPORT_NAME, text, ERR_INVALID_ID, 0);
@@ -100,12 +98,12 @@ char	**env_add(char **arr, char *text)
 	if (elem)
 		env_update3(arr, elem, text);
 	else
-	{	// add
+	{
 		count = get_count(arr) + 1;
 		result = malloc(sizeof(*result) * (count + 1));
 		if (!result)
 			process_syserror();
-		copy_arr_ex(result, arr, NULL); // replace with memcpy?
+		copy_arr_ex(result, arr, NULL);
 		result[count - 1] = ft_strdup(text);
 		if (!result[count - 1])
 			process_syserror();
@@ -121,7 +119,6 @@ char	**env_remove(char **arr, char *key)
 	char	*elem;
 
 	elem = find(arr, key);
-	//printf("[env remove] found elem: %p : %s\n", elem, elem);
 	if (!elem)
 		return (0);
 	count = get_count(arr) - 1;
@@ -131,6 +128,5 @@ char	**env_remove(char **arr, char *key)
 	copy_arr_ex(result, arr, elem);
 	result[count] = 0;
 	free(elem);
-	//printf("[env remove] elem removed\n");
 	return (result);
 }

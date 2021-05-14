@@ -16,7 +16,7 @@ static char	*cut_last_dir(char *s)
 {
 	char	*result;
 	char	*ptr;
-	
+
 	result = 0;
 	ptr = 0;
 	ptr = ft_strrchr(s, '/');
@@ -44,7 +44,6 @@ static char	*make_path(char *part1, char *part2)
 		result = ft_strdup(part2);
 		if (!result)
 			process_syserror();
-		// fprintf(stderr, "%sabsolute path: %s%s\n", BLT_COLOR, result, DEFAULT);
 	}
 	else
 	{
@@ -60,7 +59,6 @@ static char	*make_path(char *part1, char *part2)
 			if (!result)
 				process_syserror();
 		}
-		// fprintf(stderr, "%srelative path: %s%s\n", BLT_COLOR, result, DEFAULT);
 	}
 	return (result);
 }
@@ -107,9 +105,8 @@ int	exec_builtin_cd(t_exec *e)
 		path = e->argv[1];
 	else
 		path = getenv("HOME");
- 	if (!path)
+	if (!path)
 		return (perr(BLTN_CD_NAME, NULL, ERR_CD_HOME_NOT_SET, 1));
-	// fprintf(stderr, "%soldpwd: %s%s\n", BLT_COLOR, e->pwd, DEFAULT);
 	dest = make_path(e->pwd, path);
 	result = chdir(dest);
 	if (result == -1)

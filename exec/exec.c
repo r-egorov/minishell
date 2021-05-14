@@ -71,6 +71,8 @@ pid_t	exec_command(t_exec *e, int job)
 		if (is_directory(e->argv[0]))
 			exit(perr(e->argv[0], 0, ERR_IS_A_DIRECTORY, 126));
 		execve(e->argv[0], e->argv, e->envp);
+		if (errno == 13)
+			exit(perr(e->argv[0], 0, strerror(errno), 126));
 		exit(perr(e->argv[0], 0, strerror(errno), 127));
 	}
 	return (pid);

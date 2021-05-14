@@ -6,7 +6,6 @@ int	is_directory(char *path)
 
 	if (stat(path, &sb) == -1)
 		return (FAIL);
-	// fprintf(stderr, "%sst_mode: %d & IFMT: %d ==> %d | %d <== is Directory (S_IFDIR)%s\n", DCOLOR, sb.st_mode, S_IFMT, sb.st_mode & S_IFMT, S_IFDIR, DEFAULT);
 	if ((sb.st_mode & S_IFMT) == S_IFDIR)
 		return (OK);
 	return (FAIL);

@@ -20,11 +20,7 @@
 # include <sys/wait.h>
 # include "minishell.h"
 # include <sys/stat.h>
-//# include <stdarg.h>
 # include <fcntl.h>
-
-# define FAIL		0
-# define OK			1
 
 # define RED		"\033[0;31m"
 # define GREEN		"\033[0;32m"
@@ -37,6 +33,7 @@
 # define PCOLOR		GREEN
 
 # define EXPORT_PREFIX				"declare -x "
+# define SCREEN_SYMBOLS				"$\\\'\""
 
 # define BLTN_CD_NAME				"cd"
 # define BLTN_EXPORT_NAME			"export"
@@ -92,11 +89,10 @@ void	free_pipes(int **fd);
 int		fd_redir(t_exec *e, int job);
 
 int		get_count(char **arr);
-void	print_arr(char **arr);
 int		eq(const char *s1, const char *s2);
 void	free_split(char **s);
 char	**get_copy_arr(char **arr);
-void	sort_str_array(char **arr);
+char	**sort_str_array(char **arr);
 
 int		find_command(char **s);
 int		is_directory(char *path);

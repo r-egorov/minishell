@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 09:44:17 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/14 09:44:53 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/14 16:39:43 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	exec_builtin_exit(t_exec *e)
 	if (!e->argv[1])
 		exit(e->status);
 	if (!is_digits_only(e->argv[1]))
-		exit(perr(BLTN_EXIT_NAME, e->argv[1], ERR_NUMERIC_REQ, 2));
+		exit(perr(BLTN_EXIT_NAME, e->argv[1], ERR_NUMERIC_REQ, 255));
 	if (e->argv[2])
 		return (perr(BLTN_EXIT_NAME, 0, ERR_TOO_MANY_ARGS, 1));
 	exit((unsigned int)ft_atoi(e->argv[1]));
