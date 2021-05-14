@@ -30,7 +30,6 @@ int	minishell_init(t_exec *e)
 		result[i] = ft_strdup(environ[i]);
 		if (!result[i])
 		{
-			// error
 			free_split(result);
 			process_syserror();
 		}
@@ -40,6 +39,7 @@ int	minishell_init(t_exec *e)
 	e->environ_orig = environ;
 	e->envp = result;
 	environ = result;
+	e->pwd = get_pwd(e);
 	return (1);
 }
 

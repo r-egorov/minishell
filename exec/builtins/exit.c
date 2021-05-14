@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/14 09:44:17 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/05/14 09:44:53 by lelderbe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exec.h"
 
 static int	is_digits_only(const char *s)
@@ -7,7 +19,7 @@ static int	is_digits_only(const char *s)
 	if (!(*s == '+' || *s == '-' || ft_isdigit(*s)))
 		return (0);
 	s++;
-	while(*s)
+	while (*s)
 	{
 		if (!ft_isdigit(*s))
 			return (0);

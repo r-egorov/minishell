@@ -40,11 +40,9 @@ char	*get_value(char *s)
 	ptr = ft_strchr(s, '=');
 	if (!ptr)
 		return (0);
-	*ptr = '\0';
 	value = ft_strdup(ptr + 1);
 	if (!value)
 		process_syserror();
-	*ptr = '=';
 	return (value);
 }
 

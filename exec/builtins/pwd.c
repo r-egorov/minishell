@@ -14,13 +14,14 @@
 
 int	exec_builtin_pwd(t_exec *e)
 {
-	char	*pwd;
+	// char	*pwd;
 
-	(void)e;
 	//printf("[exec builtin pwd]\n");
-	pwd = getcwd(0, 0);
-	if (pwd)
-		printf("%s\n", pwd);
-	free(pwd);
+	printf("%s\n", e->pwd);
 	return (0);
+	// pwd = getcwd(0, 0);
+	// if (pwd)
+	// 	printf("%s\n", pwd);
+	// free(pwd);
+	// return (0);
 }

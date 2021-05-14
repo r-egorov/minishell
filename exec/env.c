@@ -51,34 +51,13 @@ static void	copy_arr_ex(char **dst, char **src, char *s)
 	}
 	dst[to] = src[from];
 }
-/*
-static int	env_update2(char **arr, char *elem, char *text)
-{
-	int		i;
 
-	//printf("[env update2] elem : %p : %s\n", elem, elem);
-	i = 0;
-	while (arr[i])
-	{
-		if (arr[i] == elem)
-		{
-			free(arr[i]);
-			arr[i] = ft_strdup(text);
-			if (!arr[i])
-				process_syserror();
-			break ;
-		}
-		i++;
-	}
-	return (0);
-}
-*/
 static int	env_update3(char **arr, char *elem, char *text)
 {
 	int		i;
 	char	*value;
 
-	//printf("[env update2] elem : %p : %s\n", elem, elem);
+	// printf("%s[env update3] elem : %p : %s%s\n", DCOLOR, elem, elem, DEFAULT);
 	value = get_value(text);
 	if (!value)
 		return (0);
@@ -107,8 +86,9 @@ char	**env_add(char **arr, char *text)
 	char	*key;
 
 	result = arr;
+	// fprintf(stderr, "%sgot text: %s%s\n", DCOLOR, text, DEFAULT);
 	key = get_key(text);
-	fprintf(stderr, "%skey: %s%s\n", DCOLOR, key, DEFAULT);
+	// fprintf(stderr, "%sfound key: %s%s\n", DCOLOR, key, DEFAULT);
 	if (!key || is_valid_key(key) == FAIL)
 	{
 		free(key);

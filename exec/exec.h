@@ -72,6 +72,7 @@ typedef struct s_exec {
 	t_list	*redir_append;
 	int		**fd;
 	int		status;
+	char	*pwd;
 }				t_exec;
 
 void	exec_init(t_parser *p, t_exec *e);
@@ -99,6 +100,7 @@ void	sort_str_array(char **arr);
 
 int		find_command(char **s);
 int		is_directory(char *path);
+char	*get_pwd(t_exec *e);
 
 int		match_builtin(const char *s);
 int		exec_builtins(t_exec *e, int idx, int job);
