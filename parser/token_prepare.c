@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:51:38 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/14 16:41:35 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/14 17:49:19 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ static void	token_handle_dquotes(t_token *self, size_t *index, int exit_status)
 			i++;
 		}
 		else if (self->str[i] == '$' && self->str[i + 1]
-			&& (ft_isalnum(self->str[i + 1]) || self->str[i + 1] == '_'))
+			&& (ft_isalnum(self->str[i + 1]) || self->str[i + 1] == '_'
+				|| self->str[i + 1] == '?'))
 			token_expandvar(self, &i, exit_status);
 		else
 			i++;
@@ -124,7 +125,7 @@ void	token_prepare(t_token *self, int exit_status)
 			self->remove(self, i++);
 		else if (self->str[i] == '$' && self->str[i + 1]
 			&& (ft_isalnum(self->str[i + 1]) || self->str[i + 1] == '_'
-				|| is_quotes(self->str[i + 1])))
+				|| self->str[i + 1] == '?' || is_quotes(self->str[i + 1])))
 			token_expandvar(self, &i, exit_status);
 		else if (self->str[i] == '\'')
 		{
