@@ -57,11 +57,16 @@ typedef enum e_op {
 	APPEND
 }			t_op;
 
-typedef enum e_exp_op {
+typedef enum e_ex_op {
 	EXPORT_NOOP,
 	EXPORT_UPDATE,
-	EXPORT_JOIN
-}			t_exp_op;
+	EXPORT_APPEND
+}			t_ex_op;
+
+typedef struct s_env {
+	char	*key;
+	char	*value;
+}			t_env;
 
 typedef struct s_exec {
 	int		argc;
@@ -78,21 +83,31 @@ typedef struct s_exec {
 	int		**fd;
 	int		status;
 	char	*pwd;
+	t_dlist	*env;
 }				t_exec;
 
 typedef int (*t_bltn)(t_exec*);
 
+void	free_env_content(void *content);
+char	*get_env(t_exec *e, char *key);
+int		put_env(t_exec *e, char *text);
+void	unset_env(t_exec *e, char *key);
+t_dlist	*find_by_key(t_dlist *lst, char *key);
+int		update_by_key(t_exec *e, char *key, char *value, t_ex_op op);
+
 void	exec_init(t_parser *p, t_exec *e);
 int		exec_run(t_exec *e);
+int		update_pwd(t_exec *e);
 
-char	**env_add(char **arr, char *key);
-char	**env_remove(char **arr, char *key);
-//int		env_update(char **arr, char *key, char *value);
-char	*find(char **arr, char *key);
+//char	**env_add(char **arr, char *key);
+//char	**env_remove(char **arr, char *key);
+//char	*find(char **arr, char *key);
 
 char	*get_key(char *s);
-char	*get_value(char *s);
-int		is_valid_key(char *key);
+t_ex_op	get_operation(const char *s);
+char	*get_value(const char *s);
+char    *get_text(const char *key, const char *value);
+int		is_valid_key(const char *key);
 
 int		**create_pipes(int n);
 void	pipes_redir(t_exec *e, int job);

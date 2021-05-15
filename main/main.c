@@ -14,33 +14,32 @@
 
 int	minishell_init(t_exec *e)
 {
-	extern char **environ;
-	int			count;
+	extern char	**environ;
 	int			i;
-	char		**result;
+	t_dlist		*lst;
+	t_env		*elem;
 
 	ft_bzero(e, sizeof(e));
-	count = get_count(environ);
-	result = malloc(sizeof(*result) * (count + 1));
-	if (!result)
-		process_syserror();
 	i = 0;
 	while (environ[i])
 	{
-		result[i] = ft_strdup(environ[i]);
-		if (!result[i])
-		{
-			free_split(result);
-			process_syserror();
-		}
+		put_env(e, environ[i]);
 		i++;
 	}
-	result[count] = 0;
-	e->environ_orig = environ;
-	e->envp = result;
-	environ = result;
-	e->pwd = get_pwd(e);
-	return (1);
+	update_pwd(e);
+	//e->pwd = get_pwd(e);
+	/*
+	lst = e->env;
+	while (lst)
+	{
+		elem = lst->content;
+		printf("%s%s=%s%s\n", ORANGE, elem->key, elem->value, DEFAULT);
+		lst = lst->next;
+	}
+	printf("key: PWD, value: %s\n", get_env(e, "PWD"));
+	printf("key: HOME, value: %s\n", get_env(e, "HOME"));
+	*/
+	return (0);
 }
 
 void	print_job(t_job *job)
@@ -116,7 +115,7 @@ int		main(int argc, char** argv, char **envp)
 				//printf("[main] PWD: %s\n", getenv("PWD"));
 				//printf("[main] AA: %s\n", getenv("AA"));
 				
-				environ = ex.envp;
+				//environ = ex.envp;
 				
 				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
 				//printf("[main] PWD: %s\n", getenv("PWD"));
@@ -128,6 +127,6 @@ int		main(int argc, char** argv, char **envp)
 	}
 	//printf("[main] end cli loop\n");
 	cli_del(&cli);
-	environ = ex.environ_orig;
+	//environ = ex.environ_orig;
 	return (0);
 }

@@ -14,21 +14,17 @@
 
 int	exec_builtin_env(t_exec *e)
 {
-	int		i;
 	char	*value;
+	t_dlist	*lst;
+	t_env	*content;
 
-	if (!e->envp)
-		return (0);
-	i = 0;
-	while (e->envp[i])
+	lst = e->env;
+	while (lst)
 	{
-		value = get_value(e->envp[i]);
-		if (value)
-		{
-			free(value);
-			printf("%s\n", e->envp[i]);
-		}
-		i++;
+		content = lst->content;
+		if (content->value)
+			printf("%s=%s\n", content->key, content->value);
+		lst = lst->next;
 	}
 	return (0);
 }

@@ -30,7 +30,7 @@ char	*find(char **arr, char *key)
 	}
 	return (0);
 }
-
+/*
 static int	env_update(char **arr, char *elem, char *text)
 {
 	int		i;
@@ -56,30 +56,8 @@ static int	env_update(char **arr, char *elem, char *text)
 	}
 	return (0);
 }
-/*
-char	*get_new_text(char *text)
-{
-	char		*key;
-	char		*value;
-	t_exp_op	op;
-	char		*result;
-
-	key = get_key(text);
-	value = get_value(text);
-	op = get_operation(text);
-	if (!value)
-		return (key);
-	result = ft_strjoin(key, "=");
-	if (!result)
-		process_syserror();
-	free(key);
-	key = ft_strjoin(result, value);
-	if (!key)
-		process_syserror();
-	free(value);
-	return (key);
-}
 */
+/*
 char	**env_add(char **arr, char *text)
 {
 	int			count;
@@ -136,3 +114,4 @@ char	**env_remove(char **arr, char *key)
 	free(elem);
 	return (result);
 }
+*/

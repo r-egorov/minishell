@@ -12,74 +12,210 @@
 
 #include "exec.h"
 
-char	*get_key(char *s)
+t_dlist	*find_by_key(t_dlist *lst, char *key)
 {
-	char	*ptr;
-	char	*key;
-	char	c;
+	t_env	*content;
 
-	if (ft_strlen(s) == 0)
-		return (0);
-	ptr = ft_strchr(s, '=');
-	if (ptr)
+	while (lst)
 	{
-		if (ptr != s && *(ptr - 1) == '+')
-			ptr = ptr - 1;
-		c = *ptr;
-		*ptr = '\0';
+		content = lst->content;
+		if (eq((content->key), key))
+			return (lst);
+		lst = lst->next;
 	}
-	key = ft_strdup(s);
-	if (!key)
+	return (0);
+}
+
+int	update_by_key(t_exec *e, char *key, char *value, t_ex_op op)
+{
+	t_dlist	*lst;
+	t_env	*content;
+	char	*tmp;
+
+	if (!key || !value)
+		return (0);
+	lst = find_by_key(e->env, key);
+	if (lst)
+	{
+		content = lst->content;
+		if (op == EXPORT_APPEND)
+		{
+			tmp = ft_strjoin(content->value, value);
+			if (!tmp)
+				process_syserror();
+			free(content->value);
+			content->value = tmp;
+			return (0);
+		}
+		free(content->value);
+		content->value = ft_strdup(value);
+		if (!content->value)
+			process_syserror();
+	}
+	return (0);
+}
+/*
+static t_env	*env_new(char *text)
+{
+	t_env	*result;
+
+	result = malloc(sizeof(*result));
+	if (!result)
+		process_error();
+	result->key = get_key(text);
+	if (!is_valid_key(result->key))
+	{
+		free(result->key);
+		free(result);
+		return (0);
+	}
+	result->value = get_value(text);
+	return (result);
+}
+*/
+/*
+static int	env_add(t_dlist **lst, char *text)
+{
+	t_env	*content;
+	t_dlist	*elem;
+	
+	content = env_new(text);
+	if (!content)
+		return (1);
+	elem = ft_dlstnew(content);
+	if (!elem)
 		process_syserror();
-	if (ptr)
-		*ptr = c;
-	return (key);
+	ft_dlstadd_back(lst, elem);
+	return (0);
+}
+*/
+void	free_env_content(void *content)
+{
+	t_env	*elem;
+
+	elem = content;
+	free(elem->key);
+	free(elem->value);
+	free(elem);
 }
 
-t_exp_op	get_operation(char *s)
+static t_env	*make_content(char *key, char *value)
 {
-	char	*ptr;
+	t_env	*result;
 
-	if (ft_strlen(s) == 0)
-		return (EXPORT_NOOP);
-	ptr = ft_strchr(s, '=');
-	if (!ptr)
-		return (EXPORT_NOOP);
-	if (ptr != s && *(ptr - 1) == '+')
-	// if (ptr)
-		// if (ptr != s && *(ptr - 1) == '+')
-			return (EXPORT_JOIN);
-	return (EXPORT_UPDATE);
+	result = malloc(sizeof(*result));
+	if (!result)
+		process_error();
+	result->key = ft_strdup(key);
+	if (!result->key)
+		process_syserror();
+	if (!value)
+		result->value = 0;
+	else
+	{
+		result->value = ft_strdup(value);
+		if (!result->value)
+			process_syserror();
+	}
+	return (result);
 }
 
-char	*get_value(char *s)
+int	add_by_key(t_exec *e, char *key, char *value)
 {
-	char	*ptr;
+	t_env	*content;
+	t_dlist	*elem;
+	
+	content = make_content(key, value);
+	if (!content)
+		return (1);
+	elem = ft_dlstnew(content);
+	if (!elem)
+		process_syserror();
+	ft_dlstadd_back(&e->env, elem);
+	return (0);
+}
+
+/*
+static int env_update(t_dlist *lst, char *text)
+{
+	t_env		*content;
+	t_ex_op	op;
+	char		*value;
+	char		*tmp;
+
+	content = lst->content;
+	value = get_value(text);
+	if (!value)
+		return (0);
+	op = get_operation(text);
+	if (op == EXPORT_APPEND)
+	{
+		tmp = ft_strjoin(content->value, value);
+		if (!tmp)
+			process_syserror();
+		free(value);
+		value = tmp;
+	}
+	free(content->value);
+	content->value = value;
+	return (0);
+}
+*/
+
+int	put_env(t_exec *e, char *text)
+{
+	t_dlist	*lst;
+	char	*key;
 	char	*value;
 
-	if (ft_strlen(s) == 0)
-		return (0);
-	ptr = ft_strchr(s, '=');
-	if (!ptr)
-		return (0);
-	value = ft_strdup(ptr + 1);
-	if (!value)
-		process_syserror();
-	return (value);
+	key = get_key(text);
+	if (!is_valid_key(key))
+	{
+		free(key);
+		return (1);
+	}
+	value = get_value(text);
+	lst = find_by_key(e->env, key);
+	if (lst)
+		//env_update(lst, text);
+		update_by_key(e, key, value, get_operation(text));
+	else
+		//env_add(&e->env, text);
+		add_by_key(e, key, value);
+	free(key);
+	free(value);
+	return (0);
 }
 
-int	is_valid_key(char *key)
+char	*get_env(t_exec *e, char *key)
 {
-	int		i;
+	t_dlist	*lst;
+	t_env	*content;
 
-	i = 0;
-	while (key[i])
+	lst = e->env;
+	while (lst)
 	{
-		if (i == 0 && ft_isdigit(key[i]))
-			return (FAIL);
-		if (!(ft_strchr("_", key[i]) || ft_isalnum(key[i])))
-			return (FAIL);
-		i++;
+		content = lst->content;
+		if (eq((content->key), key))
+			return (content->value);
+		lst = lst->next;
 	}
-	return (OK);
+	return (0);
+}
+
+void	unset_env(t_exec *e, char *key)
+{
+	t_dlist	*lst;
+	t_dlist	*head;
+
+	lst = find_by_key(e->env, key);
+	if (lst)
+	{
+		if (!lst->prev)
+			head = lst->next;
+		else
+			head = e->env;
+		ft_dlstdelone(lst, free_env_content);
+		e->env = head;
+	}
 }

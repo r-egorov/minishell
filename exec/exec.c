@@ -12,11 +12,38 @@
 
 #include "exec.h"
 
+static void	update_envp(t_exec *e)
+{
+	t_dlist	*lst;
+	int		count;
+	char	**arr;
+	int		i;
+	t_env	*content;
+
+	lst = e->env;
+	count = ft_dlstsize(lst);
+	arr = malloc(sizeof(*arr) * (count + 1));
+	if (!arr)
+		process_syserror();
+	i = 0;
+	while (lst)
+	{
+		content = lst->content;
+		arr[i] = get_text(content->key, content->value);
+		i++;
+		lst = lst->next;
+	}
+	arr[i] = 0;
+	free_split(e->envp);
+	e->envp = arr;
+}
+
 void	exec_init(t_parser *p, t_exec *e)
 {
 	e->jobs = p->jobs;
 	e->count = (int)p->jobs_len;
 	e->fd = 0;
+	update_envp(e);
 }
 
 int	get_status_code(pid_t last)

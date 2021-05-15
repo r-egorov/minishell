@@ -58,7 +58,7 @@ static char	*screen_special_chars(char *s)
 	return (tmp);
 }
 
-static int	print_all_and_free(char **arr)
+static int	print_all_and_free(t_exec *e, char **arr)
 {
 	int		i;
 	char	*key;
@@ -67,12 +67,11 @@ static int	print_all_and_free(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		fprintf(stderr, "%s%s%s\n", DCOLOR, arr[i], DEFAULT);
 		key = get_key(arr[i]);
 		if (!key)
 			process_syserror();
 		printf("%s%s", EXPORT_PREFIX, key);
-		value = screen_special_chars(getenv(key));
+		value = screen_special_chars(get_env(e, key));
 		if (value)
 		{
 			printf("=\"%s\"", value);
@@ -82,32 +81,25 @@ static int	print_all_and_free(char **arr)
 		free(key);
 		i++;
 	}
-	free(arr);
+	//free(arr);
 	return (0);
 }
 
 int	exec_builtin_export(t_exec *e)
 {
-	extern char	**environ;
-	char		**tmp;
 	int			i;
 	int			code;
+	char		*key;
 
 	code = 0;
 	if (!e->argv[1])
-		return (print_all_and_free(sort_str_array(get_copy_arr(e->envp))));
+		return (print_all_and_free(e, sort_str_array(e->envp)));
+		//return (print_all_and_free(e, sort_str_array(get_copy_arr(e->envp))));
 	i = 1;
 	while (e->argv[i])
 	{
-		tmp = env_add(e->envp, e->argv[i]);
-		if (!tmp)
-			code = 1;
-		if (tmp && tmp != e->envp)
-		{
-			free(e->envp);
-			e->envp = tmp;
-			environ = tmp;
-		}
+		if (put_env(e, e->argv[i]))
+			code = perr(BLTN_EXPORT_NAME, e->argv[i], ERR_INVALID_ID, 1);
 		i++;
 	}
 	return (code);

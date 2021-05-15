@@ -71,3 +71,18 @@ char	*get_pwd(t_exec *e)
 	perr("getcwd", "cannot access parent directories", strerror(errno), 1);
 	return (e->pwd);
 }
+
+int	update_pwd(t_exec *e)
+{
+	char	*pwd;
+
+	pwd = getcwd(0, 0);
+	if (pwd)
+	{
+		free(e->pwd);
+		e->pwd = pwd;
+		return (0);
+	}
+	else
+		return (perr("getcwd", "cannot access parent directories", strerror(errno), 1));
+}

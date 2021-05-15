@@ -64,42 +64,29 @@ static char	*make_path(char *part1, char *part2)
 	return (result);
 }
 
-static void	update_pwd_variable(t_exec *e)
+static void	update_env_vars(t_exec *e)
 {
+	char	*text;
 	char	*pwd;
 
+	if (find_by_key(e->env, "OLDPWD"))
+	{
+		if (find_by_key(e->env, "PWD"))
+			update_by_key(e, "OLDPWD", get_env(e, "PWD"), EXPORT_UPDATE);
+		else
+			update_by_key(e, "OLDPWD", e->pwd, EXPORT_UPDATE);
+	}
+	update_pwd(e);
+	/*
 	pwd = getcwd(0, 0);
 	if (pwd)
 	{
 		free(e->pwd);
 		e->pwd = pwd;
 	}
-}
-
-static void	update_env_vars(t_exec *e)
-{
-	char	*text;
-
-	if (find(e->envp, "OLDPWD"))
-	{
-		if (find(e->envp, "PWD"))
-			text = ft_strjoin("OLDPWD=", getenv("PWD"));
-		else
-			text = ft_strjoin("OLDPWD=", e->pwd);
-		if (!text)
-			process_syserror();
-		env_add(e->envp, text);
-		free(text);
-	}
-	update_pwd_variable(e);
-	if (find(e->envp, "PWD"))
-	{
-		text = ft_strjoin("PWD=", e->pwd);
-		if (!text)
-			process_syserror();
-		env_add(e->envp, text);
-		free(text);
-	}
+	*/
+	if (find_by_key(e->env, "PWD"))
+		update_by_key(e, "PWD", e->pwd, EXPORT_UPDATE);
 }
 
 int	exec_builtin_cd(t_exec *e)
@@ -111,7 +98,7 @@ int	exec_builtin_cd(t_exec *e)
 	if (e->argv[1])
 		path = e->argv[1];
 	else
-		path = getenv("HOME");
+		path = get_env(e, "HOME");
 	if (!path)
 		return (perr(BLTN_CD_NAME, NULL, ERR_CD_HOME_NOT_SET, 1));
 	dest = make_path(e->pwd, path);

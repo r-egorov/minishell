@@ -37,7 +37,7 @@ PARSE_SRCS	= parser.c token.c lexer.c lexer_get_token.c check_symbol.c lexer_quo
 PARSE_SRCS	:= $(addprefix ${PARSE_DIR}, ${PARSE_SRCS})
 
 EXEC_DIR	= exec/
-EXEC_SRCS	= exec.c env.c env_part2.c path.c utils.c utils_part2.c pipes.c redirects.c
+EXEC_SRCS	= exec.c env.c env_part2.c env_part3.c path.c utils.c utils_part2.c pipes.c redirects.c
 EXEC_SRCS	:= $(addprefix ${EXEC_DIR}, ${EXEC_SRCS})
 
 EXEC_BUILTIN_DIR	= exec/builtins/
@@ -62,7 +62,7 @@ CC			= gcc
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= #-Wall -Wextra -Werror
 
 %.o:		%.c 
 			${CC} ${CFLAGS} ${INCLUDES} -c $< -o ${<:.c=.o}

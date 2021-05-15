@@ -12,6 +12,7 @@
 
 #include "exec.h"
 
+/*
 int	exec_builtin_unset(t_exec *e)
 {
 	extern char	**environ;
@@ -35,6 +36,25 @@ int	exec_builtin_unset(t_exec *e)
 				environ = tmp;
 			}
 		}
+		i++;
+	}
+	return (code);
+}
+*/
+
+int	exec_builtin_unset(t_exec *e)
+{
+	int			i;
+	int			code;
+
+	code = 0;
+	i = 1;
+	while (e->argv[i])
+	{
+		if (!is_valid_key(e->argv[i]))
+			code = perr(BLTN_UNSET_NAME, e->argv[i], ERR_INVALID_ID, 1);
+		else
+			unset_env(e, e->argv[i]);
 		i++;
 	}
 	return (code);
