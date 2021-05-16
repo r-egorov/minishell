@@ -6,13 +6,13 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 14:57:11 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/11/05 11:42:58 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 15:52:15 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_tolower(int c)
+int	ft_tolower(int c)
 {
 	if (c >= 'A' && c <= 'Z')
 		c = c + 'a' - 'A';

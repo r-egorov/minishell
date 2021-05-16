@@ -6,20 +6,20 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 20:53:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/11/09 13:09:58 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 15:23:43 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int	result;
-	int sign;
+	int	sign;
 
 	result = 0;
 	sign = 1;
-	while (*str == ' ' || *str == '\n' || *str == '\t' ||
+	while (*str == ' ' || *str == '\n' || *str == '\t' || \
 			*str == '\v' || *str == '\f' || *str == '\r')
 	{
 		str++;

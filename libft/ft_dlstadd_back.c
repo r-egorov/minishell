@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 15:58:11 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/15 13:46:16 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 16:50:33 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_dlstadd_back(t_dlist **lst, t_dlist *new)
 {
-	t_dlist		*last;
+	t_dlist	*last;
 
 	if (lst && new)
 	{
@@ -23,7 +23,6 @@ void	ft_dlstadd_back(t_dlist **lst, t_dlist *new)
 			last = ft_dlstlast(*lst);
 			last->next = new;
 			new->prev = last;
-		
 		}
 		else
 			*lst = new;

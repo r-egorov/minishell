@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:29:05 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/11/09 12:41:28 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 15:42:43 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *)s);
 		s++;
 	}
-	return ((c == 0) ? (char *)s : 0);
+	if (c == 0)
+		return ((char *)s);
+	return (0);
 }

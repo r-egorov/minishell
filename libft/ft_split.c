@@ -6,16 +6,16 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 15:48:38 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/11/10 11:26:12 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 16:11:03 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static long	get_parts_count(char const *s, char c)
+static int	get_parts_count(char const *s, char c)
 {
-	long	count;
-	int		out;
+	int	count;
+	int	out;
 
 	count = 0;
 	out = 1;
@@ -35,7 +35,7 @@ static long	get_parts_count(char const *s, char c)
 
 static void	free_split(char **s)
 {
-	long	i;
+	int	i;
 
 	i = 0;
 	while (s[i])
@@ -46,29 +46,22 @@ static void	free_split(char **s)
 static char	*get_next_part(char const *s, char c)
 {
 	char	*result;
-	long	i;
+	int		i;
 
 	i = 0;
 	while (s[i] && s[i] != c)
 		i++;
-	result = (char *)malloc(sizeof(*result) * (i + 1));
+	result = malloc(sizeof(*result) * (i + 1));
 	if (!result)
 		return (0);
 	ft_strlcpy(result, s, i + 1);
 	return (result);
 }
 
-char		**ft_split(char const *s, char c)
+static int	fill_split(char **arr, char const *s, char c, int parts)
 {
-	char	**result;
-	long	parts;
-	long	part;
+	int	part;
 
-	if (!s)
-		return (0);
-	parts = get_parts_count(s, c);
-	if (!(result = (char **)ft_calloc(parts + 1, sizeof(*result))))
-		return (0);
 	part = 0;
 	while (part < parts)
 	{
@@ -76,13 +69,31 @@ char		**ft_split(char const *s, char c)
 			s++;
 		else
 		{
-			if (!(result[part] = get_next_part(s, c)))
-			{
-				free_split(result);
-				return (0);
-			}
-			s = s + ft_strlen(result[part++]);
+			arr[part] = get_next_part(s, c);
+			if (!arr[part])
+				return (-1);
+			s = s + ft_strlen(arr[part]);
+			part++;
 		}
+	}
+	return (0);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**result;
+	int		parts;
+
+	if (!s)
+		return (0);
+	parts = get_parts_count(s, c);
+	result = ft_calloc(parts + 1, sizeof(*result));
+	if (!result)
+		return (0);
+	if (fill_split(result, s, c, parts) == -1)
+	{
+		free_split(result);
+		return (0);
 	}
 	return (result);
 }

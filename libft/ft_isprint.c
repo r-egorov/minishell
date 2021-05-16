@@ -6,11 +6,11 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:21:07 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/12/15 14:35:24 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 15:24:52 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isprint(int c)
+int	ft_isprint(int c)
 {
 	return (c >= ' ' && c <= '~');
 }

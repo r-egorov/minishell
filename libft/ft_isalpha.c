@@ -6,11 +6,11 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:05:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/12/15 14:29:16 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 15:24:26 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isalpha(int c)
+int	ft_isalpha(int c)
 {
 	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }

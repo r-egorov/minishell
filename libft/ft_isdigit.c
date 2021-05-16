@@ -6,11 +6,11 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 17:01:39 by lelderbe          #+#    #+#             */
-/*   Updated: 2020/12/15 14:22:49 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 15:24:38 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isdigit(int c)
+int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }

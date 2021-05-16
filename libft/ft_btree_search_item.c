@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 12:23:35 by cisis             #+#    #+#             */
-/*   Updated: 2021/04/28 12:24:04 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 16:52:07 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*ft_btree_search_item(t_btree *root, void *data_ref,
 		int (*cmpf)(void *, void *))
 {
-	void *res;
+	void	*res;
 
 	res = 0;
 	if (root->left)

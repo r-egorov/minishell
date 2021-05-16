@@ -6,11 +6,11 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 16:10:43 by cisis             #+#    #+#             */
-/*   Updated: 2021/01/29 16:20:21 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 16:49:09 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	int		i;
 

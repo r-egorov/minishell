@@ -6,13 +6,13 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 15:42:41 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/16 14:43:27 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 16:49:50 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_dlstsize(t_dlist *lst)
+int	ft_dlstsize(t_dlist *lst)
 {
 	int	result;
 
