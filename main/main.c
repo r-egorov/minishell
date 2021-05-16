@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 12:49:34 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/13 11:25:31 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 18:36:17 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	minishell_init(t_exec *e)
 {
 	extern char	**environ;
 	int			i;
-	t_dlist		*lst;
-	t_env		*elem;
 
 	ft_bzero(e, sizeof(e));
 	i = 0;
@@ -27,18 +25,6 @@ int	minishell_init(t_exec *e)
 		i++;
 	}
 	update_pwd(e);
-	//e->pwd = get_pwd(e);
-	/*
-	lst = e->env;
-	while (lst)
-	{
-		elem = lst->content;
-		printf("%s%s=%s%s\n", ORANGE, elem->key, elem->value, DEFAULT);
-		lst = lst->next;
-	}
-	printf("key: PWD, value: %s\n", get_env(e, "PWD"));
-	printf("key: HOME, value: %s\n", get_env(e, "HOME"));
-	*/
 	return (0);
 }
 
@@ -55,42 +41,34 @@ void	print_job(t_job *job)
 	printf("======\nREDIR_IN\n");
 	while (list)
 	{
-		printf("|%s|\n", (char*)list->content);
+		printf("|%s|\n", (char *)list->content);
 		list = list->next;
 	}
 	list = job->redir_out;
 	printf("======\nREDIR_OUT\n");
 	while (list)
 	{
-		printf("|%s|\n", (char*)list->content);
+		printf("|%s|\n", (char *)list->content);
 		list = list->next;
 	}
 	list = job->redir_append;
 	printf("======\nREDIR_APPEND\n");
 	while (list)
 	{
-		printf("|%s|\n", (char*)list->content);
+		printf("|%s|\n", (char *)list->content);
 		list = list->next;
 	}
 }
 
-int		main(int argc, char** argv, char **envp)
+int	main(void)
 {
-	extern char **environ;
 	t_cli		cli;
 	t_parser	parser;
 	t_exec		ex;
 
 	minishell_init(&ex);
 	cli_init(&cli);
-	
-
-	(void)argc;
-	(void)argv;
-	(void)envp;
-
 	ignore_parent_sig();
-
 	while (cli_readline(&cli))
 	{
 		//printf("input = |%s|\nlen = %d\n", cli.line->str, cli.line->len);
@@ -110,23 +88,10 @@ int		main(int argc, char** argv, char **envp)
 				*/
 				exec_init(&parser, &ex);
 				exec_run(&ex);
-
-				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
-				//printf("[main] PWD: %s\n", getenv("PWD"));
-				//printf("[main] AA: %s\n", getenv("AA"));
-				
-				//environ = ex.envp;
-				
-				//printf("[main] envp | environ addr : %p | %p\n", ex.envp, environ);
-				//printf("[main] PWD: %s\n", getenv("PWD"));
-				//printf("[main] AA: %s\n", getenv("AA"));
 				parser_refresh(&parser, ex.status);
 			}
 		}
-		//printf("[main] end parser loop - next cli loop\n");
 	}
-	//printf("[main] end cli loop\n");
 	cli_del(&cli);
-	//environ = ex.environ_orig;
 	return (0);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/16 13:27:27 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/05/16 15:03:42 by lelderbe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exec.h"
 
 int	is_directory(char *path)
@@ -33,7 +45,7 @@ static char	*get_fullpath(char **parts, char *name)
 	return (result);
 }
 
-int	find_command(char **s)
+int	find_command(t_exec *e, char **s)
 {
 	char	*result;
 	char	*path;
@@ -42,7 +54,7 @@ int	find_command(char **s)
 
 	if (ft_strchr(*s, '/'))
 		return (OK);
-	path = getenv("PATH");
+	path = get_env(e, "PATH");
 	if (!path)
 		return (FAIL);
 	parts = ft_split(path, ':');
@@ -61,17 +73,6 @@ int	find_command(char **s)
 	return (OK);
 }
 
-char	*get_pwd(t_exec *e)
-{
-	char	*result;
-
-	result = getcwd(0, 0);
-	if (result)
-		return (result);
-	perr("getcwd", "cannot access parent directories", strerror(errno), 1);
-	return (e->pwd);
-}
-
 int	update_pwd(t_exec *e)
 {
 	char	*pwd;
@@ -84,5 +85,5 @@ int	update_pwd(t_exec *e)
 		return (0);
 	}
 	else
-		return (perr("getcwd", "cannot access parent directories", strerror(errno), 1));
+		return (perr("getcwd", ERR_GETCWD_NO_DIR, strerror(errno), 1));
 }

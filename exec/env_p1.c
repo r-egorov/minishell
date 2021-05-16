@@ -1,32 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_p1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 16:11:36 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/16 14:51:11 by lelderbe         ###   ########.fr       */
+/*   Created: 2021/04/19 17:06:56 by lelderbe          #+#    #+#             */
+/*   Updated: 2021/05/16 18:16:00 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_builtin_env(t_exec *e)
+char	*get_env(t_exec *e, char *key)
 {
 	t_dlist	*lst;
 	t_env	*content;
-	int		code;
 
-	code = 0;
 	lst = e->env;
 	while (lst)
 	{
 		content = lst->content;
-		if (content->value)
-			if (printf("%s=%s\n", content->key, content->value) == -1)
-				code = 1;
+		if (eq((content->key), key))
+			return (content->value);
 		lst = lst->next;
 	}
-	return (code);
+	return (0);
+}
+
+void	unset_env(t_exec *e, char *key)
+{
+	t_dlist	*lst;
+	t_dlist	*head;
+
+	lst = find_by_key(e->env, key);
+	if (lst)
+	{
+		if (!lst->prev)
+			head = lst->next;
+		else
+			head = e->env;
+		free(((t_env *)lst->content)->key);
+		free(((t_env *)lst->content)->value);
+		ft_dlstdelone(lst, free);
+		e->env = head;
+	}
 }

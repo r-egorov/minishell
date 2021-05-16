@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 10:46:18 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/13 12:27:40 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 18:33:07 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ void	sigint_handler(int sig)
 	exit(1);
 }
 
-void	restore_child_sig()
+void	restore_child_sig(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGTERM, SIG_DFL);
 }
 
-void	ignore_parent_sig()
+void	ignore_parent_sig(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

@@ -43,7 +43,7 @@ static int	fork_builtin(t_exec *e, int (*f)(t_exec*), int job)
 			exit(1);
 		exit(f(e));
 	}
-	return (0);
+	return (pid);
 }
 
 int	exec_builtins(t_exec *e, int idx, int job)

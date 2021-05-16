@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 16:23:50 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/04/28 13:03:28 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/16 18:32:28 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_dlist
 	struct s_dlist	*prev;
 }				t_dlist;
 
-typedef struct		s_btree
+typedef struct s_btree
 {
 	struct s_btree	*left;
 	struct s_btree	*right;
@@ -81,7 +81,7 @@ void			ft_lstadd_back(t_list **lst, t_list *new);
 void			ft_lstdelone(t_list *lst, void (*del)(void*));
 void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
-t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
+t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), \
 						void (*del)(void *));
 void			ft_dlstadd_back(t_dlist **lst, t_dlist *new);
 void			ft_dlstadd_front(t_dlist **lst, t_dlist *new);
@@ -95,11 +95,10 @@ t_btree			*ft_btree_create_node(void *item);
 void			ft_btree_apply_prefix(t_btree *root, void (*applyf)(void *));
 void			ft_btree_apply_infix(t_btree *root, void (*applyf)(void *));
 void			ft_btree_apply_suffix(t_btree *root, void (*applyf)(void *));
-void			ft_btree_insert_data(t_btree **root, void *item,
+void			ft_btree_insert_data(t_btree **root, void *item, \
 				int (*cmpf)(void *, void *));
-void			*ft_btree_search_item(t_btree *root, void *data_ref,
+void			*ft_btree_search_item(t_btree *root, void *data_ref, \
 				int (*cmpf)(void *, void *));
 void			ft_free_strs(char **strs);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:21:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/07 11:40:07 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/16 17:07:23 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ pid_t	exec_command(t_exec *e, int job)
 			exit(1);
 		if (!e->argv)
 			exit(0);
-		if (getenv("PATH") && ft_strlen(getenv("PATH")) > 0 \
-							&& find_command(&e->argv[0]) == FAIL)
+		if (get_env(e, "PATH") && ft_strlen(get_env(e, "PATH")) > 0 \
+							&& find_command(e, &e->argv[0]) == FAIL)
 			exit(perr(e->argv[0], 0, ERR_COMMAND_NOT_FOUND, 127));
 		if (is_directory(e->argv[0]))
 			exit(perr(e->argv[0], 0, ERR_IS_A_DIRECTORY, 126));
