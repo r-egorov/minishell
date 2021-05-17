@@ -65,7 +65,7 @@ int	get_status_code(pid_t last)
 		else
 		{
 			status = WTERMSIG(status) + 128;
-			if (status == 131)
+			if (pid == last && status == 131)
 				ft_putstr_fd("Quit: 3\n", 2);
 		}
 		if (pid == last)

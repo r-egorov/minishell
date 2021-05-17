@@ -79,26 +79,48 @@ static void	update_env_vars(t_exec *e)
 		update_by_key(e->env, "PWD", e->pwd, EXPORT_UPDATE);
 }
 
+static int	parse_arg(t_exec *e, char **path, int *run_pwd)
+{
+	*run_pwd = 0;
+	*path = get_env(e->env, "HOME");
+	if (!e->argv[1])
+	{
+		if (!*path)
+			return (perr(BLTN_CD_NAME, NULL, ERR_CD_HOME_NOT_SET, 1));
+	}
+	else
+	{
+		*path = e->argv[1];
+		if (eq(e->argv[1], "-"))
+		{
+			*path = get_env(e->env, "OLDPWD");
+			if (!*path)
+				return (perr(BLTN_CD_NAME, NULL, ERR_CD_OLDPWD_NOT_SET, 1));
+			*run_pwd = 1;
+		}
+	}
+	return (0);
+}
+
 int	exec_builtin_cd(t_exec *e)
 {
-	int		result;
+	int		code;
 	char	*path;
+	int		run_pwd;
 	char	*dest;
 
-	if (e->argv[1])
-		path = e->argv[1];
-	else
-		path = get_env(e->env, "HOME");
-	if (!path)
-		return (perr(BLTN_CD_NAME, NULL, ERR_CD_HOME_NOT_SET, 1));
+	code = parse_arg(e, &path, &run_pwd);
+	if (code)
+		return (code);
 	dest = make_path(e->pwd, path);
-	result = chdir(dest);
-	if (result == -1)
+	if (chdir(dest) == -1)
 	{
 		free(dest);
 		return (perr(BLTN_CD_NAME, path, strerror(errno), 1));
 	}
-	update_env_vars(e);
 	free(dest);
+	update_env_vars(e);
+	if (run_pwd)
+		return (exec_builtin_pwd(e));
 	return (0);
 }

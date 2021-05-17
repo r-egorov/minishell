@@ -47,6 +47,7 @@
 # define ERR_COMMAND_NOT_FOUND		"command not found"
 # define ERR_IS_A_DIRECTORY			"is a directory"
 # define ERR_CD_HOME_NOT_SET		"HOME not set"
+# define ERR_CD_OLDPWD_NOT_SET		"OLDPWD not set"
 # define ERR_NUMERIC_REQ			"numeric argument required"
 # define ERR_GETCWD_NO_DIR			"cannot access parent directories"
 
