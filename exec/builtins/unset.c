@@ -24,7 +24,7 @@ int	exec_builtin_unset(t_exec *e)
 		if (!is_valid_key(e->argv[i]))
 			code = perr(BLTN_UNSET_NAME, e->argv[i], ERR_INVALID_ID, 1);
 		else
-			unset_env(e, e->argv[i]);
+			unset_env(&e->env, e->argv[i]);
 		i++;
 	}
 	return (code);

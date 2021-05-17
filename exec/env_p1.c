@@ -12,12 +12,12 @@
 
 #include "exec.h"
 
-char	*get_env(t_exec *e, char *key)
+char	*get_env(t_dlist *lst, char *key)
 {
-	t_dlist	*lst;
+	//t_dlist	*lst;
 	t_env	*content;
 
-	lst = e->env;
+	//lst = e->env;
 	while (lst)
 	{
 		content = lst->content;
@@ -28,21 +28,25 @@ char	*get_env(t_exec *e, char *key)
 	return (0);
 }
 
-void	unset_env(t_exec *e, char *key)
+void	unset_env(t_dlist **lst, char *key)
 {
-	t_dlist	*lst;
+	t_dlist	*elem;
 	t_dlist	*head;
 
-	lst = find_by_key(e->env, key);
-	if (lst)
+	if (lst && *lst)
 	{
-		if (!lst->prev)
-			head = lst->next;
-		else
-			head = e->env;
-		free(((t_env *)lst->content)->key);
-		free(((t_env *)lst->content)->value);
-		ft_dlstdelone(lst, free);
-		e->env = head;
+		elem = find_by_key(*lst, key);
+		if (elem)
+		{
+			if (!elem->prev)
+				head = elem->next;
+			else
+				head = *lst;
+				// head = e->env;
+			free(((t_env *)elem->content)->key);
+			free(((t_env *)elem->content)->value);
+			ft_dlstdelone(elem, free);
+			*lst = head;
+		}
 	}
 }

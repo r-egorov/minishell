@@ -13,14 +13,15 @@
 #ifndef EXEC_H
 # define EXEC_H
 
-# include <stdio.h>
 # include "main.h"
+# include <stdio.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "minishell.h"
 # include <sys/stat.h>
 # include <fcntl.h>
+# include "env.h"
 
 # define RED		"\033[0;31m"
 # define GREEN		"\033[0;32m"
@@ -57,16 +58,16 @@ typedef enum e_op {
 	APPEND
 }			t_op;
 
-typedef enum e_ex_op {
-	EXPORT_NOOP,
-	EXPORT_UPDATE,
-	EXPORT_APPEND
-}			t_ex_op;
+// typedef enum e_ex_op {
+// 	EXPORT_NOOP,
+// 	EXPORT_UPDATE,
+// 	EXPORT_APPEND
+// }			t_ex_op;
 
-typedef struct s_env {
-	char	*key;
-	char	*value;
-}			t_env;
+// typedef struct s_env {
+// 	char	*key;
+// 	char	*value;
+// }			t_env;
 
 typedef struct s_exec {
 	int		argc;
@@ -85,11 +86,11 @@ typedef struct s_exec {
 
 typedef int (*t_bltn)(t_exec*);
 
-char	*get_env(t_exec *e, char *key);
-int		put_env(t_exec *e, char *text);
-void	unset_env(t_exec *e, char *key);
-t_dlist	*find_by_key(t_dlist *lst, char *key);
-int		update_by_key(t_exec *e, char *key, char *value, t_ex_op op);
+// char	*get_env(t_exec *e, char *key);
+// int		put_env(t_exec *e, char *text);
+// void	unset_env(t_exec *e, char *key);
+// t_dlist	*find_by_key(t_dlist *lst, char *key);
+// int		update_by_key(t_exec *e, char *key, char *value, t_ex_op op);
 
 void	exec_init(t_parser *p, t_exec *e);
 int		exec_run(t_exec *e);

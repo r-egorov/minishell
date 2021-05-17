@@ -74,7 +74,7 @@ static int	print_all(t_exec *e, char **arr)
 			process_syserror();
 		if (printf("%s%s", EXPORT_PREFIX, key) == -1)
 			code = 1;
-		value = screen_special_chars(get_env(e, key));
+		value = screen_special_chars(get_env(e->env, key));
 		if (value)
 		{
 			printf("=\"%s\"", value);
@@ -98,7 +98,7 @@ int	exec_builtin_export(t_exec *e)
 	i = 1;
 	while (e->argv[i])
 	{
-		if (put_env(e, e->argv[i]))
+		if (put_env(&e->env, e->argv[i]))
 			code = perr(BLTN_EXPORT_NAME, e->argv[i], ERR_INVALID_ID, 1);
 		i++;
 	}

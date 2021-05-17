@@ -89,7 +89,7 @@ pid_t	exec_command(t_exec *e, int job)
 			exit(1);
 		if (!e->argv)
 			exit(0);
-		if (get_env(e, "PATH") && ft_strlen(get_env(e, "PATH")) > 0 \
+		if (get_env(e->env, "PATH") && ft_strlen(get_env(e->env, "PATH")) > 0 \
 							&& find_command(e, &e->argv[0]) == FAIL)
 			exit(perr(e->argv[0], 0, ERR_COMMAND_NOT_FOUND, 127));
 		if (is_directory(e->argv[0]))

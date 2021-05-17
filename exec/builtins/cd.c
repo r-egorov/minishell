@@ -69,13 +69,13 @@ static void	update_env_vars(t_exec *e)
 	if (find_by_key(e->env, "OLDPWD"))
 	{
 		if (find_by_key(e->env, "PWD"))
-			update_by_key(e, "OLDPWD", get_env(e, "PWD"), EXPORT_UPDATE);
+			update_by_key(e->env, "OLDPWD", get_env(e->env, "PWD"), EXPORT_UPDATE);
 		else
-			update_by_key(e, "OLDPWD", e->pwd, EXPORT_UPDATE);
+			update_by_key(e->env, "OLDPWD", e->pwd, EXPORT_UPDATE);
 	}
 	update_pwd(e);
 	if (find_by_key(e->env, "PWD"))
-		update_by_key(e, "PWD", e->pwd, EXPORT_UPDATE);
+		update_by_key(e->env, "PWD", e->pwd, EXPORT_UPDATE);
 }
 
 int	exec_builtin_cd(t_exec *e)
@@ -87,7 +87,7 @@ int	exec_builtin_cd(t_exec *e)
 	if (e->argv[1])
 		path = e->argv[1];
 	else
-		path = get_env(e, "HOME");
+		path = get_env(e->env, "HOME");
 	if (!path)
 		return (perr(BLTN_CD_NAME, NULL, ERR_CD_HOME_NOT_SET, 1));
 	dest = make_path(e->pwd, path);

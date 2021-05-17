@@ -54,7 +54,7 @@ int	find_command(t_exec *e, char **s)
 
 	if (ft_strchr(*s, '/'))
 		return (OK);
-	path = get_env(e, "PATH");
+	path = get_env(e->env, "PATH");
 	if (!path)
 		return (FAIL);
 	parts = ft_split(path, ':');

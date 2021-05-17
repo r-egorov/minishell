@@ -47,18 +47,18 @@ t_dlist	*find_by_key(t_dlist *lst, char *key)
 	return (0);
 }
 
-int	update_by_key(t_exec *e, char *key, char *value, t_ex_op op)
+int	update_by_key(t_dlist *lst, char *key, char *value, t_ex_op op)
 {
-	t_dlist	*lst;
+	t_dlist	*elem;
 	t_env	*content;
 	char	*tmp;
 
 	if (!key || !value)
 		return (0);
-	lst = find_by_key(e->env, key);
-	if (lst)
+	elem = find_by_key(lst, key);
+	if (elem)
 	{
-		content = lst->content;
+		content = elem->content;
 		if (op == EXPORT_APPEND)
 		{
 			tmp = ft_strjoin(content->value, value);
@@ -76,7 +76,7 @@ int	update_by_key(t_exec *e, char *key, char *value, t_ex_op op)
 	return (0);
 }
 
-int	add_by_key(t_exec *e, char *key, char *value)
+int	add_by_key(t_dlist **lst, char *key, char *value)
 {
 	t_env	*content;
 	t_dlist	*elem;
@@ -87,13 +87,15 @@ int	add_by_key(t_exec *e, char *key, char *value)
 	elem = ft_dlstnew(content);
 	if (!elem)
 		process_syserror();
-	ft_dlstadd_back(&e->env, elem);
+	// ft_dlstadd_back(&e->env, elem);
+	ft_dlstadd_back(lst, elem);
 	return (0);
 }
 
-int	put_env(t_exec *e, char *text)
+int	put_env(t_dlist **lst, char *text)
 {
-	t_dlist	*lst;
+	// t_dlist	*lst;
+	t_dlist	*elem;
 	char	*key;
 	char	*value;
 
@@ -104,11 +106,11 @@ int	put_env(t_exec *e, char *text)
 		return (1);
 	}
 	value = get_value(text);
-	lst = find_by_key(e->env, key);
-	if (lst)
-		update_by_key(e, key, value, get_operation(text));
+	elem = find_by_key(*lst, key);
+	if (elem)
+		update_by_key(*lst, key, value, get_operation(text));
 	else
-		add_by_key(e, key, value);
+		add_by_key(lst, key, value);
 	free(key);
 	free(value);
 	return (0);

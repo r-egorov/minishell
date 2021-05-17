@@ -21,7 +21,7 @@ int	minishell_init(t_exec *e)
 	i = 0;
 	while (environ[i])
 	{
-		put_env(e, environ[i]);
+		put_env(&e->env, environ[i]);
 		i++;
 	}
 	update_pwd(e);
