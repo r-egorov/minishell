@@ -30,8 +30,6 @@
 # define CYAN		"\033[0;36m"
 # define DEFAULT	"\033[0m"
 # define DCOLOR		GREEN
-# define BLT_COLOR	GREEN
-# define PCOLOR		GREEN
 
 # define EXPORT_PREFIX				"declare -x "
 # define SCREEN_SYMBOLS				"$\\\'\""
@@ -58,17 +56,6 @@ typedef enum e_op {
 	APPEND
 }			t_op;
 
-// typedef enum e_ex_op {
-// 	EXPORT_NOOP,
-// 	EXPORT_UPDATE,
-// 	EXPORT_APPEND
-// }			t_ex_op;
-
-// typedef struct s_env {
-// 	char	*key;
-// 	char	*value;
-// }			t_env;
-
 typedef struct s_exec {
 	int		argc;
 	char	**argv;
@@ -85,12 +72,6 @@ typedef struct s_exec {
 }				t_exec;
 
 typedef int (*t_bltn)(t_exec*);
-
-// char	*get_env(t_exec *e, char *key);
-// int		put_env(t_exec *e, char *text);
-// void	unset_env(t_exec *e, char *key);
-// t_dlist	*find_by_key(t_dlist *lst, char *key);
-// int		update_by_key(t_exec *e, char *key, char *value, t_ex_op op);
 
 void	exec_init(t_parser *p, t_exec *e);
 int		exec_run(t_exec *e);

@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 12:34:59 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/16 13:00:55 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:31:35 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ static void	update_env_vars(t_exec *e)
 	if (find_by_key(e->env, "OLDPWD"))
 	{
 		if (find_by_key(e->env, "PWD"))
-			update_by_key(e->env, "OLDPWD", get_env(e->env, "PWD"), EXPORT_UPDATE);
+			update_by_key(e->env, "OLDPWD", \
+				get_env(e->env, "PWD"), EXPORT_UPDATE);
 		else
 			update_by_key(e->env, "OLDPWD", e->pwd, EXPORT_UPDATE);
 	}

@@ -87,14 +87,12 @@ int	add_by_key(t_dlist **lst, char *key, char *value)
 	elem = ft_dlstnew(content);
 	if (!elem)
 		process_syserror();
-	// ft_dlstadd_back(&e->env, elem);
 	ft_dlstadd_back(lst, elem);
 	return (0);
 }
 
 int	put_env(t_dlist **lst, char *text)
 {
-	// t_dlist	*lst;
 	t_dlist	*elem;
 	char	*key;
 	char	*value;

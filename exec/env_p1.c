@@ -14,10 +14,8 @@
 
 char	*get_env(t_dlist *lst, char *key)
 {
-	//t_dlist	*lst;
 	t_env	*content;
 
-	//lst = e->env;
 	while (lst)
 	{
 		content = lst->content;
@@ -42,7 +40,6 @@ void	unset_env(t_dlist **lst, char *key)
 				head = elem->next;
 			else
 				head = *lst;
-				// head = e->env;
 			free(((t_env *)elem->content)->key);
 			free(((t_env *)elem->content)->value);
 			ft_dlstdelone(elem, free);
