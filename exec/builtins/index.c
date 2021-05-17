@@ -66,5 +66,7 @@ int	exec_builtins(t_exec *e, int idx, int job)
 	code = builtins[idx](e);
 	dup2(fd0, STDIN_FILENO);
 	dup2(fd1, STDOUT_FILENO);
+	close(fd0);
+	close(fd1);
 	return (code);
 }
