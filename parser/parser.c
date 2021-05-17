@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:55:02 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/12 18:05:18 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/17 13:40:15 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	parser_del(t_parser *self)
 	}
 }
 
-void	parser_refresh(t_parser *self, int exit_status)
+void	parser_refresh(t_parser *self, int exit_status, t_dlist *env)
 {
 	size_t	i;
 
@@ -59,13 +59,16 @@ void	parser_refresh(t_parser *self, int exit_status)
 			self->jobs_len = 0;
 		}
 		self->exit_status = exit_status;
+		self->env = env;
 	}
 }
 
-void	parser_init(t_parser *self, char *string_to_parse, int exit_status)
+void	parser_init(t_parser *self, char *string_to_parse, int exit_status,
+		t_dlist *env)
 {
 	self->string = string_to_parse;
 	self->exit_status = exit_status;
+	self->env = env;
 	self->lexer = NULL;
 	self->jobs = NULL;
 	self->jobs_len = 0;

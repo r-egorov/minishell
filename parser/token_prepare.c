@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:51:38 by cisis             #+#    #+#             */
-/*   Updated: 2021/05/14 17:49:19 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/17 13:44:24 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	token_insert_varvalue(t_token *self, size_t *index, char *varvalue,
 	self->len = ft_strlen(tmp2);
 }
 
-static void	token_expandvar(t_token *self, size_t *i, int exit_status)
+static void	token_expandvar(t_token *self, size_t *i, int exit_status,
+		t_dlist *env)
 {
 	char		*varname;
 	char		*varvalue;
@@ -78,7 +79,7 @@ static void	token_expandvar(t_token *self, size_t *i, int exit_status)
 	else if (!ft_strcmp(varname, "?"))
 		varvalue = ft_itoa(exit_status);
 	else
-		varvalue = ft_strdup(getenv(varname));
+		varvalue = ft_strdup(get_env(env, varname));
 	if (!varvalue)
 		process_syserror();
 	token_insert_varvalue(self, i, varvalue, varname);
@@ -87,7 +88,8 @@ static void	token_expandvar(t_token *self, size_t *i, int exit_status)
 	*i += ft_strlen(varvalue);
 }
 
-static void	token_handle_dquotes(t_token *self, size_t *index, int exit_status)
+static void	token_handle_dquotes(t_token *self, size_t *index, int exit_status,
+		t_dlist *env)
 {
 	size_t		i;
 
@@ -106,7 +108,7 @@ static void	token_handle_dquotes(t_token *self, size_t *index, int exit_status)
 		else if (self->str[i] == '$' && self->str[i + 1]
 			&& (ft_isalnum(self->str[i + 1]) || self->str[i + 1] == '_'
 				|| self->str[i + 1] == '?'))
-			token_expandvar(self, &i, exit_status);
+			token_expandvar(self, &i, exit_status, env);
 		else
 			i++;
 	}
@@ -114,7 +116,7 @@ static void	token_handle_dquotes(t_token *self, size_t *index, int exit_status)
 	*index = i;
 }
 
-void	token_prepare(t_token *self, int exit_status)
+void	token_prepare(t_token *self, int exit_status, t_dlist *env)
 {
 	size_t		i;
 
@@ -126,7 +128,7 @@ void	token_prepare(t_token *self, int exit_status)
 		else if (self->str[i] == '$' && self->str[i + 1]
 			&& (ft_isalnum(self->str[i + 1]) || self->str[i + 1] == '_'
 				|| self->str[i + 1] == '?' || is_quotes(self->str[i + 1])))
-			token_expandvar(self, &i, exit_status);
+			token_expandvar(self, &i, exit_status, env);
 		else if (self->str[i] == '\'')
 		{
 			self->remove(self, i);
@@ -135,7 +137,7 @@ void	token_prepare(t_token *self, int exit_status)
 			self->remove(self, i);
 		}
 		else if (self->str[i] == '\"')
-			token_handle_dquotes(self, &i, exit_status);
+			token_handle_dquotes(self, &i, exit_status, env);
 		else
 			i++;
 	}

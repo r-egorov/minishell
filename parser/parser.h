@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 13:30:14 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/12 18:13:50 by cisis            ###   ########.fr       */
+/*   Updated: 2021/05/17 13:46:41 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include "libft.h"
 # include "errors.h"
+# include "env.h"
 //# include "line.h"
 
 typedef enum e_type
@@ -41,7 +42,7 @@ typedef struct s_token
 
 	void		(*append)(struct s_token *self, char *to_append);
 	void		(*remove)(struct s_token *self, size_t i);
-	void		(*prepare)(struct s_token *self, int exit_status);
+	void		(*prepare)(struct s_token *self, int exit_status, t_dlist *env);
 	void		(*del)(struct s_token *self);
 }				t_token;
 
@@ -74,6 +75,7 @@ typedef struct s_parser
 	char	*string;
 	t_lexer	*lexer;
 	t_job	**jobs;
+	t_dlist	*env;
 	size_t	jobs_len;
 	size_t	pos;
 	int		exit_status;
@@ -81,10 +83,11 @@ typedef struct s_parser
 	void	(*del)(struct s_parser *self);
 }				t_parser;
 
-void	parser_init(t_parser *self, char *string_to_parse, int exit_status);
+void	parser_init(t_parser *self, char *string_to_parse, int exit_status,
+			t_dlist *env);
 void	parser_del(t_parser *self);
 int		parser_next(t_parser *self);
-void	parser_refresh(t_parser *self, int exit_status);
+void	parser_refresh(t_parser *self, int exit_status, t_dlist *env);
 
 int		parser_make_jobs(t_parser *self);
 t_job	*job_new(void);
@@ -105,7 +108,7 @@ char	*lexer_get_varname(t_lexer *self);
 t_token	*token_new(void);
 void	token_del(t_token *self);
 void	token_append(t_token *self, char *src);
-void	token_prepare(t_token *self, int exit_status);
+void	token_prepare(t_token *self, int exit_status, t_dlist *env);
 
 int		is_quotes(char c);
 int		is_tokensep(char c);
