@@ -6,7 +6,7 @@
 /*   By: lelderbe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 14:20:42 by lelderbe          #+#    #+#             */
-/*   Updated: 2021/05/16 15:04:21 by lelderbe         ###   ########.fr       */
+/*   Updated: 2021/05/19 15:17:23 by lelderbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,6 @@ typedef struct s_exec {
 	t_dlist	*env;
 	t_job	**jobs;
 	int		count;
-	t_list	*redir_in;
-	t_list	*redir_out;
-	t_list	*redir_append;
 	int		**fd;
 	int		status;
 }				t_exec;
