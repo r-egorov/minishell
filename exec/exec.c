@@ -42,11 +42,10 @@ void	exec_init(t_parser *p, t_exec *e)
 {
 	e->jobs = p->jobs;
 	e->count = (int)p->jobs_len;
-	e->fd = 0;
 	update_envp(e);
 }
 
-int	get_status_code(pid_t last)
+static int	get_status_code(pid_t last)
 {
 	pid_t	pid;
 	int		status;
@@ -84,7 +83,7 @@ pid_t	exec_command(t_exec *e, int job)
 	if (pid == 0)
 	{
 		restore_child_sig();
-		pipes_redir(e, job);
+		close_child_fds(e);
 		if (fd_redir(e, job) == -1)
 			exit(1);
 		if (!e->argv)
@@ -102,17 +101,17 @@ pid_t	exec_command(t_exec *e, int job)
 	return (pid);
 }
 
-int	exec_run(t_exec *e)
+void	exec_run(t_exec *e)
 {
 	pid_t	pid;
 	int		i;
 	int		idx;
-	pid_t	last;
 
-	e->fd = create_pipes(e->count - 1);
+	save_fds(e);
 	i = 0;
 	while (i < e->count)
 	{
+		create_pipe_redir_fd1(e, i);
 		e->argc = e->jobs[i]->argc;
 		e->argv = e->jobs[i]->argv;
 		idx = -1;
@@ -122,10 +121,9 @@ int	exec_run(t_exec *e)
 			pid = exec_builtins(e, idx, i);
 		else
 			pid = exec_command(e, i);
+		redir_fd0_close_pipe(e);
 		i++;
 	}
-	last = pid;
-	free_pipes(e->fd);
-	e->status = get_status_code(last);
-	return (0);
+	restore_fds(e);
+	e->status = get_status_code(pid);
 }

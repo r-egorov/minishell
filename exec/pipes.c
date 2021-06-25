@@ -12,58 +12,40 @@
 
 #include "exec.h"
 
-void	free_pipes(int **fd)
+void	create_pipe_redir_fd1(t_exec *e, int i)
 {
-	int	i;
-
-	i = 0;
-	while (fd[i])
-	{
-		close(fd[i][0]);
-		close(fd[i][1]);
-		free(fd[i]);
-		i++;
-	}
-	free(fd);
+	pipe(e->pipe);
+	if (e->count - i > 1)
+		dup2(e->pipe[1], STDOUT_FILENO);
+	else
+		dup2(e->fd1, STDOUT_FILENO);
 }
 
-int	**create_pipes(int n)
+void	redir_fd0_close_pipe(t_exec *e)
 {
-	int	**result;
-	int	i;
-
-	result = malloc(sizeof(*result) * (n + 1));
-	if (!result)
-		process_syserror();
-	i = 0;
-	while (i < n)
-	{
-		result[i] = malloc(sizeof(**result) * 2);
-		if (!result)
-			process_syserror();
-		if ((pipe(result[i])) == -1)
-			process_syserror();
-		i++;
-	}
-	result[i] = 0;
-	return (result);
+	dup2(e->pipe[0], STDIN_FILENO);
+	close(e->pipe[0]);
+	close(e->pipe[1]);
 }
 
-void	pipes_redir(t_exec *e, int job)
+void	close_child_fds(t_exec *e)
 {
-	int	result;
+	close(e->pipe[0]);
+	close(e->pipe[1]);
+	close(e->fd0);
+	close(e->fd1);
+}
 
-	if (job - 1 >= 0)
-	{
-		result = dup2(e->fd[job - 1][0], 0);
-		if (result == -1)
-			process_syserror();
-	}
-	if (job < e->count - 1)
-	{
-		result = dup2(e->fd[job][1], 1);
-		if (result == -1)
-			process_syserror();
-	}
-	free_pipes(e->fd);
+void	save_fds(t_exec *e)
+{
+	e->fd0 = dup(STDIN_FILENO);
+	e->fd1 = dup(STDOUT_FILENO);
+}
+
+void	restore_fds(t_exec *e)
+{
+	dup2(e->fd0, STDIN_FILENO);
+	dup2(e->fd1, STDOUT_FILENO);
+	close(e->fd0);
+	close(e->fd1);
 }

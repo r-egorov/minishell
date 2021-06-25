@@ -38,7 +38,8 @@ static int	fork_builtin(t_exec *e, int (*f)(t_exec*), int job)
 	if (pid == 0)
 	{
 		restore_child_sig();
-		pipes_redir(e, job);
+		//pipes_redir(e, job);
+		close_child_fds(e);
 		if (fd_redir(e, job) == -1)
 			exit(1);
 		exit(f(e));

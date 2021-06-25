@@ -65,14 +65,16 @@ typedef struct s_exec {
 	t_dlist	*env;
 	t_job	**jobs;
 	int		count;
-	int		**fd;
+	int		pipe[2];
+	int		fd0;
+	int		fd1;
 	int		status;
 }				t_exec;
 
 typedef int (*t_bltn)(t_exec*);
 
 void	exec_init(t_parser *p, t_exec *e);
-int		exec_run(t_exec *e);
+void	exec_run(t_exec *e);
 
 char	*get_key(char *s);
 t_ex_op	get_operation(const char *s);
@@ -80,9 +82,11 @@ char	*get_value(const char *s);
 char	*get_text(const char *key, const char *value);
 int		is_valid_key(const char *key);
 
-int		**create_pipes(int n);
-void	pipes_redir(t_exec *e, int job);
-void	free_pipes(int **fd);
+void	create_pipe_redir_fd1(t_exec *e, int i);
+void	redir_fd0_close_pipe(t_exec *e);
+void	close_child_fds(t_exec *e);
+void	save_fds(t_exec *e);
+void	restore_fds(t_exec *e);
 
 int		fd_redir(t_exec *e, int job);
 
