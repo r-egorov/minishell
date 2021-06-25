@@ -17,7 +17,7 @@ int	minishell_init(t_exec *e)
 	extern char	**environ;
 	int			i;
 
-	ft_bzero(e, sizeof(e));
+	ft_bzero(e, sizeof(*e));
 	i = 0;
 	while (environ[i])
 	{

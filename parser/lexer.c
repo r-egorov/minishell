@@ -43,10 +43,8 @@ void	lexer_append_token(t_lexer *self, t_token *token)
 
 int	lexer_tokenize(t_lexer *self)
 {
-	size_t		i;
 	t_token		*token;
 
-	i = 0;
 	while (*self->buf)
 	{
 		while (*self->buf == ' ')
